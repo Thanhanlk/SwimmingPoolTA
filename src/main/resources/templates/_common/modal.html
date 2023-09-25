@@ -1,0 +1,34 @@
+<div
+        xmlns:th="http://www.thymeleaf.org"
+        th:fragment="modal(id, title, content, successUrl, bodyComponent)"
+        th:id="${ id }"
+        class="modal fade"
+        tabindex="-1"
+        role="dialog"
+        style="z-index: 10000"
+>
+    <div class="modal-dialog ${ param._sz }" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">${ title }</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <th:block th:if="${ bodyComponent ne null}">
+                    <div th:replace="${ bodyComponent } :: #component"></div>
+                </th:block>
+                <th:block th:if="${ content ne null }">
+                    ${ content }
+                </th:block>
+            </div>
+            <th:block th:if="${ successUrl ne null }">
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy bỏ</button>
+                    <a class="btn btn-primary" th:href="${ successUrl }">Đồng ý</a>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</div>

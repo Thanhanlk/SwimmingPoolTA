@@ -1,0 +1,32 @@
+server:
+  shutdown: graceful
+  port: 8080
+
+spring:
+  docker:
+    compose:
+      enabled: true
+      file: docker-compose.yaml
+  datasource:
+    username: root
+    password: NguyenVanSuong@2001
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/swimming-pool?createDatabaseIfNotExist=true
+    hikari:
+      auto-commit: false
+      connection-timeout: 10000
+      maximum-pool-size: 10
+  jpa:
+    open-in-view: false
+    show-sql: true
+    format_sql: true
+# firebase
+firebase:
+  location: firebase.json
+  bucket: swimming-pool-27ad5.appspot.com
+
+# paypal api
+paypal:
+  client-id: ${paypal.client-id}
+  client-secret: ${paypal.client-secret}
+  mode: sandbox
