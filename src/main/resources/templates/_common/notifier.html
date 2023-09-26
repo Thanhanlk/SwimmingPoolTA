@@ -1,3 +1,3 @@
 <div xmlns:th="http://www.thymeleaf.org">
-    <span th:if="${ result ne null }" th:id="${ result.success ? '_successMessage' : '_errorMessage'}" class="d-none" th:utext="${ result.message }" />
+    <span th:if="${ _RESULT_KEY ne null }" th:id="${ _RESULT_KEY.isSuccess ? '_successMessage' : '_errorMessage'}" class="d-none" th:utext="${ _RESULT_KEY.message }" />
 </div>

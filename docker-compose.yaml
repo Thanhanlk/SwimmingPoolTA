@@ -15,9 +15,10 @@ services:
   database-admin:
     image: phpmyadmin:5.2.1-apache
     container_name: mysql-admin
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
-      PMA_HOST: mysql
+      PMA_HOST: database
     ports:
       - "80:80"
     depends_on:

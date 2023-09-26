@@ -10,7 +10,7 @@
     <div class="modal-dialog ${ param._sz }" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">${ title }</h5>
+                <h5 class="modal-title" th:text="${title}"></h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -20,7 +20,7 @@
                     <div th:replace="${ bodyComponent } :: #component"></div>
                 </th:block>
                 <th:block th:if="${ content ne null }">
-                    ${ content }
+                    [[${content}]]
                 </th:block>
             </div>
             <th:block th:if="${ successUrl ne null }">

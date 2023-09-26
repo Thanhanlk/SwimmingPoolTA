@@ -40,14 +40,14 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Xin chào mừng!</h1>
                                 </div>
-                                <form method="post" class="user">
+                                <form method="post" class="user" th:action="@{/auth}">
                                     <div class="form-group">
                                         <input
                                                 id="exampleInputEmail"
-                                                type="email"
+                                                type="text"
                                                 class="form-control form-control-user"
                                                 placeholder="Nhập địa chỉ email..."
-                                                name="email"
+                                                name="username"
                                                 required
                                         >
                                     </div>
@@ -81,11 +81,10 @@
 
 </div>
 
-<!-- Bootstrap core JavaScript-->
-<script th:src="@{/resources/_common/js/jquery-3.3.1.min.js}"></script>
-<script th:src="@{/resources/_common/js/bootstrap.min.js}"></script>
-<script th:src="@{/resources/_common/js/sweetalert2.js}"></script>
-<script th:src="@{/resources/_common/js/notifier.js}"></script>
+<script th:src="@{/resources/_common/javascript/jquery-3.3.1.min.js}"></script>
+<script th:src="@{/resources/_common/javascript/bootstrap.min.js}"></script>
+<script th:src="@{/resources/_common/javascript/sweetalert2.js}"></script>
+<script th:src="@{/resources/_common/javascript/notifier.js}"></script>
 
 </body>
 

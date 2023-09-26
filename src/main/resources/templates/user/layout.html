@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, body)">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, content)">
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Male_Fashion Template">
@@ -12,16 +12,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" th:href="@{/_common/css/bootstrap.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/_common/css/font-awesome.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/_common/css/elegant-icons.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/_common/css/magnific-popup.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/_common/css/nice-select.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/_common/css/owl.carousel.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/_common/css/slicknav.min.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/user/css/style.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/user/css/header.css}" type="text/css">
-    <link rel="stylesheet" th:href="@{/user/css/footer.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/resources/_common/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/resources/_common/css/font-awesome.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/resources/_common/css/elegant-icons.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/resources/_common/css/magnific-popup.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/resources/_common/css/nice-select.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/resources/_common/css/owl.carousel.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/resources/_common/css/slicknav.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/resources/user/css/style.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/resources/user/css/header.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/resources/user/css/footer.css}" type="text/css">
     <style>
         .required:after {
             content: ' *';
@@ -32,14 +32,30 @@
 <body>
 
     <div style="height: fit-content">
-        <div th:replace="_common/notifier :: div"></div>
+        <div th:replace="~{_common/notifier :: div}"></div>
         <!-- Page Preloder -->
         <div id="preloder">
             <div class="loader"></div>
         </div>
+        <div th:replace="${content}"></div>
 <!--        <jsp:include page="common/header.jsp" />-->
 <!--        <jsp:include page="../../${pageContent}" />-->
 <!--        <jsp:include page="common/footer.jsp" />-->
     </div>
+
+    <script th:src="@{/resources/_common/javascript/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/resources/_common/javascript/bootstrap.min.js}"></script>
+    <script th:src="@{/resources/_common/javascript/jquery.nice-select.min.js}"></script>
+    <script th:src="@{/resources/_common/javascript/jquery.nicescroll.min.js}"></script>
+    <script th:src="@{/resources/_common/javascript/jquery.magnific-popup.min.js}"></script>
+    <script th:src="@{/resources/_common/javascript/jquery.countdown.min.js}"></script>
+    <script th:src="@{/resources/_common/javascript/jquery.slicknav.js}"></script>
+    <script th:src="@{/resources/_common/javascript/mixitup.min.js}"></script>
+    <script th:src="@{/resources/_common/javascript/owl.carousel.min.js}"></script>
+    <script th:src="@{/resources/_common/javascript/sweetalert2.js}"></script>
+    <script th:src="@{/resources/_common/javascript/notifier.js}"></script>
+    <script th:src="@{/resources/_common/javascript/utilities.js}"></script>
+    <script th:src="@{/resources/admin/javascript/spinner.js}"></script>
+    <script th:src="@{/resources/user/javascript/main.js}"></script>
 </body>
 </html>
