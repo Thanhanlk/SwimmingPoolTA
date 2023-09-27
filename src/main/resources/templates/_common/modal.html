@@ -1,6 +1,6 @@
 <div
         xmlns:th="http://www.thymeleaf.org"
-        th:fragment="modal(id, title, content, successUrl, bodyComponent)"
+        th:fragment="modal(id, title, content, successUrl, method, bodyComponent)"
         th:id="${ id }"
         class="modal fade"
         tabindex="-1"
@@ -17,7 +17,7 @@
             </div>
             <div class="modal-body">
                 <th:block th:if="${ bodyComponent ne null}">
-                    <div th:replace="${ bodyComponent } :: #component"></div>
+                    <div th:replace="~{${bodyComponent} :: .component}"></div>
                 </th:block>
                 <th:block th:if="${ content ne null }">
                     [[${content}]]
@@ -26,7 +26,9 @@
             <th:block th:if="${ successUrl ne null }">
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy bỏ</button>
-                    <a class="btn btn-primary" th:href="${ successUrl }">Đồng ý</a>
+                    <form th:action="${successUrl}" th:method="${method}">
+                        <button class="btn btn-primary">Đồng ý</button>
+                    </form>
                 </div>
             </th:block>
         </div>

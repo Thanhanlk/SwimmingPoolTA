@@ -7,10 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Swimming Pool</title>
 
+    <link th:href="@{/resources/_common/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-
-    <link th:href="@{/resources/_common/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/resources/admin/css/sb-admin-2.min.css}" rel="stylesheet">
     <style>
         .required:after {
@@ -70,14 +69,9 @@
         <i class="fa fa-arrow-up"></i>
     </a>
 
-    <div th:replace="~{_common/modal :: modal('logoutModal', 'Ready to Leave?', 'Select \'Logout\' below if you are ready to end your current session.', @{/auth/logout}, null)}" />
-<!--    <div th:replace="_common/modal :: modal('change-password-user', 'Đổi mật khẩu?', 'Select \'Logout\' below if you are ready to end your current session.', @{/auth/logout})" />-->
+    <div th:replace="~{_common/modal :: modal('logoutModal', 'Ready to Leave?', 'Select \'Logout\' below if you are ready to end your current session.', @{/auth/logout}, 'post', null)}" />
 
-<!--    <jsp:include page="../common/modal.jsp">-->
-<!--        <jsp:param name="_title" value="Đổi mật khẩu"/>-->
-<!--        <jsp:param name="id" value="${ changePasswordId }"/>-->
-<!--        <jsp:param name="bodyComponent" value="/user/common/change-password-form.jsp"/>-->
-<!--    </jsp:include>-->
+    <div th:replace="~{_common/modal :: modal('changePasswordId', 'Đổi mật khẩu', null, null, null, '/user/common/change-password-form')}" />
 
     <!-- Bootstrap core JavaScript-->
     <script th:src="@{/resources/_common/javascript/jquery-3.3.1.min.js}"></script>
