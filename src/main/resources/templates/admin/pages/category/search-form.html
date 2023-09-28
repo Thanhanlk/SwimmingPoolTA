@@ -1,0 +1,13 @@
+<form method="get" th:action="@{/auth/test}" class="mt-3 search-component">
+    [[${paramMap}]]
+    <input type="hidden" name="page" value="1" />
+    <input type="hidden" name="pageSize" value="5" />
+    <div class="row">
+        <div class="col-md-5">
+            <input class="form-control" placeholder="Tên, mã danh mục" th:name="data">
+        </div>
+        <div class="justify-content-center">
+            <button class="btn btn-primary">Tìm kiếm</button>
+        </div>
+    </div>
+</form>

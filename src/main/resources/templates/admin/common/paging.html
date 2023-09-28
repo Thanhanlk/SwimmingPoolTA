@@ -1,0 +1,33 @@
+<nav
+        xmlns:th="http://www.thymeleaf.org"
+        class="d-flex justify-content-start justify-content-md-end mt-2"
+        th:with="url=${currentUri + '_x_='}"
+>
+    <div
+        th:each="p : ${paramMap}"
+        th:if="${ p.key ne 'page' and p.key ne '_x_' }"
+        th:with="url=${url + '&' + p.key + '=' + #strings.arrayJoin(p.value, ',')}"
+    />
+    <ul class="pagination" >
+        <li th:if="${_PAGING_KEY.page gt 1}" class="page-item">
+            <a class="page-link" th:href="${url + '&page=' + _PAGING_KEY.page - 1 }" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <th:block th:each="page :${_PAGING_KEY.pages}">
+            <li th:if="${ page eq '...' }" class="page-item">
+                <a class="page-link">[[${ page }]]</a>
+            </li>
+            <li th:if="${ page ne '...' }" class="page-item" th:classappend="${ page eq _PAGING_KEY.page ? 'active' : '' }">
+                <a class="page-link" th:href="${url + '&page=' + page }">[[${page}]]</a>
+            </li>
+        </th:block>
+        <li th:if="${ _PAGING_KEY.page lt _PAGING_KEY.totalPage }" class="page-item">
+            <a class="page-link" th:href="${url + '&page=' + _PAGING_KEY.page + 1 }" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+    </ul>
+</nav>

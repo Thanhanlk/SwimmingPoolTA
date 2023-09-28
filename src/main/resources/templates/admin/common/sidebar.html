@@ -17,7 +17,7 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <li th:replace="~{admin/common/link :: link(@{/admin/category}, 'Quản lý danh mục', 'fa fa-table', false)}" />
+    <li th:replace="~{admin/common/link :: link(@{/admin/course}, 'Quản lý khóa học', 'fa fa-table', ${#strings.startsWith(currentUri, '/admin/course')})}" />
     <li th:replace="~{admin/common/link :: link(@{/admin/category}, 'Quản lý sản phẩm', 'fa fa-table', false)}" />
     <li th:replace="~{admin/common/link :: link(@{/admin/category}, 'Quản lý khách hàng', 'fa fa-table', false)}" />
     <li th:replace="~{admin/common/link :: link(@{/admin/category}, 'Quản lý đơn hàng', 'fa fa-table', false)}" />

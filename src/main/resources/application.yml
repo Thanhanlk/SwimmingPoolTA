@@ -3,13 +3,20 @@ server:
   port: 8080
 
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      resolve-lazily: true
+      max-file-size: 5MB
+      max-request-size: 5MB
+      file-size-threshold: 5MB
   docker:
     compose:
       enabled: true
       file: docker-compose.yaml
   datasource:
     username: root
-    password: NguyenVanSuong@2001
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/swimming-pool?createDatabaseIfNotExist=true
     hikari:
@@ -21,8 +28,11 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-    properties:
-      format-sql: true
+  messages:
+    basename: message
+    encoding: UTF-8
+    use-code-as-default-message: true
+
 # firebase
 firebase:
   location: firebase.json

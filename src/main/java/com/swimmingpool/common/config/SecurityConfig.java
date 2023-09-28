@@ -1,5 +1,6 @@
-package com.swimmingpool.security;
+package com.swimmingpool.common.config;
 
+import com.swimmingpool.user.UserConstant;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
+
+import static com.swimmingpool.user.UserConstant.Role.ADMIN;
 
 @EnableWebSecurity
 @Configuration
@@ -59,6 +62,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers("/auth/**").permitAll()
                             .requestMatchers("/resources/**").permitAll()
+                            .requestMatchers("/admin/**").hasAuthority(ADMIN.name())
                             .anyRequest()
                             .authenticated();
                 })
