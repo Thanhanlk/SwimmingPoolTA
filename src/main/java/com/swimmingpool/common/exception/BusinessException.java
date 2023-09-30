@@ -2,14 +2,16 @@ package com.swimmingpool.common.exception;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Map;
 
 @Getter
+@Setter
 public class BusinessException extends RuntimeException {
 
-    private final String redirectUrl;
-    private final Map<String, Object> data;
+    private String redirectUrl;
+    private Map<String, Object> data;
 
     public BusinessException(String message, String redirectUrl) {
         super(message);

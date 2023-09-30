@@ -1,19 +1,31 @@
 package com.swimmingpool.course.impl;
 
+import com.swimmingpool.common.dto.PageResponse;
 import com.swimmingpool.common.dto.Result;
 import com.swimmingpool.common.exception.ValidationException;
+import com.swimmingpool.common.util.I18nUtil;
 import com.swimmingpool.course.Course;
 import com.swimmingpool.course.CourseRepository;
 import com.swimmingpool.course.ICourseService;
 import com.swimmingpool.course.request.CourseCreationRequest;
+import com.swimmingpool.course.request.CourseSearchRequest;
 import com.swimmingpool.course.response.CourseCreationResponse;
+import com.swimmingpool.course.response.CourseSearchResponse;
+import com.swimmingpool.image.ImageConstant;
+import com.swimmingpool.image.ImageService;
 import com.swimmingpool.pool.Pool;
 import com.swimmingpool.pool.PoolRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -23,14 +35,35 @@ public class CourseServiceImpl implements ICourseService {
 
     private final CourseRepository courseRepository;
     private final PoolRepository poolRepository;
+    private final CustomCourseRepositoryImpl customCourseRepositoryImpl;
+
+    @Setter(onMethod_ = { @Autowired })
+    private ImageService imageService;
+
+    @Override
+    public Course findByIdThrowIfNotPresent(String id) throws ValidationException {
+        return this.courseRepository.findById(id)
+                .orElseThrow(() -> new ValidationException(I18nUtil.getMessage("course.id.validate.not-exist", id)));
+    }
+
+    @Override
+    public PageResponse<CourseSearchResponse> searchCourse(CourseSearchRequest courseSearchRequest) {
+        return this.customCourseRepositoryImpl.searchCourse(courseSearchRequest);
+    }
 
     @Override
     @Transactional
-    public Result<CourseCreationResponse> saveCourse(CourseCreationRequest courseCreationRequest) {
-        log.info("create course: {}", courseCreationRequest);
-        Optional<Course> courseByCode = this.courseRepository.findByCode(courseCreationRequest.getCode());
-        if (courseByCode.isPresent()) {
-            throw new ValidationException("course.code.validate.exist", courseCreationRequest.getCode());
+    public CourseCreationResponse saveCourse(CourseCreationRequest courseCreationRequest) throws IOException {
+        log.info("save course: {}", courseCreationRequest);
+        Course course = new Course();
+        if (StringUtils.hasLength(courseCreationRequest.getId())) {
+            course = this.findByIdThrowIfNotPresent(courseCreationRequest.getId());
+            courseCreationRequest.setCode(course.getCode());
+        } else {
+            Optional<Course> courseByCode = this.courseRepository.findByCode(courseCreationRequest.getCode());
+            if (courseByCode.isPresent()) {
+                throw new ValidationException("course.code.validate.exist", courseCreationRequest.getCode());
+            }
         }
 
         Optional<Pool> poolById = this.poolRepository.findById(courseCreationRequest.getPoolId());
@@ -38,7 +71,6 @@ public class CourseServiceImpl implements ICourseService {
             throw new ValidationException("pool.id.validate.not-exist");
         }
 
-        Course course = new Course();
         course.setCode(courseCreationRequest.getCode());
         course.setName(courseCreationRequest.getName());
         course.setPrice(courseCreationRequest.getPrice());
@@ -47,10 +79,28 @@ public class CourseServiceImpl implements ICourseService {
         course.setPoolId(courseCreationRequest.getPoolId());
         course.setShortDescription(courseCreationRequest.getShortDescription());
         course.setDescription(courseCreationRequest.getDescription());
+        course.setDiscount(courseCreationRequest.getDiscount());
+        course.setActive(false);
+        course.setIsShowHome(courseCreationRequest.getIsShowHome());
+        course.setSlug(courseCreationRequest.getSlug());
 
         // todo: handle upload course's images
-
+        if (Objects.nonNull(courseCreationRequest.getAvatar())) {
+            MultipartFile avatar = courseCreationRequest.getAvatar();
+            String avatarUrl = this.imageService.upload(avatar, String.format("%s-%s", course.getCode(), course.getName()), ImageConstant.Type.COURSE);
+            if (StringUtils.hasLength(avatarUrl)) {
+                course.setAvatar(avatarUrl);
+            }
+        }
         this.courseRepository.save(course);
-        return null;
+        return new CourseCreationResponse();
+    }
+
+    @Override
+    @Transactional
+    public void changeStatus(String id) {
+        Course course = this.findByIdThrowIfNotPresent(id);
+        course.setActive(!course.getActive());
+        this.courseRepository.save(course);
     }
 }

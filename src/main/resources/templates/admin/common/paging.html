@@ -1,7 +1,7 @@
 <nav
         xmlns:th="http://www.thymeleaf.org"
         class="d-flex justify-content-start justify-content-md-end mt-2"
-        th:with="url=${currentUri + '_x_='}"
+        th:with="url=${currentUri + '?_x_='}"
 >
     <div
         th:each="p : ${paramMap}"

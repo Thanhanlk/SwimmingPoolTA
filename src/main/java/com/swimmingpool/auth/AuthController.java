@@ -24,17 +24,6 @@ public class AuthController {
 
     private final IUserService userService;
 
-    @GetMapping("/test")
-    public String index(@RequestParam(required = false) String data, Model model) {
-        PageResponse pageResponse = new PageResponse();
-        pageResponse.setPage(1);
-        pageResponse.setPageSize(10);
-        pageResponse.setTotal(100);
-        pageResponse.setItems(List.of(1,2,3,4,5,6,7,8,89,1));
-        model.addAttribute(AppConstant.ResponseKey.PAGING, pageResponse);
-        return "admin/pages/category/index";
-    }
-
     @GetMapping
     public String getLogin() {
         return "login";

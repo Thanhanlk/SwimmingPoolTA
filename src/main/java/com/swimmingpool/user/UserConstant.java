@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 public class UserConstant {
 
     public enum Role {
-        USER, STAFF, ADMIN
+        USER, TEACHER, ADMIN
     }
 }

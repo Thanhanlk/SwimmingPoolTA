@@ -12,16 +12,16 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <li th:replace="~{admin/common/link :: link(@{/admin/category}, 'Dashboard', 'fa fa-table', false)}" />
+<!--    <li th:replace="~{admin/common/link :: link(@{/admin/category}, 'Dashboard', 'fa fa-table')}" />-->
 
     <!-- Divider -->
-    <hr class="sidebar-divider">
+<!--    <hr class="sidebar-divider">-->
 
-    <li th:replace="~{admin/common/link :: link(@{/admin/course}, 'Quản lý khóa học', 'fa fa-table', ${#strings.startsWith(currentUri, '/admin/course')})}" />
-    <li th:replace="~{admin/common/link :: link(@{/admin/category}, 'Quản lý sản phẩm', 'fa fa-table', false)}" />
-    <li th:replace="~{admin/common/link :: link(@{/admin/category}, 'Quản lý khách hàng', 'fa fa-table', false)}" />
-    <li th:replace="~{admin/common/link :: link(@{/admin/category}, 'Quản lý đơn hàng', 'fa fa-table', false)}" />
-
+    <li th:replace="~{admin/common/link :: link(@{/admin/course}, 'Quản lý khóa học', 'fa fa-table')}" />
+    <li th:replace="~{admin/common/link :: link(@{/admin/user/staff}, 'Phân công giảng dạy', 'fa fa-book')}" />
+    <li th:replace="~{admin/common/link :: link(@{/admin/user/staff}, 'Quản lý nhân viên', 'fa fa-user')}" />
+    <li th:replace="~{admin/common/link :: link(@{/admin/user/customer}, 'Quản lý khách hàng', 'fa fa-user')}" />
+    <li th:replace="~{admin/common/link :: link(@{/admin/category}, 'Quản lý đơn hàng', 'fa fa-table')}" />
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

@@ -1,31 +1,40 @@
 package com.swimmingpool.user.request;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.swimmingpool.user.UserConstant;
 import com.swimmingpool.validation.annotation.RepeatPassword;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-@RepeatPassword(message = "Mật khẩu không trùng nhau.")
+@RepeatPassword(message = "user.password.validate.not-match")
 public class UserRegisterRequest {
 
-    @NotBlank
+    private String id;
+
+    @NotBlank(message = "user.firstname.validate.empty")
     private String firstName;
 
-    @NotBlank
+    @NotBlank(message = "user.lastname.validate.empty")
     private String lastName;
 
-    @NotBlank
+    @NotBlank(message = "user.username.validate.empty")
     private String username;
 
-    @NotBlank
-    @JsonIgnore
+    @NotBlank(message = "user.password.validate.empty")
     private String password;
 
-    @NotBlank
+    @NotBlank(message = "user.repeat-password.validate.empty")
     private String repeatPassword;
+
+    private String email;
+    private String phone;
+    private String address;
 
     public String getFullName() {
         return String.format("%s %s", this.lastName, this.firstName);
+    }
+
+    public UserConstant.Role getRole() {
+        return UserConstant.Role.USER;
     }
 }

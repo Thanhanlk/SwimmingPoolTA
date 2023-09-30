@@ -1,20 +1,19 @@
 package com.swimmingpool.user;
 
+import com.swimmingpool.common.entity.AuditTable;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.util.Date;
-import java.util.UUID;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "_user")
 @Setter
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class User {
+@EntityListeners(AuditingEntityListener.class)
+public class User extends AuditTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -46,9 +45,4 @@ public class User {
 
     @Column(name = "active")
     private Boolean active;
-
-    @Column(name = "created_date", updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date createdDate;
 }

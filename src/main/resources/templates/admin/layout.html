@@ -11,6 +11,12 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link th:href="@{/resources/admin/css/sb-admin-2.min.css}" rel="stylesheet">
+    <link
+        th:if="${_CSS_KEY ne null}"
+        th:each="css : ${_CSS_KEY}"
+        th:href="@{/resources__${css}__.css}"
+        rel="stylesheet"
+    />
     <style>
         .required:after {
             content: ' *';
@@ -86,7 +92,10 @@
     <script th:src="@{/resources/admin/javascript/spinner.js}"></script>
     <script th:src="@{/resources/_common/javascript/notifier.js}" ></script>
     <script th:src="@{/resources/_common/javascript/utilities.js}" ></script>
-    <script th:src="@{/resources/admin/javascript/ckeditor/ckeditor.js}"></script>
-    <script th:src="@{/resources/admin/javascript/ckeditor.js}"></script>
+    <script
+        th:if="${_JS_KEY ne null}"
+        th:each="js : ${_JS_KEY}"
+        th:src="@{/resources__${js}__.js}"
+    ></script>
 </body>
 </html>

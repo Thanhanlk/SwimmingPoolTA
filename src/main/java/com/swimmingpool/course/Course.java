@@ -1,23 +1,21 @@
 package com.swimmingpool.course;
 
+import com.swimmingpool.common.entity.AuditTable;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Setter
 @Getter
-@Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
 @Table(name = "_course")
 @EntityListeners(AuditingEntityListener.class)
-public class Course {
+public class Course extends AuditTable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -33,6 +31,9 @@ public class Course {
 
     @Column(name = "price")
     private BigDecimal price;
+
+    @Column(name = "discount")
+    private Integer discount;
 
     @Column(name = "number_of_student")
     private Integer numberOfStudent;
@@ -50,12 +51,16 @@ public class Course {
     @Column(name = "pool_id")
     private String poolId;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_date")
-    @CreatedDate
-    private Date createdDate;
+    @Column(name = "is_show_home")
+    private Boolean isShowHome;
 
-    @Column(name = "created_by")
-    @CreatedBy
-    private String createdBy;
+    @Column(name = "slug")
+    private String slug;
+
+    @Lob
+    @Column(name = "avatar")
+    private String avatar;
+
+    @Column(name = "active")
+    private Boolean active;
 }
