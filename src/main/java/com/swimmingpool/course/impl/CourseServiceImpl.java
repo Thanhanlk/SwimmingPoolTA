@@ -1,7 +1,6 @@
 package com.swimmingpool.course.impl;
 
 import com.swimmingpool.common.dto.PageResponse;
-import com.swimmingpool.common.dto.Result;
 import com.swimmingpool.common.exception.ValidationException;
 import com.swimmingpool.common.util.I18nUtil;
 import com.swimmingpool.course.Course;
@@ -13,8 +12,6 @@ import com.swimmingpool.course.response.CourseCreationResponse;
 import com.swimmingpool.course.response.CourseSearchResponse;
 import com.swimmingpool.image.ImageConstant;
 import com.swimmingpool.image.ImageService;
-import com.swimmingpool.pool.Pool;
-import com.swimmingpool.pool.PoolRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +31,6 @@ import java.util.Optional;
 public class CourseServiceImpl implements ICourseService {
 
     private final CourseRepository courseRepository;
-    private final PoolRepository poolRepository;
     private final CustomCourseRepositoryImpl customCourseRepositoryImpl;
 
     @Setter(onMethod_ = { @Autowired })
@@ -66,17 +62,11 @@ public class CourseServiceImpl implements ICourseService {
             }
         }
 
-        Optional<Pool> poolById = this.poolRepository.findById(courseCreationRequest.getPoolId());
-        if (poolById.isEmpty()) {
-            throw new ValidationException("pool.id.validate.not-exist");
-        }
-
         course.setCode(courseCreationRequest.getCode());
         course.setName(courseCreationRequest.getName());
         course.setPrice(courseCreationRequest.getPrice());
         course.setNumberOfLesson(courseCreationRequest.getNumberOfLesson());
         course.setNumberOfStudent(courseCreationRequest.getNumberOfStudent());
-        course.setPoolId(courseCreationRequest.getPoolId());
         course.setShortDescription(courseCreationRequest.getShortDescription());
         course.setDescription(courseCreationRequest.getDescription());
         course.setDiscount(courseCreationRequest.getDiscount());

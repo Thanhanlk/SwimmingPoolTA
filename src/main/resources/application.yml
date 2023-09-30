@@ -36,7 +36,8 @@ spring:
     allow-bean-definition-overriding: true
 logging:
   file:
-    path: logs/swimming-pool.log
+    path: logs
+    name: swimming-pool.log
 # firebase
 firebase:
   enable: true

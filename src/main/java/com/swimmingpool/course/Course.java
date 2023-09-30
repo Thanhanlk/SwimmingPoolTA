@@ -48,9 +48,6 @@ public class Course extends AuditTable {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "pool_id")
-    private String poolId;
-
     @Column(name = "is_show_home")
     private Boolean isShowHome;
 

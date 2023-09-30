@@ -39,9 +39,6 @@ public class CourseCreationRequest {
     @NotBlank(message = "course.description.validate.empty")
     private String description;
 
-    @NotBlank(message = "pool.id.validate.empty")
-    private String poolId;
-
     @NotBlank(message = "course.slug.validate.empty")
     @Size(max = 255, message = "course.slug.validate.max")
     private String slug;

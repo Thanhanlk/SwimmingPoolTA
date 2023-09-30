@@ -10,8 +10,6 @@ import com.swimmingpool.course.request.CourseCreationRequest;
 import com.swimmingpool.course.request.CourseSearchRequest;
 import com.swimmingpool.course.response.CourseCreationResponse;
 import com.swimmingpool.course.response.CourseSearchResponse;
-import com.swimmingpool.pool.IPoolService;
-import com.swimmingpool.pool.response.PoolResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -31,7 +28,6 @@ import java.util.Optional;
 public class AdminCourseController extends BaseController {
 
     private final ICourseService courseService;
-    private final IPoolService poolService;
 
     @GetMapping
     public String index(CourseSearchRequest courseSearchRequest, Model model) {
@@ -44,11 +40,9 @@ public class AdminCourseController extends BaseController {
 
     @GetMapping("/create")
     public String getCrateCourse(Model model, HttpServletRequest req) {
-        List<PoolResponse> activePool = this.poolService.findAllActive();
         if (!model.containsAttribute("courseCreation")) {
             model.addAttribute("courseCreation", new CourseCreationRequest());
         }
-        model.addAttribute("activePools", activePool);
         this.addJavascript(model, "/admin/javascript/ckeditor/ckeditor", "/admin/javascript/ckeditor");
         model.addAttribute("redirectUrl", req.getRequestURI());
         return "admin/pages/course/create";
@@ -89,12 +83,9 @@ public class AdminCourseController extends BaseController {
                 courseCreationRequest.setDescription(course.getDescription());
                 courseCreationRequest.setSlug(course.getSlug());
                 courseCreationRequest.setIsShowHome(course.getIsShowHome());
-                courseCreationRequest.setPoolId(course.getPoolId());
                 model.addAttribute("courseCreation", courseCreationRequest);
             }
 
-            List<PoolResponse> activePool = this.poolService.findAllActive();
-            model.addAttribute("activePools", activePool);
             model.addAttribute("redirectUrl", req.getRequestURI() + "?id=" + id);
             this.addJavascript(model, "/admin/javascript/ckeditor/ckeditor", "/admin/javascript/ckeditor");
             return "admin/pages/course/create";
