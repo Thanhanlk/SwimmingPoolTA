@@ -22,7 +22,6 @@ public class CourseRowMapper {
             courseSearchResponse.setNumberOfLesson(t.get("numberOfLesson", Integer.class));
             courseSearchResponse.setCreatedDate(t.get("createdDate", Date.class));
             courseSearchResponse.setModifiedDate(t.get("modifiedDate", Date.class));
-            courseSearchResponse.setPoolName(t.get("poolName", String.class));
             courseSearchResponse.setAvatar(t.get("avatar", String.class));
             courseSearchResponse.setActive(t.get("active", Boolean.class));
             courseSearchResponse.setSlug(t.get("slug", String.class));

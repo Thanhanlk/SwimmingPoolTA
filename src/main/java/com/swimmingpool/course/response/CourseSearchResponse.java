@@ -18,6 +18,5 @@ public class CourseSearchResponse {
     private int discount;
     private Date createdDate;
     private Date modifiedDate;
-    private String poolName;
     private Boolean active;
 }

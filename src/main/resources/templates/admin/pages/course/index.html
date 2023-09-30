@@ -12,7 +12,6 @@
                     <th class="table-column-header" data-col="numberOfStudent" data-show="false">SL học viên</th>
                     <th class="table-column-header" data-col="numberOfLesson" data-show="false">SL buổi học</th>
                     <th class="table-column-header" data-col="discount" data-show="true">Giảm giá(%)</th>
-                    <th class="table-column-header" data-col="poolName" data-show="true">Hồ bơi</th>
                     <th class="table-column-header" data-col="createdDate" data-show="false">Ngày tạo</th>
                     <th class="table-column-header" data-col="updatedDate" data-show="false">Ngày cập nhật</th>
                     <th class="table-column-header" data-col="status" data-show="true">Trạng thái</th>
@@ -32,7 +31,6 @@
                         <td data-col="numberOfStudent" th:text="*{numberOfStudent}" />
                         <td data-col="numberOfLesson" th:text="*{numberOfLesson}" />
                         <td data-col="discount" th:text="*{discount}" />
-                        <td data-col="poolName" th:text="*{poolName}" />
                         <td data-col="createdDate" th:text="*{#dates.format(createdDate, 'dd/MM/yyyy')}"/>
                         <td data-col="updatedDate" th:text="*{#dates.format(modifiedDate, 'dd/MM/yyyy')}"/>
                         <td data-col="status">

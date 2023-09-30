@@ -23,10 +23,9 @@ public class CustomCourseRepositoryImpl {
 
         StringBuilder sqlBuilder = new StringBuilder("select c.id as id, c.code as code, c.name as name, c.created_date as createdDate")
                 .append(" , c.modified_date as modifiedDate, c.price as price, c.number_of_lesson as numberOfLesson")
-                .append(" , c.number_of_student as numberOfStudent, c.discount as discount, p.name as poolName")
+                .append(" , c.number_of_student as numberOfStudent, c.discount as discount")
                 .append(" , c.avatar as avatar, c.active as active, c.slug as slug")
                 .append(" from _course c")
-                .append("  join _pool p ON p.id = c.pool_id")
                 .append(" where 1 = 1");
         Map<String, Object> params = new HashMap<>();
         if (StringUtils.hasLength(courseSearchRequest.getCodeName())) {
