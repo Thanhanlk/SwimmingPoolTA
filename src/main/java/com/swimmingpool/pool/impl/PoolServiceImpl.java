@@ -1,6 +1,8 @@
 package com.swimmingpool.pool.impl;
 
+import com.swimmingpool.common.exception.ValidationException;
 import com.swimmingpool.pool.IPoolService;
+import com.swimmingpool.pool.Pool;
 import com.swimmingpool.pool.PoolRepository;
 import com.swimmingpool.pool.response.PoolResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,12 @@ import java.util.List;
 public class PoolServiceImpl implements IPoolService {
 
     private final PoolRepository poolRepository;
+
+    @Override
+    public Pool findByIdThrowIfNotPresent(String poolId) throws ValidationException {
+        return this.poolRepository.findById(poolId)
+                .orElseThrow(() -> new ValidationException("pool.id.validate.not-exist", poolId));
+    }
 
     @Override
     @Cacheable(cacheManager = "redisCacheManager", cacheNames = "ACTIVE_POOL", key = "'EMPTY'")

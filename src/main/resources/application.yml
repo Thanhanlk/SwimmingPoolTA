@@ -36,8 +36,7 @@ spring:
     allow-bean-definition-overriding: true
 logging:
   file:
-    path: logs
-    name: swimming-pool.log
+    name: logs/swimming-pool.log
 # firebase
 firebase:
   enable: true
@@ -59,4 +58,8 @@ cache:
   password: ${REDIS_PASSWORD}
   properties:
     - name: ACTIVE_POOL
+      ttl: 1440
+    - name: ACTIVE_COURSE
+      ttl: 1440
+    - name: TEACHER
       ttl: 1440

@@ -10,8 +10,11 @@ import com.swimmingpool.course.response.CourseCreationResponse;
 import com.swimmingpool.course.response.CourseSearchResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface ICourseService {
+
+    List<Course> findActiveCourse();
 
     Course findByIdThrowIfNotPresent(String id) throws ValidationException;
 

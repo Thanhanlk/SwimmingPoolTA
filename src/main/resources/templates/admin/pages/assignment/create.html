@@ -1,0 +1,74 @@
+<div xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout :: layout(~{::#content})}">
+    <div id="content">
+        <a th:href="@{/admin/assignment}">Quay lại</a>
+        <form
+                th:action="@{/admin/assignment}"
+                th:object="${assignmentCreation}"
+                method="post"
+                class="d-flex flex-column mt-3"
+                style="gap: 20px;"
+        >
+            <div>
+                <div class="mt-2 card p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="required">Giáo viên dạy bơi</label>
+                            <select class="form-control" th:field="*{userId}">
+                                <option th:each="teacher : ${teachers}" th:value="${teacher.id}" th:text="${teacher.username + '-' + teacher.fullName}" />
+                            </select>
+                        </div>
+                    </div>
+
+                    <div
+                            th:each="form,_status : *{assignmentFields}"
+                    >
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label class="required">Khóa học</label>
+                                <select class="form-control" th:field="*{assignmentFields[__${_status.index}__].courseId}">
+                                    <option th:each="course: ${courses}" th:value="${course.id}" th:text="${course.name}" />
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="required">Hồ bơi</label>
+                                <select class="form-control" th:field="*{assignmentFields[__${_status.index}__].poolId}">
+                                    <option th:each="pool: ${pools}" th:value="${pool.id}" th:text="${pool.name}" />
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label class="required">Thứ</label>
+                                <select class="form-control" th:field="*{assignmentFields[__${_status.index}__].dayOfWeek}">
+                                    <option
+                                        th:each="day : ${T(java.time.DayOfWeek).values()}"
+                                        th:value="${day}"
+                                        th:text="#{'day-of-week.' + __${day}__}"
+                                    />
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label class="required">Thời gian bắt đầu</label>
+                                <input type="time" class="form-control" th:field="*{assignmentFields[__${_status.index}__].startTime}"/>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="required">Thời gian kết thúc</label>
+                                <input type="time" class="form-control"  th:field="*{assignmentFields[__${_status.index}__].endTime}"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-secondary" th:href="@{/admin/assignment}">Hủy bỏ</a>
+                <button class="btn btn-primary ml-3">Lưu lại</button>
+            </div>
+        </form>
+    </div>
+</div>
