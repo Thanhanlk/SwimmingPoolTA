@@ -1,7 +1,6 @@
 const columnController = document.getElementById('column-controller');
 const columnOption = document.getElementById('column-option');
 const columnHeader = document.querySelectorAll('.table-column-header');
-console.log(columnController)
 // create option
 columnHeader?.forEach(header => {
     const colName = header.dataset.col;

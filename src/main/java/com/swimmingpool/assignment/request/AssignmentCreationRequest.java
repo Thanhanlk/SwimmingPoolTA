@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 public class AssignmentCreationRequest {
@@ -20,5 +21,16 @@ public class AssignmentCreationRequest {
         this.userId = null;
         this.assignmentFields = new ArrayList<>();
         this.assignmentFields.add(new AssignmentField());
+    }
+
+    public void addAssignmentField(AssignmentField assignmentField) {
+        if (Objects.isNull(assignmentField)) return;
+        if (Objects.isNull(this.assignmentFields)) this.assignmentFields = new ArrayList<>();
+        this.assignmentFields.add(assignmentField);
+    }
+
+    public void deleteAssignmentField(int index) {
+        if (Objects.isNull(this.assignmentFields)) return;
+        this.assignmentFields.remove(index);
     }
 }

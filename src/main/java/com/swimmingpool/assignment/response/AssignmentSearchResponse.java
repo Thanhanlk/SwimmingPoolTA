@@ -8,5 +8,6 @@ import java.util.List;
 public class AssignmentSearchResponse {
     private String userName;
     private String fullName;
+    private String userId;
     private List<AssignmentCreationResponse> assignments;
 }

@@ -23,13 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.Time;
 import java.time.DayOfWeek;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,18 +48,32 @@ public class AssignmentServiceImpl implements IAssignmentService {
     private IPoolService poolService;
 
     @Override
+    public Assignment findByIdThrowIfNotPresent(String id) {
+        return this.assignmentRepository.findById(id)
+                .orElseThrow(() -> new ValidationException("assignment.id.validate.not-exist", id));
+    }
+
+    @Override
+    public List<Assignment> findByUserId(String userId) {
+        return this.assignmentRepository.findByUserId(userId);
+    }
+
+    @Override
     public PageResponse<AssignmentSearchResponse> searchAssignment(AssignmentSearchRequest request) {
         PageResponse<AssignmentCreationResponse> pageResponse = this.customAssignmentRepository.searchAssignment(request);
         List<AssignmentCreationResponse> items = pageResponse.getItems();
         Map<String, List<AssignmentCreationResponse>> assignmentGroup = items.stream()
-                .collect(Collectors.groupingBy(a -> a.getUsername() + "-" + a.getFullName(), LinkedHashMap::new, Collectors.toList()));
+                .collect(Collectors.groupingBy(AssignmentCreationResponse::getUserId, LinkedHashMap::new, Collectors.toList()));
         List<AssignmentSearchResponse> newItems = assignmentGroup.keySet().stream()
                 .map(key -> {
                     List<AssignmentCreationResponse> assignmentCreationResponses = assignmentGroup.get(key);
-                    String[] name = key.split("-");
                     AssignmentSearchResponse assignmentSearchResponse = new AssignmentSearchResponse();
-                    assignmentSearchResponse.setUserName(name[0]);
-                    assignmentSearchResponse.setFullName(name[1]);
+                    if (!CollectionUtils.isEmpty(assignmentCreationResponses)) {
+                        AssignmentCreationResponse a = assignmentCreationResponses.get(0);
+                        assignmentSearchResponse.setUserName(a.getUsername());
+                        assignmentSearchResponse.setFullName(a.getFullName());
+                    }
+                    assignmentSearchResponse.setUserId(key);
                     assignmentSearchResponse.setAssignments(assignmentCreationResponses);
                     return assignmentSearchResponse;
                 }).toList();
@@ -73,20 +85,29 @@ public class AssignmentServiceImpl implements IAssignmentService {
     public void saveAssignment(AssignmentCreationRequest creationRequest) {
         log.info("save assignment: {}", creationRequest);
         User user = this.userService.findByIdThrowIfNotPresent(creationRequest.getUserId());
-
+        List<String> ids = creationRequest.getAssignmentFields().stream()
+                .map(AssignmentField::getId)
+                .filter(Objects::nonNull)
+                .toList();
+        if (!CollectionUtils.isEmpty(ids)) {
+            this.assignmentRepository.deleteAllNotIds(ids, creationRequest.getUserId());
+        }
+        Map<String, Assignment> assignmentByUserIdMap = this.findByUserId(creationRequest.getUserId()).stream()
+                .collect(Collectors.toMap(Assignment::getId, v -> v));
         for (AssignmentField form : creationRequest.getAssignmentFields()) {
-            this.courseService.findByIdThrowIfNotPresent(form.getCourseId());
-            Pool pool = this.poolService.findByIdThrowIfNotPresent(form.getPoolId());
-
             Time startTime = DateUtil.strToTime(form.getStartTime());
             Time endTime = DateUtil.strToTime(form.getEndTime());
-
+            if (startTime.after(endTime)) {
+                throw new ValidationException("assignment.start-time.validate.less-then-end-time");
+            }
+            this.courseService.findByIdThrowIfNotPresent(form.getCourseId());
+            Pool pool = this.poolService.findByIdThrowIfNotPresent(form.getPoolId());
             Optional<Assignment> assignmentByPoolId = this.assignmentRepository.findByPoolIdAndStartTimeBetweenAndDayOfWeek(
                     form.getPoolId(),
                     startTime,
                     endTime,
                     form.getDayOfWeek().getValue()
-            );
+            ).filter(x -> !x.getId().equals(form.getId()));
             if (assignmentByPoolId.isPresent()) {
                 Assignment assignment = assignmentByPoolId.get();
                 String name = DayOfWeek.of(assignment.getDayOfWeek()).name();
@@ -94,8 +115,8 @@ public class AssignmentServiceImpl implements IAssignmentService {
                         "assignment.pool-id.validate.exist",
                         pool.getName(),
                         I18nUtil.getMessage("day-of-week." + name),
-                        assignment.getStartTime(),
-                        assignment.getEndTime()
+                        assignment.getStartTime().toString(),
+                        assignment.getEndTime().toString()
                 );
             }
 
@@ -104,7 +125,7 @@ public class AssignmentServiceImpl implements IAssignmentService {
                     startTime,
                     endTime,
                     form.getDayOfWeek().getValue()
-            );
+            ).filter(x -> !x.getId().equals(form.getId()));
             if (assignmentByUserId.isPresent()) {
                 Assignment assignment = assignmentByUserId.get();
                 String name = DayOfWeek.of(assignment.getDayOfWeek()).name();
@@ -118,8 +139,7 @@ public class AssignmentServiceImpl implements IAssignmentService {
                 );
             }
 
-            Assignment assignment = new Assignment();
-            assignment.setActive(false);
+            Assignment assignment = assignmentByUserIdMap.getOrDefault(form.getId(), new Assignment());
             assignment.setCourseId(form.getCourseId());
             assignment.setDayOfWeek(form.getDayOfWeek().getValue());
             assignment.setCourseId(form.getCourseId());
@@ -127,7 +147,13 @@ public class AssignmentServiceImpl implements IAssignmentService {
             assignment.setEndTime(endTime);
             assignment.setStartTime(startTime);
             assignment.setPoolId(form.getPoolId());
-            assignment = this.assignmentRepository.save(assignment);
+            this.assignmentRepository.save(assignment);
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteByUserId(String userId) {
+        this.assignmentRepository.deleteByUserId(userId);
     }
 }

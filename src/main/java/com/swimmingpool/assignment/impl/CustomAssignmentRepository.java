@@ -25,7 +25,7 @@ public class CustomAssignmentRepository {
                 .append(" , u.full_name as fullName, a.day_of_week as dayOfWeek")
                 .append(" , a.start_time as startTime, a.end_time as endTime")
                 .append(" , c.name as courseName, p.name as poolName, a.created_date as createdDate")
-                .append(" , a.modified_date as modifiedDate, a.active as active")
+                .append(" , a.modified_date as modifiedDate, u.id as userId")
                 .append(" FROM _assignment a")
                 .append("  JOIN _pool p ON p.id = a.pool_id")
                 .append("  JOIN _course c ON c.id = a.course_id")

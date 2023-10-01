@@ -11,7 +11,6 @@
                     <th class="table-column-header" data-col="pool" data-show="true">Hồ bơi</th>
                     <th class="table-column-header" data-col="createdDate" data-show="false">Ngày tạo</th>
                     <th class="table-column-header" data-col="modifiedDate" data-show="false">Ngày cập nhật</th>
-                    <th class="table-column-header" data-col="status" data-show="true">Trạng thái</th>
                     <th>Thao tác</th>
                 </tr>
                 </thead>
@@ -34,14 +33,11 @@
                             <td data-col="pool" th:text="${a.poolName}"/>
                             <td data-col="createdDate" th:text="${#dates.format(a.createdDate, 'dd/MM/yyyy HH:mm')}"/>
                             <td data-col="modifiedDate" th:text="${#dates.format(a.modifiedDate, 'dd/MM/yyyy HH:mm')}"/>
-                            <td data-col="status">
-                                <span th:class="${ a.active ? 'text-success' : 'text-danger' }">[[${ a.active ? 'Hoạt động' : 'Ngưng hoạt động' }]]</span>
-                            </td>
                             <th:block th:if="${_s.index eq 0}">
                                 <td th:rowspan="${#lists.size(assignment.assignments)}" class="user-action">
                                     <div>
                                         <i class="fa fa-ellipsis-v cursor-pointer" aria-hidden="true"></i>
-                                        <ul th:replace="~{admin/pages/course/table-action :: actionList(*{active}, *{id}, *{slug})}"></ul>
+                                        <ul th:replace="~{admin/pages/assignment/table-action :: actionList(${assignment.userId})}"></ul>
                                     </div>
                                 </td>
                             </th:block>

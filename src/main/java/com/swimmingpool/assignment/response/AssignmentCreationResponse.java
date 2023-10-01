@@ -23,5 +23,5 @@ public class AssignmentCreationResponse {
     private String poolName;
     private Date createdDate;
     private Date modifiedDate;
-    private Boolean active;
+    private String userId;
 }

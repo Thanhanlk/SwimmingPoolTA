@@ -16,7 +16,7 @@ public class HomeController {
                 .stream()
                 .filter(x -> x.getAuthority().equals(UserConstant.Role.ADMIN.name()))
                 .findFirst()
-                .map(x -> "/admin/pages/home/index")
+                .map(x -> "redirect:/admin/pool")
                 .orElse("/user/pages/home/index");
     }
 }

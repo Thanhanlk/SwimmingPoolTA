@@ -26,7 +26,7 @@ public class AssignmentRowMapper {
             assignmentCreationResponse.setPoolName(tuple.get("poolName", String.class));
             assignmentCreationResponse.setCreatedDate(tuple.get("createdDate", Date.class));
             assignmentCreationResponse.setModifiedDate(tuple.get("modifiedDate", Date.class));
-            assignmentCreationResponse.setActive(tuple.get("active", Boolean.class));
+            assignmentCreationResponse.setUserId(tuple.get("userId", String.class));
             return assignmentCreationResponse;
         };
     }

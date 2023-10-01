@@ -1,6 +1,7 @@
 package com.swimmingpool.assignment;
 
 import com.swimmingpool.assignment.request.AssignmentCreationRequest;
+import com.swimmingpool.assignment.request.AssignmentField;
 import com.swimmingpool.assignment.request.AssignmentSearchRequest;
 import com.swimmingpool.assignment.response.AssignmentCreationResponse;
 import com.swimmingpool.assignment.response.AssignmentSearchResponse;
@@ -20,14 +21,12 @@ import com.swimmingpool.user.response.UserSearchResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/assignment")
@@ -48,20 +47,48 @@ public class AdminAssignmentController extends BaseController {
         return "admin/pages/assignment/index";
     }
 
-    @GetMapping("/create")
-    public String getCreateAssignment(Model model) {
-        List<PoolResponse> pools = this.poolService.findAllActive();
-        List<UserSearchResponse> staffUser = this.userService.findStaffUser(new UserSearchRequest());
-        List<Course> courses = this.courseService.findActiveCourse();
+    @PostMapping("/add-row")
+    public String addRowAssignment(@ModelAttribute("assignmentCreation") AssignmentCreationRequest creationRequest, RedirectAttributes redirectAttributes) {
+        creationRequest.addAssignmentField(new AssignmentField());
+        redirectAttributes.addFlashAttribute("assignmentCreation", creationRequest);
+        return "redirect:/admin/assignment/save";
+    }
 
-        if (!model.containsAttribute("assignmentCreation")) {
-            model.addAttribute("assignmentCreation", new AssignmentCreationRequest());
+    @PostMapping("/delete-row")
+    public String deleteRowAssignment(
+            @ModelAttribute("assignmentCreation") AssignmentCreationRequest creationRequest,
+            @RequestParam Integer index,
+            RedirectAttributes redirectAttributes
+    ) {
+        creationRequest.deleteAssignmentField(index);
+        redirectAttributes.addFlashAttribute("assignmentCreation", creationRequest);
+        return "redirect:/admin/assignment/save";
+    }
+
+    @GetMapping("/save")
+    public String getCreateAssignment(@RequestParam(required = false) Optional<String> userId,  Model model) {
+        try {
+            List<PoolResponse> pools = this.poolService.findAllActive();
+            List<UserSearchResponse> staffUser = this.userService.findStaffUser(new UserSearchRequest());
+            List<Course> courses = this.courseService.findActiveCourse();
+
+            if (!model.containsAttribute("assignmentCreation")) {
+                AssignmentCreationRequest assignmentCreationRequest = userId
+                        .map(this.assignmentService::convertToAssignmentCreationRequest)
+                        .orElseGet(AssignmentCreationRequest::new);
+                model.addAttribute("assignmentCreation", assignmentCreationRequest);
+            }
+
+            model.addAttribute("teachers", staffUser);
+            model.addAttribute("pools", pools);
+            model.addAttribute("courses", courses);
+
+            this.addJavascript(model, "/admin/javascript/assignment");
+            return "admin/pages/assignment/create";
+        } catch (BusinessException ex) {
+            ex.setRedirectUrl("redirect:/admin/assignment/save");
+            throw ex;
         }
-
-        model.addAttribute("teachers", staffUser);
-        model.addAttribute("pools", pools);
-        model.addAttribute("courses", courses);
-        return "admin/pages/assignment/create";
     }
 
     @PostMapping
@@ -79,6 +106,18 @@ public class AdminAssignmentController extends BaseController {
             ex.setData(Map.of("assignmentCreation", creationRequest));
             throw ex;
         }
+    }
 
+    @GetMapping
+    public String deleteByUserId(@RequestParam String userId, RedirectAttributes redirectAttributes) {
+        try {
+            this.assignmentService.deleteByUserId(userId);
+            Result<Object> result = Result.success(null, I18nUtil.getMessage("assignment.delete.success"));
+            redirectAttributes.addFlashAttribute(AppConstant.ResponseKey.RESULT, result);
+            return "redirect:/admin/assignment";
+        } catch (BusinessException ex) {
+            ex.setRedirectUrl("redirect:/admin/assignment");
+            throw ex;
+        }
     }
 }
