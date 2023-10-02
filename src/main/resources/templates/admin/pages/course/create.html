@@ -39,17 +39,6 @@
 
                     <div class="row mt-3">
                         <div class="col-md-6">
-                            <label class="required">Số lượng học sinh</label>
-                            <input th:field="*{numberOfStudent}" class="form-control" type="number" required/>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="required">Số lượng buổi học</label>
-                            <input th:field="*{numberOfLesson}" class="form-control" type="number" required/>
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-md-6">
                             <label class="required">Giá tiền</label>
                             <input th:field="*{price}" class="form-control" type="number" required/>
                         </div>
@@ -60,9 +49,13 @@
                     </div>
 
                     <div class="row mt-3">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label th:class="${isCreate ? 'required' : ''}">Ảnh đại diện</label>
                             <input th:field="*{avatar}" class="form-control" type="file" accept="image/png" th:required="${isCreate}"/>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="required">Số lượng buổi học</label>
+                            <input th:field="*{numberOfLesson}" class="form-control" type="number" required/>
                         </div>
                     </div>
 

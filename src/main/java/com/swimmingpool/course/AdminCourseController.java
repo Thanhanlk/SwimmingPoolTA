@@ -32,6 +32,7 @@ public class AdminCourseController extends BaseController {
     @GetMapping
     public String index(CourseSearchRequest courseSearchRequest, Model model) {
         PageResponse<CourseSearchResponse> pageResponse = this.courseService.searchCourse(courseSearchRequest);
+        model.addAttribute("searchRequest", courseSearchRequest);
         this.addPagingResult(model, pageResponse);
         this.addJavascript(model, "/admin/javascript/column-controller");
         this.addCss(model, "/admin/css/column-controller", "/admin/css/user");
@@ -78,7 +79,6 @@ public class AdminCourseController extends BaseController {
                 courseCreationRequest.setDiscount(course.getDiscount());
                 courseCreationRequest.setPrice(course.getPrice());
                 courseCreationRequest.setNumberOfLesson(course.getNumberOfLesson());
-                courseCreationRequest.setNumberOfStudent(course.getNumberOfStudent());
                 courseCreationRequest.setShortDescription(course.getShortDescription());
                 courseCreationRequest.setDescription(course.getDescription());
                 courseCreationRequest.setSlug(course.getSlug());

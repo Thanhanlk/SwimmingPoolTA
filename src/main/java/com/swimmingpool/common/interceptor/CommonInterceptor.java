@@ -6,7 +6,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 public class CommonInterceptor implements HandlerInterceptor {
@@ -15,7 +17,15 @@ public class CommonInterceptor implements HandlerInterceptor {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         if (Objects.nonNull(modelAndView)) {
             modelAndView.addObject("currentUri", request.getRequestURI());
-            modelAndView.addObject("paramMap", request.getParameterMap());
+            modelAndView.addObject("uriWithQueryString", this.getUriWithParameters(request));
         }
+    }
+
+    private String getUriWithParameters(HttpServletRequest request) {
+        Map<String, String[]> parameterMap = request.getParameterMap();
+        return request.getRequestURI() + "?" + parameterMap.keySet().stream()
+                .filter(key -> !"page".equals(key))
+                .map(key -> key + "=" + String.join(",", parameterMap.get(key)))
+                .collect(Collectors.joining("&"));
     }
 }

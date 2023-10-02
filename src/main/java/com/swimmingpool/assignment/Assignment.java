@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Time;
 import java.time.DayOfWeek;
+import java.util.Date;
 
 @Setter
 @Getter
@@ -26,6 +27,10 @@ public class Assignment extends AuditTable {
 
     @Column(name = "day_of_week")
     private Integer dayOfWeek;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "start_date")
+    private Date startDate;
 
     @Temporal(TemporalType.TIME)
     @Column(name = "start_time")

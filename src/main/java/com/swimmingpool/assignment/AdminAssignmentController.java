@@ -41,6 +41,12 @@ public class AdminAssignmentController extends BaseController {
     @GetMapping
     public String getAssignment(AssignmentSearchRequest request, Model model) {
         PageResponse<AssignmentSearchResponse> pageResponse = this.assignmentService.searchAssignment(request);
+        List<PoolResponse> pools = this.poolService.findAllActive();
+        List<Course> courses = this.courseService.findActiveCourse();
+
+        model.addAttribute("pools", pools);
+        model.addAttribute("courses", courses);
+        model.addAttribute("searchRequest", request);
         this.addPagingResult(model, pageResponse);
         this.addJavascript(model, "/admin/javascript/column-controller");
         this.addCss(model, "/admin/css/column-controller", "/admin/css/user");

@@ -34,4 +34,6 @@ public interface AssignmentRepository extends JpaRepository<Assignment, String> 
 
     @Modifying
     void deleteByUserId(String userId);
+
+    List<Assignment> findByPoolId(String poolId);
 }

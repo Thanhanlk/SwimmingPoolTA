@@ -74,7 +74,6 @@ public class CourseServiceImpl implements ICourseService {
         course.setName(courseCreationRequest.getName());
         course.setPrice(courseCreationRequest.getPrice());
         course.setNumberOfLesson(courseCreationRequest.getNumberOfLesson());
-        course.setNumberOfStudent(courseCreationRequest.getNumberOfStudent());
         course.setShortDescription(courseCreationRequest.getShortDescription());
         course.setDescription(courseCreationRequest.getDescription());
         course.setDiscount(courseCreationRequest.getDiscount());

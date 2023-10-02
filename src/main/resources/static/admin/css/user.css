@@ -1,6 +1,6 @@
 .user-action > div {
     width: fit-content;
-    position: relative;
+    position: absolute;
 }
 
 .user-action > div:after {

@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 public interface IAssignmentService {
 
+    List<Assignment> findByPoolId(String poolId);
+
     Assignment findByIdThrowIfNotPresent(String id) throws ValidationException;
 
     List<Assignment> findByUserId(String userId);

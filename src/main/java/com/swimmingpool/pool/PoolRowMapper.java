@@ -16,6 +16,7 @@ public class PoolRowMapper {
             p.setId(tuple.get("id", String.class));
             p.setName(tuple.get("name", String.class));
             p.setCode(tuple.get("code", String.class));
+            p.setNumberOfStudent(tuple.get("numberOfStudent", Integer.class));
             p.setActive(tuple.get("active", Boolean.class));
             p.setCreatedDate(tuple.get("createdDate", Date.class));
             p.setModifiedDate(tuple.get("modifiedDate", Date.class));

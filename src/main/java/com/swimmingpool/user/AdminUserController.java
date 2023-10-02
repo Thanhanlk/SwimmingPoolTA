@@ -30,6 +30,7 @@ public class AdminUserController extends BaseController {
     public String getStaff(UserSearchRequest userSearchRequest, Model model) {
         userSearchRequest.setRole(UserConstant.Role.TEACHER);
         PageResponse<UserSearchResponse> pageResponse = this.userService.searchUser(userSearchRequest);
+        model.addAttribute("searchRequest", userSearchRequest);
         model.addAttribute("title", "Quản lý nhân viên");
         model.addAttribute("subTitle", "Danh sách nhân viên");
         return this.index(model, pageResponse);

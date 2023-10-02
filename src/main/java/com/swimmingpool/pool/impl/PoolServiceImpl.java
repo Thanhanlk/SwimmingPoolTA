@@ -1,5 +1,7 @@
 package com.swimmingpool.pool.impl;
 
+import com.swimmingpool.assignment.Assignment;
+import com.swimmingpool.assignment.IAssignmentService;
 import com.swimmingpool.common.dto.PageResponse;
 import com.swimmingpool.common.exception.ValidationException;
 import com.swimmingpool.pool.IPoolService;
@@ -9,16 +11,17 @@ import com.swimmingpool.pool.request.PoolCreationRequest;
 import com.swimmingpool.pool.request.PoolSearchRequest;
 import com.swimmingpool.pool.response.PoolResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,6 +31,9 @@ public class PoolServiceImpl implements IPoolService {
 
     private final PoolRepository poolRepository;
     private final CustomPoolRepository customPoolRepository;
+
+    @Setter(onMethod_ = @Autowired, onParam_ = @Lazy)
+    private IAssignmentService assignmentService;
 
     @Override
     public PageResponse<PoolResponse> searchPool(PoolSearchRequest poolSearchRequest) {
@@ -46,16 +52,17 @@ public class PoolServiceImpl implements IPoolService {
         Pool pool = new Pool();
         if (StringUtils.hasLength(creationRequest.getId())) {
             pool = this.findByIdThrowIfNotPresent(creationRequest.getId());
-            creationRequest.setActive(pool.getActive());
         } else {
             Optional<Pool> poolByCode = this.poolRepository.findByCode(creationRequest.getCode());
             if (poolByCode.isPresent()) {
                 throw new ValidationException("pool.code.validate.exist", creationRequest.getCode());
             }
             creationRequest.setActive(false);
+            pool.setCode(creationRequest.getCode());
+            pool.setActive(creationRequest.getActive());
         }
         pool.setName(creationRequest.getName());
-        pool.setActive(creationRequest.getActive());
+        pool.setNumberOfStudent(creationRequest.getNumberOfStudent());
         this.poolRepository.save(pool);
     }
 
@@ -80,5 +87,16 @@ public class PoolServiceImpl implements IPoolService {
         Pool pool = this.findByIdThrowIfNotPresent(id);
         pool.setActive(!pool.getActive());
         this.poolRepository.save(pool);
+    }
+
+    @Override
+    @Transactional
+    @CacheEvict(cacheManager = "redisCacheManager", cacheNames = "ACTIVE_POOL", key = "'EMPTY'")
+    public void deletePool(String id) {
+        List<Assignment> courseByPoolId = this.assignmentService.findByPoolId(id);
+        if (!courseByPoolId.isEmpty()) {
+            throw new ValidationException("pool.delete.exist-assignment");
+        }
+        this.poolRepository.deleteById(id);
     }
 }

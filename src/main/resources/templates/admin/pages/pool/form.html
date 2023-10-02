@@ -1,5 +1,5 @@
 <div th:fragment="form(_id, code, name, idForm)">
-    <div th:replace="~{_common/modal :: modal(${idForm}, ${_id ne null ? 'Cập nhật hồ bơi' : 'Tạo mới hồ bơi'}, null, null, null, null, ~{::#form})}" >
+    <div th:replace="~{_common/modal :: modal(${idForm}, ${_id ne null ? 'Cập nhật hồ bơi' : 'Tạo mới hồ bơi'}, null, null, null, null, ~{::#form}, null)}" >
         <form
                 id="form"
                 th:action="@{/admin/pool}"

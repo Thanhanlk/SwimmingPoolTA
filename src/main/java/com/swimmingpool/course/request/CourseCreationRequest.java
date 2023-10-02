@@ -28,10 +28,6 @@ public class CourseCreationRequest {
     @Min(value = 1, message = "course.number-of-lesson.validate.min")
     private Integer numberOfLesson;
 
-    @NotNull(message = "course.number-of-student.validate.empty")
-    @Min(value = 1, message = "course.number-of-student.validate.min")
-    private Integer numberOfStudent;
-
     @NotBlank(message = "course.short-description.validate.empty")
     @Size(max = 200, message = "course.short-description.validate.max")
     private String shortDescription;

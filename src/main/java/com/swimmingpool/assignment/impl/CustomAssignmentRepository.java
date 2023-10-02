@@ -25,7 +25,7 @@ public class CustomAssignmentRepository {
                 .append(" , u.full_name as fullName, a.day_of_week as dayOfWeek")
                 .append(" , a.start_time as startTime, a.end_time as endTime")
                 .append(" , c.name as courseName, p.name as poolName, a.created_date as createdDate")
-                .append(" , a.modified_date as modifiedDate, u.id as userId")
+                .append(" , a.modified_date as modifiedDate, u.id as userId, a.start_date as startDate")
                 .append(" FROM _assignment a")
                 .append("  JOIN _pool p ON p.id = a.pool_id")
                 .append("  JOIN _course c ON c.id = a.course_id")
@@ -51,6 +51,16 @@ public class CustomAssignmentRepository {
         if (Objects.nonNull(request.getEndTime())) {
             sqlBuilder.append(" AND a.end_time = :endTime");
             params.put("endTime", request.getEndTime());
+        }
+
+        if (StringUtils.hasLength(request.getPoolId())) {
+            sqlBuilder.append(" AND a.pool_id = :poolId");
+            params.put("poolId", request.getPoolId());
+        }
+
+        if (StringUtils.hasLength(request.getCourseId())) {
+            sqlBuilder.append(" AND a.course_id = :courseId");
+            params.put("courseId", request.getCourseId());
         }
         sqlBuilder.append(" ORDER BY a.day_of_week, a.start_time");
         return PagingUtil.paginate(sqlBuilder.toString(), params, request, AssignmentRowMapper.assignmentSearchRowMapper())

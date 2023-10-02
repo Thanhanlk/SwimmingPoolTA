@@ -18,4 +18,6 @@ public interface IPoolService {
     PageResponse<PoolResponse> searchPool(PoolSearchRequest poolSearchRequest);
 
     void changeStatus(String id);
+
+    void deletePool(String id);
 }

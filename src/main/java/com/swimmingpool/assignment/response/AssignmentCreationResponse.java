@@ -24,4 +24,5 @@ public class AssignmentCreationResponse {
     private Date createdDate;
     private Date modifiedDate;
     private String userId;
+    private Date startDate;
 }

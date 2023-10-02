@@ -1,0 +1,63 @@
+<form method="get" th:action="@{__${currentUri}__}" th:object="${searchRequest}" class="search-component mt-3">
+    <input type="hidden" name="page" value="1" />
+    <input type="hidden" name="pageSize" value="5" />
+    <div class="row">
+        <div class="col-md-4">
+            <label>Mã hóa đơn</label>
+            <input class="form-control" placeholder="Nhập thông tin...." th:field="*{id}">
+        </div>
+        <div class="col-md-4">
+            <label>Tên khách hàng</label>
+            <input class="form-control" placeholder="Nhập thông tin...." th:field="*{fullName}">
+        </div>
+        <div class="col-md-4">
+            <label>Hình thức thanh toán</label>
+            <select class="form-control" th:field="*{methodPayment}">
+                <option th:value="${null}">Không chọn</option>
+                <option
+                    th:each="m : ${T(com.swimmingpool.order.OrderConstant.MethodPayment).values()}"
+                    th:value="${m}"
+                    th:text="#{'method-payment.' + __${m}__}"
+                />
+            </select>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <label>Số điện thoại</label>
+            <div>
+                <input class="form-control" th:field="*{phone}">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <label>Từ ngày</label>
+            <div>
+                <input type="date" class="form-control" th:field="*{fromDate}">
+            </div>
+        </div>
+        <div class="col md-4">
+            <label>Đến ngày</label>
+            <div>
+                <input type="date" class="form-control" th:field="*{toDate}">
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <label>Trạng thái</label>
+            <select class="form-control" th:field="*{status}">
+                <option th:value="${null}">Không chọn</option>
+                <option
+                    th:each="s : ${T(com.swimmingpool.order.OrderConstant.Status).values()}"
+                    th:value="${s}"
+                    th:text="#{'status.' + __${s}__}"
+                />
+            </select>
+        </div>
+        <div class="col d-flex align-items-end">
+            <button class="btn btn-primary">Tìm kiếm</button>
+        </div>
+    </div>
+</form>

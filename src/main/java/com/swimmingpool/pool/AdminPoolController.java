@@ -29,6 +29,7 @@ public class AdminPoolController extends BaseController {
     @GetMapping
     private String index(PoolSearchRequest searchRequest, Model model) {
         PageResponse<PoolResponse> pageResponse = this.poolService.searchPool(searchRequest);
+        model.addAttribute("searchRequest", searchRequest);
         this.addPagingResult(model, pageResponse);
         this.addCss(model, "/admin/css/user");
         return "admin/pages/pool/index";
@@ -52,6 +53,19 @@ public class AdminPoolController extends BaseController {
         try {
             this.poolService.savePool(request);
             Result<Object> result = Result.success(null, I18nUtil.getMessage("pool.save.success"));
+            redirectAttributes.addFlashAttribute(AppConstant.ResponseKey.RESULT, result);
+            return "redirect:/admin/pool";
+        } catch (BusinessException ex) {
+            ex.setRedirectUrl("redirect:/admin/pool");
+            throw ex;
+        }
+    }
+
+    @GetMapping("/delete")
+    public String deletePool(@RequestParam String id, RedirectAttributes redirectAttributes) {
+        try {
+            this.poolService.deletePool(id);
+            Result<Object> result = Result.success(null, I18nUtil.getMessage("pool.delete.success"));
             redirectAttributes.addFlashAttribute(AppConstant.ResponseKey.RESULT, result);
             return "redirect:/admin/pool";
         } catch (BusinessException ex) {

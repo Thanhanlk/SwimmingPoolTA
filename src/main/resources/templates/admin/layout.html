@@ -76,9 +76,9 @@
         <i class="fa fa-arrow-up"></i>
     </a>
 
-    <div th:replace="~{_common/modal :: modal('logoutModal', 'Ready to Leave?', 'Select \'Logout\' below if you are ready to end your current session.', @{/auth/logout}, 'post', null, null)}" />
+    <div th:replace="~{_common/modal :: modal('logoutModal', 'Ready to Leave?', 'Select \'Logout\' below if you are ready to end your current session.', @{/auth/logout}, 'post', null, null, null)}" />
 
-    <div th:replace="~{_common/modal :: modal('changePasswordId', 'Đổi mật khẩu', null, null, null, '/user/common/change-password-form', null)}" />
+    <div th:replace="~{_common/modal :: modal('changePasswordId', 'Đổi mật khẩu', null, null, null, '/user/common/change-password-form', null, null)}" />
 
     <!-- Bootstrap core JavaScript-->
     <script th:src="@{/resources/_common/javascript/jquery-3.3.1.min.js}"></script>

@@ -27,6 +27,9 @@ public class Pool extends AuditTable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "number_of_student")
+    private Integer numberOfStudent;
+
     @Column(name = "active")
     private Boolean active;
 }

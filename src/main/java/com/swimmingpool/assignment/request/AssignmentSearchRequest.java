@@ -12,4 +12,6 @@ public class AssignmentSearchRequest extends PageRequest {
     private DayOfWeek day;
     private Time startTime;
     private Time endTime;
+    private String poolId;
+    private String courseId;
 }

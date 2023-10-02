@@ -17,7 +17,9 @@
     <div class="card shadow my-4">
         <div class="card-header d-flex justify-content-between py-3">
             <h6 class="m-0 font-weight-bold text-primary">[[${subTitle}]]</h6>
-            <div th:if="${actionComponent ne null}" th:replace="~{ ${actionComponent} :: .action-component }"></div>
+            <th:block th:if="${actionComponent ne null}">
+                <div th:replace="~{ ${actionComponent} :: .action-component }"></div>
+            </th:block>
         </div>
         <div class="card-body">
             <div th:replace="${tableComponent}"></div>

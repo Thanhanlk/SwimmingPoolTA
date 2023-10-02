@@ -13,7 +13,6 @@ public class CourseSearchResponse {
     private String avatar;
     private String slug;
     private BigDecimal price;
-    private int numberOfStudent;
     private int numberOfLesson;
     private int discount;
     private Date createdDate;

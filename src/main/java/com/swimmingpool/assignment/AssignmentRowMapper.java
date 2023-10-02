@@ -27,6 +27,7 @@ public class AssignmentRowMapper {
             assignmentCreationResponse.setCreatedDate(tuple.get("createdDate", Date.class));
             assignmentCreationResponse.setModifiedDate(tuple.get("modifiedDate", Date.class));
             assignmentCreationResponse.setUserId(tuple.get("userId", String.class));
+            assignmentCreationResponse.setStartDate(tuple.get("startDate", Date.class));
             return assignmentCreationResponse;
         };
     }

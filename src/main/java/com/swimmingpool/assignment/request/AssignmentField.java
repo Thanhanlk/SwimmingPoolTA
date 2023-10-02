@@ -2,9 +2,12 @@ package com.swimmingpool.assignment.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.DayOfWeek;
+import java.util.Date;
 
 @Data
 public class AssignmentField {
@@ -25,4 +28,9 @@ public class AssignmentField {
 
     @NotBlank(message = "course.id.validate.empty")
     private String courseId;
+
+    @NotNull(message = "assignment.start-date.validate.empty")
+    @Past(message = "assignment.start-date.validate.past")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date startDate;
 }

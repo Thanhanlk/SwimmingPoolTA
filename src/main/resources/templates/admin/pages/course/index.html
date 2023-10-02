@@ -9,7 +9,6 @@
                     <th class="table-column-header" data-col="code" data-show="true">Mã khóa học</th>
                     <th class="table-column-header" data-col="name" data-show="true">Tên khóa học</th>
                     <th class="table-column-header" data-col="price" data-show="true">Giá</th>
-                    <th class="table-column-header" data-col="numberOfStudent" data-show="false">SL học viên</th>
                     <th class="table-column-header" data-col="numberOfLesson" data-show="false">SL buổi học</th>
                     <th class="table-column-header" data-col="discount" data-show="true">Giảm giá(%)</th>
                     <th class="table-column-header" data-col="createdDate" data-show="false">Ngày tạo</th>
@@ -28,7 +27,6 @@
                         <td data-col="code" th:text="*{code}" />
                         <td data-col="name" th:text="*{name}"/>
                         <td data-col="price" th:text="*{#numbers.formatCurrency(price)}" />
-                        <td data-col="numberOfStudent" th:text="*{numberOfStudent}" />
                         <td data-col="numberOfLesson" th:text="*{numberOfLesson}" />
                         <td data-col="discount" th:text="*{discount}" />
                         <td data-col="createdDate" th:text="*{#dates.format(createdDate, 'dd/MM/yyyy')}"/>

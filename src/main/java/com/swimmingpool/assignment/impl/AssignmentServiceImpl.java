@@ -48,7 +48,14 @@ public class AssignmentServiceImpl implements IAssignmentService {
     private IPoolService poolService;
 
     @Override
+    public List<Assignment> findByPoolId(String poolId) {
+        log.info("find assignment by pool-id: {}", poolId);
+        return this.assignmentRepository.findByPoolId(poolId);
+    }
+
+    @Override
     public Assignment findByIdThrowIfNotPresent(String id) {
+        log.info("find assignment by id: {}", id);
         return this.assignmentRepository.findById(id)
                 .orElseThrow(() -> new ValidationException("assignment.id.validate.not-exist", id));
     }
@@ -147,6 +154,7 @@ public class AssignmentServiceImpl implements IAssignmentService {
             assignment.setEndTime(endTime);
             assignment.setStartTime(startTime);
             assignment.setPoolId(form.getPoolId());
+            assignment.setStartDate(form.getStartDate());
             this.assignmentRepository.save(assignment);
         }
     }

@@ -35,9 +35,6 @@ public class Course extends AuditTable {
     @Column(name = "discount")
     private Integer discount;
 
-    @Column(name = "number_of_student")
-    private Integer numberOfStudent;
-
     @Column(name = "number_of_lesson")
     private Integer numberOfLesson;
 
