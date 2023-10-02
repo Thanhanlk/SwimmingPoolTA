@@ -18,7 +18,7 @@ import java.util.Date;
 @MappedSuperclass
 public class AuditTable {
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_date")
+    @Column(name = "created_date", updatable = false)
     @CreatedDate
     private Date createdDate;
 

@@ -108,7 +108,7 @@ public class AdminAssignmentController extends BaseController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/delete")
     public String deleteByUserId(@RequestParam String userId, RedirectAttributes redirectAttributes) {
         try {
             this.assignmentService.deleteByUserId(userId);

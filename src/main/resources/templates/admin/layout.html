@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Swimming Pool</title>
 
+    <link rel="icon" th:href="@{/resources/img/favicon.ico}" />
     <link th:href="@{/resources/_common/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
@@ -75,9 +76,9 @@
         <i class="fa fa-arrow-up"></i>
     </a>
 
-    <div th:replace="~{_common/modal :: modal('logoutModal', 'Ready to Leave?', 'Select \'Logout\' below if you are ready to end your current session.', @{/auth/logout}, 'post', null)}" />
+    <div th:replace="~{_common/modal :: modal('logoutModal', 'Ready to Leave?', 'Select \'Logout\' below if you are ready to end your current session.', @{/auth/logout}, 'post', null, null)}" />
 
-    <div th:replace="~{_common/modal :: modal('changePasswordId', 'Đổi mật khẩu', null, null, null, '/user/common/change-password-form')}" />
+    <div th:replace="~{_common/modal :: modal('changePasswordId', 'Đổi mật khẩu', null, null, null, '/user/common/change-password-form', null)}" />
 
     <!-- Bootstrap core JavaScript-->
     <script th:src="@{/resources/_common/javascript/jquery-3.3.1.min.js}"></script>
