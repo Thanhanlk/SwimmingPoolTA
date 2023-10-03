@@ -19,6 +19,7 @@
                 </thead>
                 <tbody>
                     <tr th:each="course,_status : ${_PAGING_KEY.items}" th:object="${course}">
+                        <div th:replace="~{_common/modal :: modal(*{'deleteCourse' + id}, 'Xác nhận', *{'Bạn có chắc chắn muốn xóa ' + name}, @{/admin/course/delete(id=*{id})}, 'get', null, null, null)}" />
                         <td data-col="stt" th:text="${ _status.index + 1 + ( (_PAGING_KEY.page - 1) * _PAGING_KEY.pageSize ) }"></td>
                         <td data-col="image">
                             <img width="100%" height="100px" th:src="*{avatar}" th:alt="*{name}"

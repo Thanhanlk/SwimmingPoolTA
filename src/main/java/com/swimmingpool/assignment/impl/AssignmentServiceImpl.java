@@ -54,6 +54,12 @@ public class AssignmentServiceImpl implements IAssignmentService {
     }
 
     @Override
+    public List<Assignment> findByCourseId(String courseId) {
+        log.info("find assignment by course-id: {}", courseId);
+        return this.assignmentRepository.findByCourseId(courseId);
+    }
+
+    @Override
     public Assignment findByIdThrowIfNotPresent(String id) {
         log.info("find assignment by id: {}", id);
         return this.assignmentRepository.findById(id)
@@ -92,6 +98,17 @@ public class AssignmentServiceImpl implements IAssignmentService {
     public void saveAssignment(AssignmentCreationRequest creationRequest) {
         log.info("save assignment: {}", creationRequest);
         User user = this.userService.findByIdThrowIfNotPresent(creationRequest.getUserId());
+        for (AssignmentField form : creationRequest.getAssignmentFields()) {
+            Assignment assignment = new Assignment();
+            this.saveAssignment(assignment, form, user);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateAssignment(AssignmentCreationRequest creationRequest) {
+        log.info("update assignment: {}", creationRequest);
+        User user = this.userService.findByIdThrowIfNotPresent(creationRequest.getUserId());
         List<String> ids = creationRequest.getAssignmentFields().stream()
                 .map(AssignmentField::getId)
                 .filter(Objects::nonNull)
@@ -102,66 +119,75 @@ public class AssignmentServiceImpl implements IAssignmentService {
         Map<String, Assignment> assignmentByUserIdMap = this.findByUserId(creationRequest.getUserId()).stream()
                 .collect(Collectors.toMap(Assignment::getId, v -> v));
         for (AssignmentField form : creationRequest.getAssignmentFields()) {
-            Time startTime = DateUtil.strToTime(form.getStartTime());
-            Time endTime = DateUtil.strToTime(form.getEndTime());
-            if (startTime.after(endTime)) {
-                throw new ValidationException("assignment.start-time.validate.less-then-end-time");
-            }
-            this.courseService.findByIdThrowIfNotPresent(form.getCourseId());
-            Pool pool = this.poolService.findByIdThrowIfNotPresent(form.getPoolId());
-            Optional<Assignment> assignmentByPoolId = this.assignmentRepository.findByPoolIdAndStartTimeBetweenAndDayOfWeek(
-                    form.getPoolId(),
-                    startTime,
-                    endTime,
-                    form.getDayOfWeek().getValue()
-            ).filter(x -> !x.getId().equals(form.getId()));
-            if (assignmentByPoolId.isPresent()) {
-                Assignment assignment = assignmentByPoolId.get();
-                String name = DayOfWeek.of(assignment.getDayOfWeek()).name();
-                throw new ValidationException(
-                        "assignment.pool-id.validate.exist",
-                        pool.getName(),
-                        I18nUtil.getMessage("day-of-week." + name),
-                        assignment.getStartTime().toString(),
-                        assignment.getEndTime().toString()
-                );
-            }
-
-            Optional<Assignment> assignmentByUserId = this.assignmentRepository.findByUserIdAndStartTimeBetweenAndDayOfWeek(
-                    creationRequest.getUserId(),
-                    startTime,
-                    endTime,
-                    form.getDayOfWeek().getValue()
-            ).filter(x -> !x.getId().equals(form.getId()));
-            if (assignmentByUserId.isPresent()) {
-                Assignment assignment = assignmentByUserId.get();
-                String name = DayOfWeek.of(assignment.getDayOfWeek()).name();
-                throw new ValidationException(
-                        "assignment.user-id.validate.exist",
-                        user.getFullName(),
-                        I18nUtil.getMessage("day-of-week." + name),
-                        assignment.getStartTime().toString(),
-                        assignment.getEndTime().toString(),
-                        pool.getName()
-                );
-            }
-
             Assignment assignment = assignmentByUserIdMap.getOrDefault(form.getId(), new Assignment());
-            assignment.setCourseId(form.getCourseId());
-            assignment.setDayOfWeek(form.getDayOfWeek().getValue());
-            assignment.setCourseId(form.getCourseId());
-            assignment.setUserId(creationRequest.getUserId());
-            assignment.setEndTime(endTime);
-            assignment.setStartTime(startTime);
-            assignment.setPoolId(form.getPoolId());
-            assignment.setStartDate(form.getStartDate());
-            this.assignmentRepository.save(assignment);
+            if (Objects.nonNull(assignment.getStartDate()) && assignment.getStartDate().before(new Date())) {
+                continue;
+            }
+            this.saveAssignment(assignment, form, user);
         }
     }
 
-    @Override
-    @Transactional
-    public void deleteByUserId(String userId) {
-        this.assignmentRepository.deleteByUserId(userId);
+    private Time[] validateBeforeCreateAssignment(AssignmentField form, User user) {
+        if (form.getStartDate().before(new Date())) {
+            throw new ValidationException("assignment.start-date.validate.past");
+        }
+        Time startTime = DateUtil.strToTime(form.getStartTime());
+        Time endTime = DateUtil.strToTime(form.getEndTime());
+        if (startTime.after(endTime)) {
+            throw new ValidationException("assignment.start-time.validate.less-then-end-time");
+        }
+        this.courseService.findByIdThrowIfNotPresent(form.getCourseId());
+        Pool pool = this.poolService.findByIdThrowIfNotPresent(form.getPoolId());
+        Optional<Assignment> assignmentByPoolId = this.assignmentRepository.findByPoolIdAndStartTimeBetweenAndDayOfWeek(
+                form.getPoolId(),
+                startTime,
+                endTime,
+                form.getDayOfWeek().getValue()
+        ).filter(x -> !x.getId().equals(form.getId()));
+        if (assignmentByPoolId.isPresent()) {
+            Assignment a = assignmentByPoolId.get();
+            String name = DayOfWeek.of(a.getDayOfWeek()).name();
+            throw new ValidationException(
+                    "assignment.pool-id.validate.exist",
+                    pool.getName(),
+                    I18nUtil.getMessage("day-of-week." + name),
+                    a.getStartTime().toString(),
+                    a.getEndTime().toString()
+            );
+        }
+
+        Optional<Assignment> assignmentByUserId = this.assignmentRepository.findByUserIdAndStartTimeBetweenAndDayOfWeek(
+                user.getId(),
+                startTime,
+                endTime,
+                form.getDayOfWeek().getValue()
+        ).filter(x -> !x.getId().equals(form.getId()));
+        if (assignmentByUserId.isPresent()) {
+            Assignment a = assignmentByUserId.get();
+            String name = DayOfWeek.of(a.getDayOfWeek()).name();
+            throw new ValidationException(
+                    "assignment.user-id.validate.exist",
+                    user.getFullName(),
+                    I18nUtil.getMessage("day-of-week." + name),
+                    a.getStartTime().toString(),
+                    a.getEndTime().toString(),
+                    pool.getName()
+            );
+        }
+        return new Time[]{startTime, endTime};
+    }
+
+    private void saveAssignment(Assignment assignment, AssignmentField form, User user) {
+        Time[] times = this.validateBeforeCreateAssignment(form, user);
+        assignment.setCourseId(form.getCourseId());
+        assignment.setDayOfWeek(form.getDayOfWeek().getValue());
+        assignment.setCourseId(form.getCourseId());
+        assignment.setUserId(user.getId());
+        assignment.setStartTime(times[0]);
+        assignment.setEndTime(times[1]);
+        assignment.setPoolId(form.getPoolId());
+        assignment.setStartDate(form.getStartDate());
+        assignment.setActive(true);
+        this.assignmentRepository.save(assignment);
     }
 }

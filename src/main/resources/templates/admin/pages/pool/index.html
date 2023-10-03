@@ -30,7 +30,7 @@
                         <div>
                             <i class="fa fa-ellipsis-v cursor-pointer" aria-hidden="true"></i>
                             <ul th:replace="~{admin/pages/pool/table-action :: actionList(*{active}, *{id})}"></ul>
-                            <div th:replace="~{admin/pages/pool/form :: form(*{id}, *{code}, *{name}, *{'update-pool' + id})}" />
+                            <div th:replace="~{admin/pages/pool/form :: form(*{id}, *{code}, *{name}, *{numberOfStudent}, *{'update-pool' + id})}" />
                         </div>
                     </td>
                 </tr>

@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 
 public interface IAssignmentService {
 
+    List<Assignment> findByCourseId(String courseId);
+
     List<Assignment> findByPoolId(String poolId);
 
     Assignment findByIdThrowIfNotPresent(String id) throws ValidationException;
@@ -29,6 +31,7 @@ public interface IAssignmentService {
                     assignmentField.setStartTime(a.getStartTime().toString());
                     assignmentField.setPoolId(a.getPoolId());
                     assignmentField.setDayOfWeek(DayOfWeek.of(a.getDayOfWeek()));
+                    assignmentField.setStartDate(a.getStartDate());
                     return assignmentField;
                 })
                 .toList();
@@ -42,5 +45,5 @@ public interface IAssignmentService {
 
     void saveAssignment(AssignmentCreationRequest creationRequest);
 
-    void deleteByUserId(String userId);
+    void updateAssignment(AssignmentCreationRequest creationRequest);
 }

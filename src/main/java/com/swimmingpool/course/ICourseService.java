@@ -23,4 +23,6 @@ public interface ICourseService {
     PageResponse<CourseSearchResponse> searchCourse(CourseSearchRequest courseSearchRequest);
 
     void changeStatus(String id);
+
+    void deleteCourse(String id);
 }

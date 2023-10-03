@@ -1,10 +1,9 @@
-<div th:fragment="form(_id, code, name, idForm)">
-    <div th:replace="~{_common/modal :: modal(${idForm}, ${_id ne null ? 'Cập nhật hồ bơi' : 'Tạo mới hồ bơi'}, null, null, null, null, ~{::#form}, null)}" >
+<div th:fragment="form(_id, code, name, numberOfStudent, idForm)">
+    <div th:replace="~{_common/modal :: modal(${idForm}, ${_id ne null ? 'Cập nhật hồ bơi' : 'Tạo mới hồ bơi'}, null, null, null, null, ~{::.form}, null)}" >
         <form
-                id="form"
                 th:action="@{/admin/pool}"
                 method="post"
-                class="d-flex flex-column"
+                class="d-flex flex-column form"
                 style="gap: 20px;"
         >
             <input type="hidden" name="_REDIRECT_URL_KEY" th:value="@{/admin/pool}" />
@@ -21,6 +20,13 @@
                 <div class="col-md-12">
                     <label class="required">Tên hồ bơi</label>
                     <input name="name" th:value="${name}" placeholder="Nhập tên hồ bơi" class="form-control" required/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="required">Số lượng học viên</label>
+                    <input name="numberOfStudent" th:value="${numberOfStudent}" type="number" placeholder="Nhập số lượng" class="form-control" th:readonly="${_id ne null}" required/>
                 </div>
             </div>
 

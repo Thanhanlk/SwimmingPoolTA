@@ -30,10 +30,9 @@ public class AdminUserController extends BaseController {
     public String getStaff(UserSearchRequest userSearchRequest, Model model) {
         userSearchRequest.setRole(UserConstant.Role.TEACHER);
         PageResponse<UserSearchResponse> pageResponse = this.userService.searchUser(userSearchRequest);
-        model.addAttribute("searchRequest", userSearchRequest);
         model.addAttribute("title", "Quản lý nhân viên");
         model.addAttribute("subTitle", "Danh sách nhân viên");
-        return this.index(model, pageResponse);
+        return this.index(model, pageResponse, userSearchRequest);
     }
 
     @GetMapping(value = "/staff", params = "id")
@@ -90,7 +89,7 @@ public class AdminUserController extends BaseController {
         PageResponse<UserSearchResponse> pageResponse = this.userService.searchUser(userSearchRequest);
         model.addAttribute("title", "Quản lý khách hàng");
         model.addAttribute("subTitle", "Danh sách khách hàng");
-        return this.index(model, pageResponse);
+        return this.index(model, pageResponse, userSearchRequest);
     }
 
     @GetMapping("/change-status")
@@ -110,7 +109,8 @@ public class AdminUserController extends BaseController {
         }
     }
 
-    private String index(Model model, PageResponse pageResponse) {
+    private String index(Model model, PageResponse pageResponse, UserSearchRequest userSearchRequest) {
+        model.addAttribute("searchRequest", userSearchRequest);
         this.addPagingResult(model, pageResponse);
         this.addJavascript(model, "/admin/javascript/column-controller");
         this.addCss(model, "/admin/css/column-controller", "/admin/css/user");

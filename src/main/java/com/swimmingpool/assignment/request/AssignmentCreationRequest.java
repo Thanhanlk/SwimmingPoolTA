@@ -33,4 +33,9 @@ public class AssignmentCreationRequest {
         if (Objects.isNull(this.assignmentFields)) return;
         this.assignmentFields.remove(index);
     }
+
+    public AssignmentField getAssignmentField(int index) {
+        if (Objects.isNull(this.assignmentFields)) return null;
+        return this.assignmentFields.get(index);
+    }
 }

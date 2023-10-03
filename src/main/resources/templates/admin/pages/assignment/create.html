@@ -2,7 +2,7 @@
     <div id="content">
         <a th:href="@{/admin/assignment}">Quay lại</a>
         <form
-                th:action="@{/admin/assignment}"
+                th:action="@{__${currentUri}__}"
                 th:object="${assignmentCreation}"
                 method="post"
                 class="d-flex flex-column mt-3"
@@ -20,15 +20,31 @@
                     </div>
 
                     <div id="assignment-container">
-                        <div th:id="${'form' + _status.index}" th:each="form,_status : *{assignmentFields}" class="card p-3 mt-3">
+                        <div
+                            th:id="${'form' + _status.index}"
+                            th:each="form,_status : *{assignmentFields}"
+                            th:with="startDate=*{assignmentFields[__${_status.index}__].startDate},_id=*{assignmentFields[__${_status.index}__].id},isDisabled=${!#strings.isEmpty(_id) and startDate ne null and startDate.before(#dates.createNow())}"
+                            class="card p-3 mt-3"
+                        >
                             <input type="hidden" th:field="*{assignmentFields[__${_status.index}__].id}"/>
                             <div class="d-flex justify-content-between">
                                 <a data-toggle="collapse" th:href="${'#formAssignment' + _status.index}" role="button" class="h3 text-dark">
                                     <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                                    <label>Lịch dạy [[__${_status.index + 1}__]]</label>
+                                    <label>
+                                        Lịch dạy [[__${_status.index + 1}__]]
+                                        <th:block th:if="${isDisabled}">
+                                            (Lịch dạy đã áp dụng)
+                                        </th:block>
+                                    </label>
                                 </a>
                                 <div class="d-flex" style="gap: 5px">
-                                    <button th:formaction="@{/admin/assignment/delete-row(index=${_status.index})}" formnovalidate class="btn btn-danger">
+                                    <button
+                                        th:formaction="@{/admin/assignment/delete-row(index=${_status.index})}"
+                                        formmethod="post"
+                                        th:disabled="${isDisabled}"
+                                        formnovalidate
+                                        class="btn btn-danger"
+                                    >
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </div>
@@ -37,14 +53,14 @@
                                 <div class="row mt-3">
                                     <div class="col-md-6">
                                         <label class="required">Khóa học</label>
-                                        <select class="form-control" th:field="*{assignmentFields[__${_status.index}__].courseId}">
+                                        <select class="form-control" th:field="*{assignmentFields[__${_status.index}__].courseId}" th:readonly="${isDisabled}">
                                             <option th:each="course: ${courses}" th:value="${course.id}" th:text="${course.name}" />
                                         </select>
                                     </div>
 
                                     <div class="col-md-6">
                                         <label class="required">Hồ bơi</label>
-                                        <select class="form-control" th:field="*{assignmentFields[__${_status.index}__].poolId}">
+                                        <select class="form-control" th:field="*{assignmentFields[__${_status.index}__].poolId}" th:readonly="${isDisabled}">
                                             <option th:each="pool: ${pools}" th:value="${pool.id}" th:text="${pool.name}" />
                                         </select>
                                     </div>
@@ -53,7 +69,7 @@
                                 <div class="row mt-3">
                                     <div class="col-md-6">
                                         <label class="required">Thứ</label>
-                                        <select class="form-control" th:field="*{assignmentFields[__${_status.index}__].dayOfWeek}">
+                                        <select class="form-control" th:field="*{assignmentFields[__${_status.index}__].dayOfWeek}" th:readonly="${isDisabled}">
                                             <option
                                                     th:each="day : ${T(java.time.DayOfWeek).values()}"
                                                     th:value="${day}"
@@ -63,24 +79,24 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="required">Thời gian áp dụng</label>
-                                        <input type="date" class="form-control" th:field="*{assignmentFields[__${_status.index}__].startDate}" required/>
+                                        <input type="date" class="form-control" th:field="*{assignmentFields[__${_status.index}__].startDate}" th:readonly="${isDisabled}" required/>
                                     </div>
                                 </div>
 
                                 <div class="row mt-3">
                                     <div class="col-md-6">
                                         <label class="required">Thời gian bắt đầu</label>
-                                        <input type="time" class="form-control" th:field="*{assignmentFields[__${_status.index}__].startTime}" required/>
+                                        <input type="time" class="form-control" th:field="*{assignmentFields[__${_status.index}__].startTime}" th:readonly="${isDisabled}" required/>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="required">Thời gian kết thúc</label>
-                                        <input type="time" class="form-control"  th:field="*{assignmentFields[__${_status.index}__].endTime}" required/>
+                                        <input type="time" class="form-control"  th:field="*{assignmentFields[__${_status.index}__].endTime}" th:readonly="${isDisabled}" required/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button th:formaction="@{/admin/assignment/add-row}" formnovalidate class="btn btn-primary mt-3">Thêm lịch dạy</button>
+                    <button th:formaction="@{/admin/assignment/add-row}" formmethod="post" formnovalidate class="btn btn-primary mt-3">Thêm lịch dạy</button>
                 </div>
             </div>
 

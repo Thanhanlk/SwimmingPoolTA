@@ -48,4 +48,7 @@ public class Assignment extends AuditTable {
 
     @Column(name = "user_id")
     private String userId;
+
+    @Column(name = "active")
+    private Boolean active;
 }

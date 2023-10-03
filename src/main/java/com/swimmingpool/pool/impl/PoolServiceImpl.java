@@ -60,9 +60,9 @@ public class PoolServiceImpl implements IPoolService {
             creationRequest.setActive(false);
             pool.setCode(creationRequest.getCode());
             pool.setActive(creationRequest.getActive());
+            pool.setNumberOfStudent(creationRequest.getNumberOfStudent());
         }
         pool.setName(creationRequest.getName());
-        pool.setNumberOfStudent(creationRequest.getNumberOfStudent());
         this.poolRepository.save(pool);
     }
 

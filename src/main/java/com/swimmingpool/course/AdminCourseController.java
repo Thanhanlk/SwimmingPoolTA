@@ -107,4 +107,17 @@ public class AdminCourseController extends BaseController {
             throw ex;
         }
     }
+
+    @GetMapping("/delete")
+    public String deleteCourse(@RequestParam String id, RedirectAttributes redirectAttributes) {
+        try {
+            this.courseService.deleteCourse(id);
+            Result<Object> success = Result.success(null, I18nUtil.getMessage("course.delete.success"));
+            redirectAttributes.addFlashAttribute(AppConstant.ResponseKey.RESULT, success);
+            return "redirect:/admin/course";
+        } catch (BusinessException ex) {
+            ex.setRedirectUrl("redirect:/admin/course");
+            throw ex;
+        }
+    }
 }

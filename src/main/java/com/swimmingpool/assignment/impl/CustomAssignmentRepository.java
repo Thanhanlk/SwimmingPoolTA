@@ -4,6 +4,7 @@ import com.swimmingpool.assignment.AssignmentRowMapper;
 import com.swimmingpool.assignment.request.AssignmentSearchRequest;
 import com.swimmingpool.assignment.response.AssignmentCreationResponse;
 import com.swimmingpool.common.dto.PageResponse;
+import com.swimmingpool.common.util.DateUtil;
 import com.swimmingpool.common.util.PagingUtil;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -40,17 +41,17 @@ public class CustomAssignmentRepository {
 
         if (Objects.nonNull(request.getDay())) {
             sqlBuilder.append(" AND a.day_of_week = :dayOfWeek");
-            params.put("dayOfWeek", request.getDay());
+            params.put("dayOfWeek", request.getDay().getValue());
         }
 
-        if (Objects.nonNull(request.getStartTime())) {
-            sqlBuilder.append(" AND a.start_time = :startTime");
-            params.put("startTime", request.getStartTime());
+        if (StringUtils.hasLength(request.getStartTime())) {
+            sqlBuilder.append(" AND a.start_time >= :startTime");
+            params.put("startTime", DateUtil.strToTime(request.getStartTime()));
         }
 
-        if (Objects.nonNull(request.getEndTime())) {
-            sqlBuilder.append(" AND a.end_time = :endTime");
-            params.put("endTime", request.getEndTime());
+        if (StringUtils.hasLength(request.getEndTime())) {
+            sqlBuilder.append(" AND a.end_time <= :endTime");
+            params.put("endTime", DateUtil.strToTime(request.getEndTime()));
         }
 
         if (StringUtils.hasLength(request.getPoolId())) {

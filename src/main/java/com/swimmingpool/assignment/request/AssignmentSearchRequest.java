@@ -10,8 +10,8 @@ import java.time.DayOfWeek;
 public class AssignmentSearchRequest extends PageRequest {
     private String codeNameUser;
     private DayOfWeek day;
-    private Time startTime;
-    private Time endTime;
+    private String startTime;
+    private String endTime;
     private String poolId;
     private String courseId;
 }

@@ -42,7 +42,7 @@ public class Course extends AuditTable {
     private String shortDescription;
 
     @Lob
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = " longtext")
     private String description;
 
     @Column(name = "is_show_home")

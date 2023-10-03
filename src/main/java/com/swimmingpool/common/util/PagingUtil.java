@@ -31,7 +31,7 @@ public class PagingUtil {
             });
             query.setFirstResult((pageRequest.getPage() - 1) * pageRequest.getPageSize());
             query.setMaxResults(pageRequest.getPageSize());
-            long count = (long) queryCount.getSingleResult();
+                long count = (long) queryCount.getSingleResult();
             List<Tuple> tupleList = query.getResultList();
             List<R> items = tupleList.stream()
                     .map(rowMapper)

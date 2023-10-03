@@ -1,5 +1,7 @@
 package com.swimmingpool.course.impl;
 
+import com.swimmingpool.assignment.Assignment;
+import com.swimmingpool.assignment.IAssignmentService;
 import com.swimmingpool.common.dto.PageResponse;
 import com.swimmingpool.common.exception.ValidationException;
 import com.swimmingpool.common.util.I18nUtil;
@@ -16,7 +18,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -35,8 +39,12 @@ public class CourseServiceImpl implements ICourseService {
     private final CourseRepository courseRepository;
     private final CustomCourseRepositoryImpl customCourseRepositoryImpl;
 
-    @Setter(onMethod_ = { @Autowired })
+    @Setter(onMethod_ = { @Autowired }, onParam_ = @Lazy)
     private ImageService imageService;
+
+    @Setter(onMethod_ = { @Autowired }, onParam_ = @Lazy)
+    private IAssignmentService assignmentService;
+
 
     @Override
     @Cacheable(cacheManager = "redisCacheManager", cacheNames = "ACTIVE_COURSE", key = "'EMPTY'")
@@ -95,9 +103,21 @@ public class CourseServiceImpl implements ICourseService {
 
     @Override
     @Transactional
+    @CacheEvict(cacheManager = "redisCacheManager", cacheNames = "ACTIVE_COURSE", key = "'EMPTY'")
     public void changeStatus(String id) {
         Course course = this.findByIdThrowIfNotPresent(id);
         course.setActive(!course.getActive());
         this.courseRepository.save(course);
+    }
+
+    @Transactional
+    @Override
+    @CacheEvict(cacheManager = "redisCacheManager", cacheNames = "ACTIVE_COURSE", key = "'EMPTY'")
+    public void deleteCourse(String id) {
+        List<Assignment> assignmentByCourseId = this.assignmentService.findByCourseId(id);
+        if (!assignmentByCourseId.isEmpty()) {
+            throw new ValidationException("course.delete.exist-assignment");
+        }
+        this.courseRepository.deleteById(id);
     }
 }
