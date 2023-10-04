@@ -32,7 +32,7 @@ public interface AssignmentRepository extends JpaRepository<Assignment, String> 
     List<Assignment> findByUserId(String userId);
 
     @Modifying
-    @Query("DELETE FROM Assignment a WHERE a.id NOT IN (?1) AND a.userId = ?2 AND a.active = true AND a.startDate < CURRENT_DATE")
+    @Query("DELETE FROM Assignment a WHERE a.id NOT IN (?1) AND a.userId = ?2 AND a.active = true AND a.startDate > CURRENT_DATE")
     void deleteAllNotIds(List<String> ids, String userId);
 
     List<Assignment> findByPoolId(String poolId);

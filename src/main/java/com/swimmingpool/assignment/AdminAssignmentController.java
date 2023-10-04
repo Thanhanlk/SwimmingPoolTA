@@ -72,7 +72,7 @@ public class AdminAssignmentController extends BaseController {
             @RequestParam(required = false) Optional<String> userId,
             RedirectAttributes redirectAttributes
     ) {
-        String url = userId.map(i -> "redirect:/admin/assignment/update?id=" + i).orElse("redirect:/admin/assignment/create");
+        String url = userId.map(i -> "redirect:/admin/assignment/update?userId=" + i).orElse("redirect:/admin/assignment/create");
         Optional.ofNullable(creationRequest.getAssignmentField(index))
                 .map(AssignmentField::getStartDate)
                 .filter(x -> x.before(new Date()))
