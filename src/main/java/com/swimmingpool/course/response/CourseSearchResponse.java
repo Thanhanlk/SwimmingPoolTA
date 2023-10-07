@@ -18,4 +18,8 @@ public class CourseSearchResponse {
     private Date createdDate;
     private Date modifiedDate;
     private Boolean active;
+
+    public String getImage() {
+        return this.avatar;
+    }
 }

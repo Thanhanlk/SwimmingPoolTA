@@ -9,6 +9,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -18,6 +19,7 @@ import java.util.Locale;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
     private static final Locale VN = new Locale("vi", "VN");
 
@@ -26,6 +28,12 @@ public class WebConfig implements WebMvcConfigurer {
     @PostConstruct
     public void init() {
         LocaleContextHolder.setDefaultLocale(VN);
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("classpath:/static/");
     }
 
     @Override

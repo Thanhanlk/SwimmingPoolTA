@@ -1,0 +1,6 @@
+<li
+    th:fragment="link(url, label)"
+    th:class="${#strings.startsWith(currentUri, url) ? 'active' : ''}"
+>
+    <a th:href="@{__${url}__}" th:text="${label}"/>
+</li>

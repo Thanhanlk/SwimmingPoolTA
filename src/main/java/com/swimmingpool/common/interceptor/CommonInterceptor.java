@@ -16,7 +16,7 @@ public class CommonInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         if (Objects.nonNull(modelAndView)) {
-            modelAndView.addObject("currentUri", request.getRequestURI());
+            modelAndView.addObject("currentUri", request.getServletPath());
             modelAndView.addObject("uriWithQueryString", this.getUriWithParameters(request));
         }
     }

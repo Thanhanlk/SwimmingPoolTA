@@ -6,6 +6,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AppConstant {
 
+    public static final int DATE_INDICATE_NEWEST = 30;
+    public static final int PERCENT_INDICATE_HOT_SALE = 35;
+    public static final int NUMBER_BEST_SELLER_SHOW = 8;
+    public static final int NUMBER_IMAGE_SHOW_HOME = 3; // UI only shows three images
+
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Validation {
         public static final String RGX_VIETNAM_PHONE = "^(0|\\+84)\\d{9}";

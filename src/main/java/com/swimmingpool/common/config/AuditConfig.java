@@ -20,6 +20,7 @@ public class AuditConfig {
         return () -> Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .map(Authentication::getPrincipal)
+                .filter(x -> x instanceof UserResponse)
                 .map(UserResponse.class::cast)
                 .map(UserResponse::getUsername);
     }

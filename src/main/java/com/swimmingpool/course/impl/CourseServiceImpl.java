@@ -11,6 +11,8 @@ import com.swimmingpool.course.ICourseService;
 import com.swimmingpool.course.request.CourseCreationRequest;
 import com.swimmingpool.course.request.CourseSearchRequest;
 import com.swimmingpool.course.response.CourseCreationResponse;
+import com.swimmingpool.course.response.CourseImageDTO;
+import com.swimmingpool.course.response.CourseResponse;
 import com.swimmingpool.course.response.CourseSearchResponse;
 import com.swimmingpool.image.ImageConstant;
 import com.swimmingpool.image.ImageService;
@@ -47,7 +49,7 @@ public class CourseServiceImpl implements ICourseService {
 
 
     @Override
-    @Cacheable(cacheManager = "redisCacheManager", cacheNames = "ACTIVE_COURSE", key = "'EMPTY'")
+    @Cacheable(cacheManager = "redisCacheManager", cacheNames = "ACTIVE_COURSE", key = "'EMPTY'", unless = "#result eq null or #result.empty")
     public List<Course> findActiveCourse() {
         return this.courseRepository.findActiveCourse();
     }
@@ -89,7 +91,6 @@ public class CourseServiceImpl implements ICourseService {
         course.setIsShowHome(courseCreationRequest.getIsShowHome());
         course.setSlug(courseCreationRequest.getSlug());
 
-        // todo: handle upload course's images
         if (Objects.nonNull(courseCreationRequest.getAvatar())) {
             MultipartFile avatar = courseCreationRequest.getAvatar();
             String avatarUrl = this.imageService.upload(avatar, String.format("%s-%s", course.getCode(), course.getName()), ImageConstant.Type.COURSE);
@@ -119,5 +120,25 @@ public class CourseServiceImpl implements ICourseService {
             throw new ValidationException("course.delete.exist-assignment");
         }
         this.courseRepository.deleteById(id);
+    }
+
+    @Override
+    public List<CourseImageDTO> getCourseImage(int limit) {
+        return this.customCourseRepositoryImpl.getCourseImage(limit);
+    }
+
+    @Override
+    public List<CourseResponse> getBestSeller(int limit) {
+        return this.customCourseRepositoryImpl.getBestSeller(limit);
+    }
+
+    @Override
+    public List<CourseResponse> getNewest(int limit) {
+        return this.customCourseRepositoryImpl.getNewest(limit);
+    }
+
+    @Override
+    public List<CourseResponse> getHotSales(int limit) {
+        return this.customCourseRepositoryImpl.getHotSales(limit);
     }
 }

@@ -1,0 +1,46 @@
+<section id="banner" class="banner spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 offset-lg-4">
+                <th:block th:if="${ not #lists.isEmpty(productImage) }">
+                    <div class="banner__item" th:object="${productImage[0]}">
+                        <div class="banner__item__pic">
+                            <img th:src="*{imageUrl}" th:alt="*{name}" />
+                        </div>
+                        <div class="banner__item__text">
+                            <h2 th:text="*{name}"/>
+                            <a th:href="@{/course/__*{slug}__(courseCode=__*{code}__)}">Đăng ký</a>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+            <div class="col-lg-5">
+                <th:block th:if="${#lists.size(productImage) > 1}">
+                    <div class="banner__item banner__item--middle" th:object="${productImage[1]}">
+                        <div class="banner__item__pic">
+                            <img th:src="*{imageUrl}" th:alt="*{name}" />
+                        </div>
+                        <div class="banner__item__text">
+                            <h2 th:text="*{name}"/>
+                            <a th:href="@{/course/__*{slug}__(cousreCode=__*{code}__)}">Đăng ký</a>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+            <div class="col-lg-7">
+                <th:block th:if="${#lists.size(productImage) > 2}">
+                    <div class="banner__item banner__item--last" th:object="${productImage[2]}">
+                        <div class="banner__item__pic">
+                            <img th:src="*{imageUrl}" th:alt="*{name}" />
+                        </div>
+                        <div class="banner__item__text">
+                            <h2 th:text="*{name}"/>
+                            <a th:href="@{/course/__*{slug}__(courseCode=__*{code}__)}">Đăng ký</a>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Banner Section End -->

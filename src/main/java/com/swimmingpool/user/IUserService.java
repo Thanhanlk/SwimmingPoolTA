@@ -21,9 +21,10 @@ public interface IUserService extends UserDetailsService {
 
     List<UserSearchResponse> findUser(UserSearchRequest userSearchRequest);
 
-    @Cacheable(cacheManager = "redisCacheManager", cacheNames = "TEACHER", key = "'EMPTY'")
+    @Cacheable(cacheManager = "redisCacheManager", cacheNames = "TEACHER", key = "'EMPTY'", unless = "#result eq null or #result.empty")
     default List<UserSearchResponse> findStaffUser(UserSearchRequest userSearchRequest) {
         userSearchRequest.setRole(UserConstant.Role.TEACHER);
+        userSearchRequest.setActive(true);
         return this.findUser(userSearchRequest);
     }
 

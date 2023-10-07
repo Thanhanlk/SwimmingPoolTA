@@ -6,8 +6,8 @@
     <meta name="keywords" content="Male_Fashion, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title th:text="${ title }">Swimming Pool</title>
-
+    <title>Trung tâm dạy bơi</title>
+    <link rel="icon" th:href="@{/resources/img/favicon.ico}" />
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
@@ -22,6 +22,12 @@
     <link rel="stylesheet" th:href="@{/resources/user/css/style.css}" type="text/css">
     <link rel="stylesheet" th:href="@{/resources/user/css/header.css}" type="text/css">
     <link rel="stylesheet" th:href="@{/resources/user/css/footer.css}" type="text/css">
+    <link
+            th:if="${_CSS_KEY ne null}"
+            th:each="css : ${_CSS_KEY}"
+            th:href="@{/resources__${css}__.css}"
+            rel="stylesheet"
+    />
     <style>
         .required:after {
             content: ' *';
@@ -37,10 +43,9 @@
         <div id="preloder">
             <div class="loader"></div>
         </div>
-        <div th:replace="${content}"></div>
-<!--        <jsp:include page="common/header.jsp" />-->
-<!--        <jsp:include page="../../${pageContent}" />-->
-<!--        <jsp:include page="common/footer.jsp" />-->
+        <header th:replace="~{user/common/header :: header}" />
+        <div th:replace="${content}"/>
+        <footer th:replace="~{user/common/footer :: footer}"/>
     </div>
 
     <script th:src="@{/resources/_common/javascript/jquery-3.3.1.min.js}"></script>
@@ -57,5 +62,10 @@
     <script th:src="@{/resources/_common/javascript/utilities.js}"></script>
     <script th:src="@{/resources/admin/javascript/spinner.js}"></script>
     <script th:src="@{/resources/user/javascript/main.js}"></script>
+    <script
+            th:if="${_JS_KEY ne null}"
+            th:each="js : ${_JS_KEY}"
+            th:src="@{/resources__${js}__.js}"
+    ></script>
 </body>
 </html>

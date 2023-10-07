@@ -1,0 +1,19 @@
+<th:block th:fragment="courseCard(item, lg, md, sm)" th:object="${item}">
+    <div th:classappend="${'col-lg-' + lg + ' col-md-' + md + ' col-sm-' + sm}">
+        <div class="product__item">
+            <div class="product__item__pic set-bg" th:data-setbg="*{image}">
+                <ul class="product__hover">
+                    <li>
+                        <a th:href="@{/course/__*{slug}__(courseCode=__*{code}__)}">
+                            <img th:src="@{/resources/img/icon/search.png}" alt="">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="product__item__text">
+                <h6 th:title="*{name}" th:text="*{name}"/>
+                <h5 th:text="*{#numbers.formatCurrency(price)}" />
+            </div>
+        </div>
+        </div>
+</th:block>

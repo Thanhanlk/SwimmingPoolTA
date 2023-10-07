@@ -13,6 +13,7 @@ import com.swimmingpool.user.response.UserResponse;
 import com.swimmingpool.user.response.UserSearchResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,6 +47,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Transactional
+    @CacheEvict(cacheManager = "redisCacheManager", cacheNames = "TEACHER", key = "'EMPTY'", beforeInvocation = true, condition = "#userRegisterRequest instanceof com.swimmingpool.user.request.StaffRegisterRequest")
     public Result<UserResponse> registerUser(UserRegisterRequest userRegisterRequest) {
         log.info("register user: {}", userRegisterRequest);
         User user = new User();
@@ -73,10 +75,10 @@ public class UserServiceImpl implements IUserService {
                     .ifPresent(u -> {
                         throw new ValidationException("user.email.valdiate.exist", u.getEmail());
                     });
-            user.setUsername(userRegisterRequest.getUsername().toLowerCase());
-            user.setActive(true);
-            user.setRole(userRegisterRequest.getRole());
         }
+        user.setUsername(userRegisterRequest.getUsername().toLowerCase());
+        user.setActive(true);
+        user.setRole(userRegisterRequest.getRole());
         user.setPassword(this.passwordEncoder.encode(userRegisterRequest.getPassword()));
         user.setFullName(userRegisterRequest.getFullName());
         user.setPhone(userRegisterRequest.getPhone());

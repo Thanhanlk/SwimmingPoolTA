@@ -1,6 +1,6 @@
 package com.swimmingpool.common.config;
 
-import com.swimmingpool.user.UserConstant;
+import com.swimmingpool.common.constant.AppConstant;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,27 +19,17 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
 import static com.swimmingpool.user.UserConstant.Role.ADMIN;
 
 @EnableWebSecurity
 @Configuration
-@EnableWebMvc
-public class SecurityConfig implements WebMvcConfigurer {
+public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/resources/**")
-                .addResourceLocations("classpath:/static/");
     }
 
     @Bean
@@ -62,7 +52,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers("/auth/**").permitAll()
                             .requestMatchers("/resources/**").permitAll()
+                            .requestMatchers("/course/**").permitAll()
                             .requestMatchers("/admin/**").hasAuthority(ADMIN.name())
+                            .requestMatchers(AppConstant.Endpoint.HOME).permitAll()
                             .anyRequest()
                             .authenticated();
                 })
@@ -71,7 +63,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .loginProcessingUrl("/auth")
                         .usernameParameter("username")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl(AppConstant.Endpoint.HOME, true)
                         .failureHandler((request, response, exception) -> {
                             ModelAndView modelAndView = resolver.resolveException(request, response, null, exception);
                             try {

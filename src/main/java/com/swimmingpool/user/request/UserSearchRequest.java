@@ -8,4 +8,5 @@ import lombok.Data;
 public class UserSearchRequest extends PageRequest {
     private String name;
     private UserConstant.Role role;
+    private Boolean active;
 }

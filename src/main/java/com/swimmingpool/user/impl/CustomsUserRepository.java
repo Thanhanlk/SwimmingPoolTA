@@ -39,6 +39,11 @@ public class CustomsUserRepository {
             sqlBuilder.append(" AND u.role = :role");
             param.put("role", userSearchRequest.getRole().name());
         }
+
+        if (Objects.nonNull(userSearchRequest.getActive())) {
+            sqlBuilder.append(" AND u.active = :active");
+            param.put("active", userSearchRequest.getActive());
+        }
         sqlBuilder.append(" ORDER BY u.created_date DESC");
         return sqlBuilder.toString();
     }
