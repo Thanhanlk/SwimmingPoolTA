@@ -34,7 +34,7 @@ public class CustomCourseRepositoryImpl {
 
         StringBuilder sqlBuilder = new StringBuilder("select c.id as id, c.code as code, c.name as name, c.created_date as createdDate")
                 .append(" , c.modified_date as modifiedDate, c.price as price, c.number_of_lesson as numberOfLesson")
-                .append(" , c.discount as discount")
+                .append(" , c.discount as discount, c.short_description as shortDescription")
                 .append(" , c.avatar as avatar, c.active as active, c.slug as slug")
                 .append(" from _course c")
                 .append(" where 1 = 1");
@@ -74,7 +74,7 @@ public class CustomCourseRepositoryImpl {
     }
 
     public List<CourseResponse> getBestSeller(int limit) {
-        String sql = new StringBuilder("SELECT c.id, c.code, c.name, c.avatar, c.price, c.slug , count(1) as count")
+        String sql = new StringBuilder("SELECT c.id, c.code, c.name, c.avatar, c.price, c.slug, c.short_description , count(1) as count")
                 .append(" FROM _course c")
                 .append("  JOIN _assignment a ON c.id = a.course_id")
                 .append("  JOIN _order o ON a.id = o.assignment_id")
@@ -86,7 +86,7 @@ public class CustomCourseRepositoryImpl {
     }
 
     public List<CourseResponse> getNewest(int limit) {
-        String sql = new StringBuilder("SELECT c.id, c.code, c.name, c.avatar, c.price, c.slug")
+        String sql = new StringBuilder("SELECT c.id, c.code, c.name, c.avatar, c.price, c.slug, c.short_description")
                 .append(" FROM _course c")
                 .append(" WHERE c.active = true AND DATEDIFF(now(), c.created_date) <= ?1")
                 .append(" ORDER BY c.created_date DESC")
@@ -95,7 +95,7 @@ public class CustomCourseRepositoryImpl {
     }
 
     public List<CourseResponse> getHotSales(int limit) {
-        String sql = new StringBuilder("SELECT p.id, p.code, p.name, p.avatar, p.price, p.slug")
+        String sql = new StringBuilder("SELECT p.id, p.code, p.name, p.avatar, p.price, p.slug, p.short_description")
                 .append(" FROM _course p")
                 .append(" WHERE p.active = true AND p.discount  >= ?1")
                 .append(" ORDER BY p.discount DESC")
@@ -111,6 +111,7 @@ public class CustomCourseRepositoryImpl {
                 .image(tuple.get(3, String.class))
                 .price(tuple.get(4, BigDecimal.class))
                 .slug(tuple.get(5, String.class))
+                .shortDescription(tuple.get(6, String.class))
                 .build();
         return this.getCourseInUserHome(sql, limit, mapper, params);
     }

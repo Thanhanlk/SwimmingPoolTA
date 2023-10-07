@@ -6,11 +6,11 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <ul class="filter__controls text-left mb-3">
-                            <li class="active" style="color: #111111;" th:text="${label}" />
+                            <li th:if="${label ne null}" class="active" style="color: #111111;" th:text="${label}" />
                         </ul>
                     </div>
                 </div>
-                <div class="row product__filter">
+                <div class="row product__filter" style="row-gap: 30px;">
                     <th:block th:each="item : ${items}">
                         <div th:replace="~{user/pages/course/course-card :: courseCard(${item}, '3', '6', '6')}"/>
                     </th:block>

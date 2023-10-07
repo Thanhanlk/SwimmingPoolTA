@@ -16,10 +16,8 @@ public class CourseResponse {
     private String code;
     private String name;
     private String image;
-    private String categoryName;
     private String shortDescription;
     private String description;
-    private Long categoryId;
     private Boolean active;
     private Boolean isShowHome;
     private BigDecimal price;

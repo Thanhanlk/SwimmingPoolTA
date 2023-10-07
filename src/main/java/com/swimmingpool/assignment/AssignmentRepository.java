@@ -38,4 +38,7 @@ public interface AssignmentRepository extends JpaRepository<Assignment, String> 
     List<Assignment> findByPoolId(String poolId);
 
     List<Assignment> findByCourseId(String courseId);
+
+    @Query("SELECT a FROM Assignment a WHERE a.active = true AND a.startDate < CURRENT_DATE AND a.courseId = ?1 ORDER BY a.dayOfWeek, a.startTime")
+    List<Assignment> findActiveByCourseId(String courseId);
 }

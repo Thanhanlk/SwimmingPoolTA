@@ -10,10 +10,7 @@ import com.swimmingpool.course.CourseRepository;
 import com.swimmingpool.course.ICourseService;
 import com.swimmingpool.course.request.CourseCreationRequest;
 import com.swimmingpool.course.request.CourseSearchRequest;
-import com.swimmingpool.course.response.CourseCreationResponse;
-import com.swimmingpool.course.response.CourseImageDTO;
-import com.swimmingpool.course.response.CourseResponse;
-import com.swimmingpool.course.response.CourseSearchResponse;
+import com.swimmingpool.course.response.*;
 import com.swimmingpool.image.ImageConstant;
 import com.swimmingpool.image.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -29,9 +26,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -140,5 +136,27 @@ public class CourseServiceImpl implements ICourseService {
     @Override
     public List<CourseResponse> getHotSales(int limit) {
         return this.customCourseRepositoryImpl.getHotSales(limit);
+    }
+
+    @Override
+    public CourseDetailResponse getDetailProduct(String courseCode, int limitRelatedCourse) {
+        Course course = this.courseRepository.findByCode(courseCode)
+                .orElseThrow(() -> new ValidationException("course.code.validate.not-exist", courseCode));
+        if (!course.getActive()) {
+            throw new ValidationException("course.code.validate.not-exist", courseCode);
+        }
+        List<Assignment> activeAssignmentByCourseId = this.assignmentService.findActiveByCourseId(course.getId());
+        return CourseDetailResponse.builder()
+                .id(course.getId())
+                .code(course.getCode())
+                .name(course.getName())
+                .image(course.getAvatar())
+                .shortDescription(course.getShortDescription())
+                .description(course.getDescription())
+                .assignments(activeAssignmentByCourseId)
+                .slug(course.getSlug())
+                .discount(course.getDiscount())
+                .price(course.getPrice())
+                .build();
     }
 }

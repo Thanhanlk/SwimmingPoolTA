@@ -23,8 +23,8 @@ public class CommonInterceptor implements HandlerInterceptor {
 
     private String getUriWithParameters(HttpServletRequest request) {
         Map<String, String[]> parameterMap = request.getParameterMap();
-        return request.getRequestURI() + "?" + parameterMap.keySet().stream()
-                .filter(key -> !"page".equals(key))
+        return request.getRequestURI() + "?x=" + parameterMap.keySet().stream()
+                .filter(key -> !"page".equals(key) || !"x".equals(key))
                 .map(key -> key + "=" + String.join(",", parameterMap.get(key)))
                 .collect(Collectors.joining("&"));
     }

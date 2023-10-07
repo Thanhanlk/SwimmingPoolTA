@@ -1,6 +1,6 @@
 <th:block th:fragment="priceParameter(minPrice, maxPrice)">
     <li th:class="*{(searchRequest.minPrice eq minPrice and searchRequest.maxPrice eq maxPrice) ? 'active' : ''}">
-        <a th:href="@{/course(minPrice=__${minPrice}__,maxPrice=__${maxPirce}__)}">
+        <a th:href="${uriWithQueryString + '&minPrice=' + minPrice + '&maxPrice=' + maxPrice}">
             [[${#numbers.formatCurrency(minPrice)}]] <th:block th:if="${maxPrice ne null}">- [[${#numbers.formatCurrency(maxPrice)}]]</th:block>
         </a>
     </li>

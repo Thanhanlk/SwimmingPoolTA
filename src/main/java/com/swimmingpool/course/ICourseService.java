@@ -4,10 +4,7 @@ import com.swimmingpool.common.dto.PageResponse;
 import com.swimmingpool.common.exception.ValidationException;
 import com.swimmingpool.course.request.CourseCreationRequest;
 import com.swimmingpool.course.request.CourseSearchRequest;
-import com.swimmingpool.course.response.CourseCreationResponse;
-import com.swimmingpool.course.response.CourseImageDTO;
-import com.swimmingpool.course.response.CourseResponse;
-import com.swimmingpool.course.response.CourseSearchResponse;
+import com.swimmingpool.course.response.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -33,4 +30,6 @@ public interface ICourseService {
     List<CourseResponse> getNewest(int limit);
 
     List<CourseResponse> getHotSales(int limit);
+
+    CourseDetailResponse getDetailProduct(String courseCode, int limitRelatedCourse);
 }

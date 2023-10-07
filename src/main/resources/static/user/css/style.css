@@ -134,7 +134,7 @@ ol {
 	text-transform: uppercase;
 	padding: 14px 30px;
 	color: #ffffff;
-	background: #000000;
+	background: var(--info);
 	letter-spacing: 4px;
 }
 
@@ -296,7 +296,7 @@ ol {
 	margin-bottom: 8px;
 }
 
-.breadcrumb__links a {
+.breadcrumb__links .arrow {
 	font-size: 15px;
 	color: #111111;
 	margin-right: 18px;
@@ -304,12 +304,16 @@ ol {
 	position: relative;
 }
 
-.breadcrumb__links a:after {
+.breadcrumb__links .arrow:after {
 	position: absolute;
 	right: -14px;
 	top: 0;
 	content: "\f105";
 	font-family: "FontAwesome";
+}
+
+.breadcrumb__links > a:last-child {
+	font-weight: bold;
 }
 
 .breadcrumb__links span {

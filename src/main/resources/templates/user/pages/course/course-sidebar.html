@@ -9,9 +9,28 @@
         <div class="accordion" id="accordionExample">
             <div class="card">
                 <div class="card-heading">
+                    <a data-toggle="collapse" data-target="#DayOfWeekParameter">Thứ</a>
+                </div>
+                <div id="DayOfWeekParameter" class="collapse show">
+                    <div class="card-body">
+                        <div class="shop__sidebar__size d-flex flex-wrap">
+                            <div th:each="d : ${T(java.time.DayOfWeek).values()}" class="col-md-4 p-1" th:classappend="${d eq searchRequest.dayOfWeek ? 'active' : ''}">
+                                <div>
+                                    <a
+                                        th:text="#{'day-of-week.' + __${d}__}"
+                                        th:href="${uriWithQueryString + '&dayOfWeek=' + d}"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-heading">
                     <a data-toggle="collapse" data-target="#priceParameter">Giá</a>
                 </div>
-                <div id="priceParameter" class="collapse show" data-parent="#accordionExample">
+                <div id="priceParameter" class="collapse show">
                     <div class="card-body">
                         <div class="shop__sidebar__price">
                             <ul>
@@ -20,7 +39,6 @@
                                 <li th:replace="~{user/pages/course/price-parameter :: priceParameter(100000, 150000)}"/>
                                 <li th:replace="~{user/pages/course/price-parameter :: priceParameter(150000, 200000)}"/>
                                 <li th:replace="~{user/pages/course/price-parameter :: priceParameter(200000, 250000)}"/>
-                                <li th:replace="~{user/pages/course/price-parameter :: priceParameter(250000, null)}"/>
                             </ul>
                         </div>
                     </div>

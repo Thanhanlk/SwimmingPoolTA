@@ -25,6 +25,7 @@ public class CourseRowMapper {
             courseSearchResponse.setAvatar(t.get("avatar", String.class));
             courseSearchResponse.setActive(t.get("active", Boolean.class));
             courseSearchResponse.setSlug(t.get("slug", String.class));
+            courseSearchResponse.setShortDescription(t.get("shortDescription", String.class));
             return courseSearchResponse;
         };
     }

@@ -7,7 +7,7 @@
 }
 
 .shop__sidebar__search {
-    margin-bottom: 45px;
+    margin-bottom: 20px;
 }
 
 .shop__sidebar__search form {
@@ -105,8 +105,8 @@
 .shop__sidebar__price ul li a,
 .shop__sidebar__brand ul li a {
     color: #b7b7b7;
-    font-size: 15px;
-    line-height: 32px;
+    font-size: 14px;
+    line-height: 30px;
     -webkit-transition: all, 0.3s;
     -o-transition: all, 0.3s;
     transition: all, 0.3s;
@@ -130,28 +130,29 @@
     height: auto;
 }
 
-.shop__sidebar__size {
-    padding-top: 15px;
+.shop__sidebar__size > div > div {
+    border: 1px solid #e5e5e5;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.shop__sidebar__size a,
-.shop__sidebar__size label {
+.shop__sidebar__size > div > div.active {
+    background: #111111;
+    border-color: #111111;
+}
+
+.shop__sidebar__size > div > div.active > a {
+    color: white !important;
+}
+
+.shop__sidebar__size a {
     color: #111111;
-    font-size: 15px;
+    font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    display: inline-block;
-    border: 1px solid #e5e5e5;
-    padding: 6px 25px;
-    margin-bottom: 10px;
-    margin-right: 5px;
     cursor: pointer;
-}
-
-.shop__sidebar__size label.active {
-    background: #111111;
-    color: #ffffff;
-    border-color: #111111;
 }
 
 .shop__sidebar__size label input {

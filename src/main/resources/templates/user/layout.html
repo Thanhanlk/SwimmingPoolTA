@@ -33,6 +33,12 @@
             content: ' *';
             color: var(--danger);
         }
+
+        .dots {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
@@ -67,5 +73,10 @@
             th:each="js : ${_JS_KEY}"
             th:src="@{/resources__${js}__.js}"
     ></script>
+    <script>
+        $(window).load(function(){
+            $('.nice-scroll').niceScroll();
+        });
+    </script>
 </body>
 </html>

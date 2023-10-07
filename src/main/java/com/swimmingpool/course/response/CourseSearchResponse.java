@@ -13,11 +13,12 @@ public class CourseSearchResponse {
     private String avatar;
     private String slug;
     private BigDecimal price;
-    private int numberOfLesson;
-    private int discount;
+    private Integer numberOfLesson;
+    private Integer discount;
     private Date createdDate;
     private Date modifiedDate;
     private Boolean active;
+    private String shortDescription;
 
     public String getImage() {
         return this.avatar;

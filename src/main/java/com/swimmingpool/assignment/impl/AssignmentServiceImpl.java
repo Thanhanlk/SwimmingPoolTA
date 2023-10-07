@@ -60,6 +60,12 @@ public class AssignmentServiceImpl implements IAssignmentService {
     }
 
     @Override
+    public List<Assignment> findActiveByCourseId(String courseId) {
+        log.info("find active assignment by course-id: {}", courseId);
+        return this.assignmentRepository.findActiveByCourseId(courseId);
+    }
+
+    @Override
     public Assignment findByIdThrowIfNotPresent(String id) {
         log.info("find assignment by id: {}", id);
         return this.assignmentRepository.findById(id)

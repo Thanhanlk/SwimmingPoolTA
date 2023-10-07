@@ -15,6 +15,8 @@ public interface IAssignmentService {
 
     List<Assignment> findByCourseId(String courseId);
 
+    List<Assignment> findActiveByCourseId(String courseId);
+
     List<Assignment> findByPoolId(String poolId);
 
     Assignment findByIdThrowIfNotPresent(String id) throws ValidationException;

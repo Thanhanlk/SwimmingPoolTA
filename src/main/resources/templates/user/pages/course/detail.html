@@ -1,160 +1,79 @@
-<!-- Shop Details Section Begin -->
-<section class="shop-details">
-    <div class="product__details__pic">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="product__details__breadcrumb">
-                        <a href="${ contextPath }/home">Trang chủ</a>
-                        <a href="${ contextPath }/shopping">Mua sắm</a>
-                        <span>${ product.name }</span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-3">
-                    <ul class="nav nav-tabs nice-scroll" role="tablist" style="max-height: 518px; overflow: hidden">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#color-image-primary${ product.id }" role="tab">
-                                <div class="product__thumb__pic set-bg" data-setbg="${ product.image }"></div>
-                            </a>
-                        </li>
-                        <c:forEach var="item" items="${ product.details }">
-                            <c:set var="_color" value="${ item.key }" />
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#color-image${ _color.id }" role="tab">
-                                    <div class="product__thumb__pic set-bg" data-setbg="${ _color.imageUrl }"></div>
-                                </a>
-                            </li>
-                        </c:forEach>
-                    </ul>
-                </div>
-                <div class="col-lg-6 col-md-9">
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="color-image-primary${ product.id }" role="tabpanel">
-                            <div class="product__details__pic__item">
-                                <img src="${ product.image }" alt="">
-                            </div>
+<div th:replace="~{user/layout :: layout(${course.name}, ~{::#content})}">
+    <div id="content">
+        <!-- Shop Details Section Begin -->
+        <div th:replace="~{user/pages/home/hero :: #hero}"/>
+        <section class="shop-details">
+            <div th:replace="~{user/common/breadcrumb :: breadscrumb(${'Khóa học,' + course.name})}"/>
+            <div class="product__details__content">
+                <div class="container mt-3">
+                    <div class="d-flex">
+                        <div class="col-md-8 pl-0" style="height: 445px;">
+                            <img th:src="${course.image}"/>
                         </div>
-                        <c:forEach var="item" items="${ product.details }">
-                            <c:set var="_color" value="${ item.key }" />
-                            <div class="tab-pane" id="color-image${ _color.id }" role="tabpanel">
-                                <div class="product__details__pic__item">
-                                    <img src="${ _color.imageUrl }" alt="">
+                        <div class="col-md-4">
+                            <form  method="post" class="product__details__text text-left">
+                                <h4 class="dots" th:title="${course.name}" th:text="${course.name}"/>
+                                <div class="d-flex align-items-center mb-2">
+                                    <th:block th:if="${course.discount le 0}">
+                                        <h5 id="new-price" class="mb-0" th:text="${#numbers.formatCurrency(course.price)}"/>
+                                    </th:block>
+                                    <th:block th:if="${course.discount gt 0}">
+                                        <h5 id="new-price" class="mb-0" th:text="${#numbers.formatCurrency(course.price * ((100 - course.discount)/100.0))}"/>
+                                        <span id="old-price" th:text="${#numbers.formatCurrency(course.price)}"/>
+                                    </th:block>
                                 </div>
-                            </div>
-                        </c:forEach>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="product__details__content">
-        <div class="container">
-            <div class="row d-flex justify-content-center">
-                <div class="col-lg-8">
-                    <form action="${ contextPath }/cart/add" method="post" class="product__details__text">
-                        <h4>${ product.name }</h4>
-                        <div class="d-flex justify-content-center align-items-center mb-2">
-                            <h3 id="new-price" class="mb-0"></h3>
-                            <span id="old-price"></span>
-                        </div>
-                        <p>${ product.shortDescription }</p>
-                        <div class="product__details__option d-flex flex-column align-items-center" style="gap: 20px">
-                            <div class="product__details__option__color">
-                                <span>Color:</span>
-                                <c:forEach var="item" items="${ product.details }" varStatus="_status">
-                                    <c:set var="_color" value="${ item.key }" />
-                                    <c:forEach var="size" items="${ item.value }">
-                                        <input
-                                            id="${ _color.color }-${ size.size }"
-                                            type="hidden"
-                                            data-qty="${ size.quantity }"
-                                            data-price="${ size.price }"
-                                            data-discount="${ size.discount }"
-                                            data-active="${ size.active }"
-                                            data-id="${ size.id }"
-                                        />
-                                    </c:forEach>
-                                    <input class="option-color-input" type="radio" name="optionColor" id="color-input-${ _color.id }" value="${ _color.color }" ${ _status.index eq 0 ? 'checked' : ''}>
-                                    <label class="option-color" for="color-input-${ _color.id }">${ _color.color }</label>
-                                </c:forEach>
-                            </div>
-                            <div class="product__details__option__size">
-                                <span>Size:</span>
-                                <c:forEach var="size" items="${ product.sizesSet }" varStatus="_status">
-                                    <input type="radio" name="optionSize" id="${ size }" value="${ size }" ${ _status.index eq 0 ? 'checked' : ''}>
-                                    <label for="${ size }">${ size }</label>
-                                </c:forEach>
-                            </div>
-                            <div class="product__details__option__qty">
-                                <span>Số lượng:</span>
-                                <label id="qty"></label>
-                            </div>
-                        </div>
-                        <div class="product__details__cart__option">
-                            <div class="quantity">
-                                <div class="pro-qty">
-                                    <input id="input-qty" type="text" value="1" name="quantity" readonly>
-                                    <input id="input-id" type="hidden" name="productDetailId" readonly />
+                                <p class="my-3" th:text="${course.shortDescription}"/>
+                                <div class="product__details__option">
+                                    <b>Lịch (Chọn lịch để đăng ký)</b>
+                                    <div class="d-flex flex-wrap mt-2 nice-scroll" style="gap: 5px; overflow: auto; max-height: 185px">
+                                        <div th:each="a : ${course.assignments}" class="d-flex border p-2" style="gap: 5px">
+                                            <input th:id="${a.id}" type="checkbox" th:disabled="${a.startDate.after(#dates.createNow())}"/>
+                                            <label th:for="${a.id}" class="mb-0">
+                                                <th:block th:text="#{'day-of-week.' + ${T(java.time.DayOfWeek).of(a.dayOfWeek)}}"/>&#44;<th:block th:text="${#dates.format(a.startTime, 'HH:mm')}"/>-<th:block th:text="${#dates.format(a.endTime, 'HH:mm')}"/>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <button id="btn-add-cart" class="primary-btn">Thêm giỏ hàng</button>
+                                <div class="product__details__cart__option mb-0">
+                                    <button class="primary-btn border-0 rounded w-100">Thêm giỏ hàng</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="product__details__last__option">
-                            <ul>
-                                <li><span>Loại sản phẩm:</span> ${ product.categoryName }</li>
+                    </div>
+                    <div class="row">
+                        <div class="product__details__tab">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5"
+                                       role="tab">Mô Tả</a>
+                                </li>
                             </ul>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="product__details__tab">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-5"
-                                role="tab">Mô Tả</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Bình Luận(${ product.comments.size() })</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="tabs-5" role="tabpanel">
-                                <div class="product__details__tab__content">
-                                    <div class="product__details__tab__content__item">
-                                        <c:out value="${ product.description }" escapeXml="false" />
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tabs-5" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <div class="product__details__tab__content__item px-5" th:utext="${course.description}" />
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane" id="tabs-6" role="tabpanel">
-                                <jsp:include page="comment.jsp" />
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-<!-- Shop Details Section End -->
-
-<!-- Related Section Begin -->
-<section class="related spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h3 class="related-title">Sản phẩm liên quan</h3>
+        </section>
+        <!-- Shop Details Section End -->
+        <!-- Related Section Begin -->
+        <section class="related spad pt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="related-title">Sản phẩm liên quan</h3>
+                    </div>
+                </div>
+                <div class="row" style="row-gap: 30px">
+                    <div th:replace="~{user/pages/home/course :: course(null, 'relatedCourse')}"/>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <c:set var="_products" value="${ product.relatedProducts }" scope="request" />
-            <jsp:include page="../home/product.jsp">
-                <jsp:param name="_nameData" value="_products"/>
-            </jsp:include>
-        </div>
+        </section>
+        <!-- Related Section End -->
     </div>
-</section>
-<!-- Related Section End -->
+</div>

@@ -10,7 +10,7 @@
                        <div th:replace="~{user/pages/course/course-sidebar :: #course-sidebar}"/>
                    </div>
                    <div class="col-lg-9">
-                       <div class="row">
+                       <div class="row" style="row-gap: 30px;">
                            <th:block th:each="item : ${_PAGING_KEY.items}">
                                <div th:replace="~{user/pages/course/course-card :: courseCard(${item}, '4', '6', '6')}" />
                            </th:block>
