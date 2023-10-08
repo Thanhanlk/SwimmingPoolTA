@@ -3,10 +3,12 @@ package com.swimmingpool.user.response;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.swimmingpool.user.UserConstant;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class UserSearchResponse extends UserResponse {
 
     private UserConstant.Role role;

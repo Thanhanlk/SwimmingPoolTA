@@ -76,7 +76,5 @@ cache:
       ttl: 1440
     - name: ACTIVE_COURSE
       ttl: 1440
-    - name: TEACHER
-      ttl: 1440
     - name: CART
       ttl: 1440

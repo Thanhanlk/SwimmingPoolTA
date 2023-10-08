@@ -7,6 +7,7 @@ import com.swimmingpool.common.util.I18nUtil;
 import com.swimmingpool.user.IUserService;
 import com.swimmingpool.user.User;
 import com.swimmingpool.user.UserRepository;
+import com.swimmingpool.user.request.ChangePassword;
 import com.swimmingpool.user.request.UserRegisterRequest;
 import com.swimmingpool.user.request.UserSearchRequest;
 import com.swimmingpool.user.response.UserResponse;
@@ -120,5 +121,28 @@ public class UserServiceImpl implements IUserService {
                 .filter(x -> x instanceof UserResponse)
                 .map(UserResponse.class::cast)
                 .orElseThrow();
+    }
+
+    @Override
+    public void updateUser(UserResponse userUpdateRequest) {
+        UserResponse userResponse = this.getCurrentUserThrowIfNot();
+        User u = this.findByIdThrowIfNotPresent(userResponse.getId());
+        u.setAddress(userUpdateRequest.getAddress());
+        u.setPhone(userUpdateRequest.getPhone());
+        u.setEmail(userUpdateRequest.getEmail());
+        u.setFullName(userUpdateRequest.getFullName());
+        this.userRepository.save(u);
+    }
+
+    @Override
+    public void changePassword(ChangePassword changePassword) {
+        UserResponse userResponse = this.getCurrentUserThrowIfNot();
+        if (!this.passwordEncoder.matches(changePassword.getCurrentPassword(), userResponse.getPassword())) {
+            throw new ValidationException("change-password.current-password.validate.not-match");
+        }
+        User u = this.findByIdThrowIfNotPresent(userResponse.getId());
+        String newPassword = this.passwordEncoder.encode(changePassword.getNewPassword());
+        u.setPassword(newPassword);
+        this.userRepository.save(u);
     }
 }

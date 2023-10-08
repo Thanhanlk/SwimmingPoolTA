@@ -1,6 +1,5 @@
 package com.swimmingpool.common.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -31,8 +30,6 @@ import java.util.stream.Collectors;
 @Setter
 @RequiredArgsConstructor
 public class CacheConfig {
-
-    private final ObjectMapper objectMapper;
 
     private String host;
     private int port;

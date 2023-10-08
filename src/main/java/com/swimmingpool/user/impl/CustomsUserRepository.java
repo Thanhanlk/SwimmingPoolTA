@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -53,10 +54,10 @@ public class CustomsUserRepository {
         String sql = this.sqlSearchUser(userSearchRequest, param);
         Query nativeQuery = this.entityManager.createNativeQuery(sql, Tuple.class);
         param.forEach(nativeQuery::setParameter);
-        List resultList = nativeQuery.getResultList();
+        List<Tuple> resultList = nativeQuery.getResultList();
         return resultList.stream()
                 .map(UserRowMapper.userSearchResponseRowMapper())
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public PageResponse<UserSearchResponse> searchUser(UserSearchRequest userSearchRequest) {

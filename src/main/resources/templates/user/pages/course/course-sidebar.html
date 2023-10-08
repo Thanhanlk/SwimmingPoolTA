@@ -14,13 +14,23 @@
                 <div id="DayOfWeekParameter" class="collapse show">
                     <div class="card-body">
                         <div class="shop__sidebar__size d-flex flex-wrap">
-                            <div th:each="d : ${T(java.time.DayOfWeek).values()}" class="col-md-4 p-1" th:classappend="${d eq searchRequest.dayOfWeek ? 'active' : ''}">
-                                <div>
-                                    <a
-                                        th:text="#{'day-of-week.' + __${d}__}"
-                                        th:href="${uriWithQueryString + '&dayOfWeek=' + d}"
-                                    />
-                                </div>
+                            <div th:each="d : ${T(java.time.DayOfWeek).values()}" class="col-md-4 p-1">
+                                <th:block th:if="${d eq searchRequest.dayOfWeek}">
+                                    <div class="active">
+                                        <a
+                                            th:text="#{'day-of-week.' + __${d}__}"
+                                            th:href="@{/course}"
+                                        />
+                                    </div>
+                                </th:block>
+                                <th:block th:if="${d ne searchRequest.dayOfWeek}">
+                                    <div>
+                                        <a
+                                            th:text="#{'day-of-week.' + __${d}__}"
+                                            th:href="@{/course?dayOfWeek=__${d}__}"
+                                        />
+                                    </div>
+                                </th:block>
                             </div>
                         </div>
                     </div>

@@ -3,15 +3,13 @@ package com.swimmingpool.user.response;
 import com.swimmingpool.user.UserConstant;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -24,6 +22,11 @@ public class UserResponse extends User {
     private UserConstant.Role role;
     private Date createdDate;
     private Date modifiedDate;
+    private String username;
+
+    public UserResponse() {
+        super(" ", "", new ArrayList<>());
+    }
 
     public UserResponse(com.swimmingpool.user.User user) {
         super(user.getUsername(), user.getPassword(), user.getActive(), true, true, true, roleToAuthority(user.getRole()));
@@ -35,10 +38,12 @@ public class UserResponse extends User {
         this.role = user.getRole();
         this.createdDate = user.getCreatedDate();
         this.modifiedDate = user.getModifiedDate();
+        this.username = user.getUsername();
     }
 
     public UserResponse(String username, boolean active, UserConstant.Role role) {
         super(username, "", active, true, true, true, roleToAuthority(role));
+        this.username = username;
     }
 
     public static List<? extends GrantedAuthority> roleToAuthority(UserConstant.Role...roles) {
@@ -50,5 +55,6 @@ public class UserResponse extends User {
 
     public UserResponse(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
+        this.username = username;
     }
 }

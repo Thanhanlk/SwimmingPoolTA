@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +68,7 @@ public class PoolServiceImpl implements IPoolService {
     }
 
     @Override
-    @Cacheable(cacheManager = "redisCacheManager", cacheNames = "ACTIVE_POOL", key = "'EMPTY'")
+    @Cacheable(cacheManager = "redisCacheManager", cacheNames = "ACTIVE_POOL", key = "'EMPTY'", unless = "#result eq null or #result.empty")
     public List<PoolResponse> findAllActive() {
         log.info("get active pool");
         return this.poolRepository.findActivePool().stream()
@@ -77,7 +78,7 @@ public class PoolServiceImpl implements IPoolService {
                     poolResponse.setCode(pool.getCode());
                     poolResponse.setName(pool.getName());
                     return poolResponse;
-                }).toList();
+                }).collect(Collectors.toList());
     }
 
     @Override

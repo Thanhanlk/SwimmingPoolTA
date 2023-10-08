@@ -6,14 +6,14 @@
         <div class="user-info position-relative">
             <a href="javascript:void(0)">Xin chào, <th:block sec:authentication="principal.fullName"/></a>
             <ul class="d-none bg-white position-absolute border" style="list-style: none">
-                <li class="border-bottom">
-                    <p data-toggle="modal" data-target="#${ updateUserId }">Cập nhật thông tin</p>
+                <li>
+                    <p data-toggle="modal" data-target="#updateUserId">Cập nhật thông tin</p>
                 </li>
-                <li class="border-bottom">
-                    <p data-toggle="modal" data-target="#${ changePasswordId }">Đổi mật khẩu</p>
+                <li>
+                    <p data-toggle="modal" data-target="#changePasswordId">Đổi mật khẩu</p>
                 </li>
-                <li class="border-bottom">
-                    <p data-toggle="modal" data-target="#${ logoutId }">Đăng xuất</p>
+                <li>
+                    <p data-toggle="modal" data-target="#logoutId">Đăng xuất</p>
                 </li>
             </ul>
         </div>

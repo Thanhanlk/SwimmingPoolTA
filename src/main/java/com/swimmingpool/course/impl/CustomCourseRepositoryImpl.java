@@ -37,6 +37,7 @@ public class CustomCourseRepositoryImpl {
                 .append(" , c.discount as discount, c.short_description as shortDescription")
                 .append(" , c.avatar as avatar, c.active as active, c.slug as slug")
                 .append(" from _course c")
+                .append(Objects.nonNull(courseSearchRequest.getDayOfWeek()) ? " left join _assignment a on a.course_id = c.id" : "")
                 .append(" where 1 = 1");
         Map<String, Object> params = new HashMap<>();
 
@@ -48,6 +49,23 @@ public class CustomCourseRepositoryImpl {
         if (courseSearchRequest.getActive() != null) {
             sqlBuilder.append(" AND (c.active = :active)");
             params.put("active", courseSearchRequest.getActive());
+        }
+
+        if (courseSearchRequest.getMinPrice() != null) {
+            sqlBuilder.append(" AND (c.price >= :minPrice)");
+            params.put("minPrice", courseSearchRequest.getMinPrice());
+        }
+
+        if (courseSearchRequest.getMaxPrice() != null) {
+            sqlBuilder.append(" AND (c.price <= :maxPrice)");
+            params.put("maxPrice", courseSearchRequest.getMaxPrice());
+        }
+
+        // this condition must be last
+        if (courseSearchRequest.getDayOfWeek() != null) {
+            sqlBuilder.append(" AND (a.day_of_week = :dayOfWeek)")
+            .append(" GROUP BY c.id");
+            params.put("dayOfWeek", courseSearchRequest.getDayOfWeek().getValue());
         }
         sqlBuilder.append(" ORDER BY c.created_date DESC");
         return PagingUtil.paginate(sqlBuilder.toString(), params, courseSearchRequest, CourseRowMapper.searchCourseMapper())

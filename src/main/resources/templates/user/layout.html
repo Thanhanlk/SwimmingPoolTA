@@ -55,6 +55,13 @@
         <footer th:replace="~{user/common/footer :: footer}"/>
     </div>
 
+    <th:block sec:authorize="isAuthenticated()">
+        <div th:replace="~{_common/modal :: modal('logoutId', 'Xác nhận?', 'Bạn có muốn đăng xuất tài khoản.', @{/auth/logout}, 'post', null, null, null)}" />
+        <div th:replace="~{_common/modal :: modal('updateUserId', 'Cập nhật thông tin', null, null, null, 'user/common/user-info-form', null, null)}" />
+        <div th:replace="~{_common/modal :: modal('changePasswordId', 'Đổi mật khẩu', null, null, null, 'user/common/change-password-form', null, null)}" />
+    </th:block>
+
+
     <script th:src="@{/resources/_common/javascript/jquery-3.3.1.min.js}"></script>
     <script th:src="@{/resources/_common/javascript/bootstrap.min.js}"></script>
     <script th:src="@{/resources/_common/javascript/jquery.nice-select.min.js}"></script>

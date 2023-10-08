@@ -28,7 +28,7 @@ public class CourseController extends BaseController {
         }
         searchRequest.setActive(true);
         searchRequest.setPageSize(12);
-        model.addAttribute("searchRequest", new CourseSearchRequest());
+        model.addAttribute("searchRequest", searchRequest);
         PageResponse<CourseSearchResponse> pageResponse = this.courseService.searchCourse(searchRequest);
         this.addPagingResult(model, pageResponse);
         this.addCss(model, "/user/css/shop", "/user/css/product", "/user/css/paging");

@@ -3,13 +3,16 @@ package com.swimmingpool.common.interceptor;
 import com.swimmingpool.cart.ICartService;
 import com.swimmingpool.cart.response.CartResponse;
 import com.swimmingpool.user.IUserService;
+import com.swimmingpool.user.response.UserResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import org.thymeleaf.util.ArrayUtils;
 
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -33,7 +36,8 @@ public class CommonInterceptor implements HandlerInterceptor {
 
     private void getCardSize(HttpServletRequest request) {
         try {
-            this.userService.getCurrentUserThrowIfNot();
+            UserResponse currentUserThrowIfNot = this.userService.getCurrentUserThrowIfNot();
+            request.setAttribute("_userResponse", currentUserThrowIfNot);
             List<CartResponse> myCart = this.cartService.getMyCart();
             request.setAttribute("cartSize", myCart.size());
         } catch (Exception ignore) {}
@@ -41,9 +45,10 @@ public class CommonInterceptor implements HandlerInterceptor {
 
     private String getUriWithParameters(HttpServletRequest request) {
         Map<String, String[]> parameterMap = request.getParameterMap();
+        request.setAttribute("paramMap", parameterMap);
         return request.getRequestURI() + "?x=" + parameterMap.keySet().stream()
-                .filter(key -> !"page".equals(key) || !"x".equals(key))
-                .map(key -> key + "=" + String.join(",", parameterMap.get(key)))
+                .filter(key -> !"page".equals(key) && !"x".equals(key))
+                .map(key -> key + "=" + Array.get(parameterMap.get(key), 0))
                 .collect(Collectors.joining("&"));
     }
 }

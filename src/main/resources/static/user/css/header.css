@@ -239,8 +239,9 @@
     list-style: none;
     text-align: left;
     z-index: 9999;
-    border-radius: 8px;
+    border-radius: 4px;
     width: 200px;
+    padding: 0 10px;
 }
 
 .user-info ul li p {
@@ -251,6 +252,10 @@
     font-weight: 600;
     cursor: pointer;
     margin-bottom: 0;
+}
+
+.user-info ul li p:hover {
+    color: var(--info) !important;
 }
 
 .cart-size {
