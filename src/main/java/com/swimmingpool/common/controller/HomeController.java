@@ -23,7 +23,7 @@ public class HomeController extends BaseController {
 
     private final ICourseService courseService;
 
-    @GetMapping(AppConstant.Endpoint.HOME)
+    @GetMapping(value = {AppConstant.Endpoint.HOME, "/"})
     public String home(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         if (Objects.isNull(userDetails)) return this.userHome(model);
         return userDetails.getAuthorities()
@@ -32,6 +32,12 @@ public class HomeController extends BaseController {
                 .findFirst()
                 .map(x -> "redirect:/admin/pool")
                 .orElseGet(() -> this.userHome(model));
+    }
+
+    @GetMapping("/contact")
+    public String contact(Model model) {
+        this.addCss(model, "/user/css/contact", "/user/css/map");
+        return "user/pages/contact/index";
     }
 
     private String userHome(Model model) {

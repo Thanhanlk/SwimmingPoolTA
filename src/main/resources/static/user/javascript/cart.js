@@ -21,8 +21,8 @@ function calculatePrice() {
     const checkedCart = getCheckedCart();
     const { newPrice, oldPrice } = checkedCart
         .map(cart => cart.dataset)
-        .reduce(({ newPrice, oldPrice }, { newprice, oldprice, quantity }) => (
-            { newPrice:  newPrice + (+newprice * quantity), oldPrice: oldPrice + (+oldprice * quantity) }
+        .reduce(({ newPrice, oldPrice }, { price, discount }) => (
+            { newPrice:  newPrice + (+price * ((100 - discount) / 100)), oldPrice: oldPrice + (+price) }
         ), { newPrice: 0, oldPrice: 0 })
     originalPriceDOM.textContent = $formatter.format(oldPrice);
     discountDOM.textContent = $formatter.format(oldPrice - newPrice);
@@ -43,7 +43,7 @@ function setHrefBtnCheckout(checked) {
 
 (function main() {
     checkboxCartSelector.addEventListener('change', e => {
-        setHrefBtnCheckout(e.target.checked);
+        setHrefBtnCheckout(e.target.checked && checkboxCartIds.length > 0);
         checkboxCartIds.forEach(element => {
             element.checked = e.target.checked;
         });
@@ -59,30 +59,4 @@ function setHrefBtnCheckout(checked) {
             setHrefBtnCheckout(checked > 0);
         })
     })
-
-    const proQty2 = $('.pro-qty-2');
-    proQty2.prepend('<span class="fa fa-angle-left dec qtybtn"></span>');
-    proQty2.append('<span class="fa fa-angle-right inc qtybtn"></span>');
-    proQty2.on('click', '.qtybtn', function () {
-        const $button = $(this);
-        const oldValue = $button.parent().find('input').val();
-        const inputQty = $button.parent().find('input');
-        const max = inputQty.attr('max');
-        if ($button.hasClass('inc')) {
-            const newVal = parseFloat(oldValue) + 1;
-            if (+max >= newVal) {
-                inputQty.val(newVal);
-            }
-        } else {
-            const newVal = parseFloat(oldValue) - 1;
-            if (oldValue > 1) {
-                inputQty.val(newVal);
-            }
-            if (newVal <= +max) {
-                const tr = $button.parents('tbody > tr')[0];
-                tr.classList.remove('border', 'border-warning');
-            }
-        }
-
-    });
 })()

@@ -8,6 +8,7 @@ import com.swimmingpool.assignment.request.AssignmentField;
 import com.swimmingpool.assignment.request.AssignmentSearchRequest;
 import com.swimmingpool.assignment.response.AssignmentCreationResponse;
 import com.swimmingpool.assignment.response.AssignmentSearchResponse;
+import com.swimmingpool.assignment.response.AvailableAssignmentResponse;
 import com.swimmingpool.common.dto.PageResponse;
 import com.swimmingpool.common.exception.ValidationException;
 import com.swimmingpool.common.util.DateUtil;
@@ -54,15 +55,21 @@ public class AssignmentServiceImpl implements IAssignmentService {
     }
 
     @Override
+    public List<Assignment> findByIds(List<String> ids) {
+        log.info("find assignment by ids: {}", ids);
+        return this.assignmentRepository.findAllById(ids);
+    }
+
+    @Override
     public List<Assignment> findByCourseId(String courseId) {
         log.info("find assignment by course-id: {}", courseId);
         return this.assignmentRepository.findByCourseId(courseId);
     }
 
     @Override
-    public List<Assignment> findActiveByCourseId(String courseId) {
+    public List<AvailableAssignmentResponse> findAvailableAssignmentByCourseId(String courseId) {
         log.info("find active assignment by course-id: {}", courseId);
-        return this.assignmentRepository.findActiveByCourseId(courseId);
+        return this.customAssignmentRepository.findAvailableAssignment(courseId);
     }
 
     @Override

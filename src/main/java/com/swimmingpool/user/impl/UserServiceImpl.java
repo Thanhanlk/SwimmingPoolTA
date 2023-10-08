@@ -14,6 +14,9 @@ import com.swimmingpool.user.response.UserSearchResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +26,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -106,5 +110,15 @@ public class UserServiceImpl implements IUserService {
                 .orElseThrow(() -> new ValidationException("user.id.validate.not-exist", id));
         user.setActive(!user.getActive());
         this.userRepository.save(user);
+    }
+
+    @Override
+    public UserResponse getCurrentUserThrowIfNot() {
+        return Optional.ofNullable(SecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication)
+                .map(Authentication::getPrincipal)
+                .filter(x -> x instanceof UserResponse)
+                .map(UserResponse.class::cast)
+                .orElseThrow();
     }
 }

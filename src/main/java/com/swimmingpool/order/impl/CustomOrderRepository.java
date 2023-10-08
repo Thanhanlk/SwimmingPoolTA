@@ -27,6 +27,7 @@ public class CustomOrderRepository {
                 .append("  , o.full_name as fullName, o.phone as phone")
                 .append("  , o.created_date as createdDate, o.status as status")
                 .append("  , o.method_payment as methodPayment, o.price as total")
+                .append("  , a.start_date as startDate, o.discount as discount")
                 .append(" FROM _order o")
                 .append("  JOIN _assignment a ON a.id = o.assignment_id")
                 .append("  JOIN _course c ON c.id = a.course_id")
@@ -67,6 +68,11 @@ public class CustomOrderRepository {
         if (Objects.nonNull(orderSearchRequest.getToDate())) {
             sqlBuilder.append(" AND o.created_date <= :toDate");
             params.put("toDate", orderSearchRequest.getToDate());
+        }
+
+        if (Objects.nonNull(orderSearchRequest.getCreatedBy())) {
+            sqlBuilder.append(" AND o.created_by <= :createdBy");
+            params.put("createdBy", orderSearchRequest.getCreatedBy());
         }
 
         sqlBuilder.append(" ORDER BY o.created_date DESC");

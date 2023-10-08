@@ -1,0 +1,94 @@
+<div th:replace="~{user/layout :: layout(null, ~{::#content})}">
+    <div id="content">
+        <div th:replace="~{user/common/breadcrumb :: breadscrumb('Giỏ hàng')}"/>
+        <!-- Shopping Cart Section Begin -->
+        <section class="shopping-cart spad pt-5">
+            <div class="container">
+                <form method="post" class="row">
+                    <div class="col-lg-8">
+                        <div class="shopping__cart__table">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th style="width: 50px">
+                                        <input id="cart-selector" type="checkbox" style="width: 50px" />
+                                    </th>
+                                    <th>Khóa học</th>
+                                    <th>Tổng tiền</th>
+                                    <th class="cart__close">
+                                        <a th:if="${ not #lists.isEmpty(myCart) }" th:href="@{/cart/delete-all}">
+                                            <i class="fa fa-close"></i>
+                                        </a>
+                                        <a th:if="${#lists.isEmpty(myCart)}" href="javascript:void(0)">
+                                            <i class="fa fa-close"></i>
+                                        </a>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="cart : ${myCart}">
+                                    <tr th:class="${cart.startDate.before(#dates.createNow()) ? 'border border-warning' : ''}" style="border-width: 2px;">
+                                        <td>
+                                            <input type="checkbox" name="cartId" th:value="${cart.cartId}" style="width: 50px"  th:data-price="${cart.price}" th:data-discount="${cart.discount}"/>
+                                        </td>
+                                        <td class="product__cart__item">
+                                            <a th:href="@{/course/${cart.slug}?courseCode=${cart.courseCode}}" class="product__cart__item__pic" style="width: 200px;">
+                                                <img class="w-100 h-100" th:src="${cart.courseImage}" th:alt="${cart.courseName}">
+                                            </a>
+                                            <div class="product__cart__item__text">
+                                                <a th:href="@{/course/${cart.slug}?courseCode=${cart.courseCode}}" class="h6">
+                                                    <div>[[${ cart.courseName }]]</div>
+                                                    <div>
+                                                        [[#{'day-of-week.' + ${cart.dayOfWeek}}]], [[${#dates.format(cart.startTime, 'HH:mm')}]]-[[${#dates.format(cart.endTime, 'HH:mm')}]]
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td class="cart__price">
+                                            <div class="d-flex">
+                                                <th:block th:switch="${ cart.discount gt 0 }">
+                                                    <th:block th:case="${true}" th:with="newPrice=${cart.price * ( (100 - cart.discount) / 100.0 ) },oldPrice=${cart.price}">
+                                                        <h5 th:text="${#numbers.formatCurrency(newPrice)}"/>
+                                                        <span class="old-price ml-2" th:classappend="${cart.price eq newPrice ? 'd-none' : '' }" th:text="${#numbers.formatCurrency(oldPrice)}"/>
+                                                    </th:block>
+                                                    <th:block th:case="*">
+                                                        <h5 th:text="${#numbers.formatCurrency(cart.price)}"/>
+                                                    </th:block>
+                                                </th:block>
+                                            </div>
+                                        </td>
+                                        <td class="cart__close">
+                                            <a th:href="@{/cart/delete?cId=__${cart.cartId}__}">
+                                                <i class="fa fa-close"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="continue__btn">
+                                    <a class="border-info" th:href="@{/course}">Khóa học khác</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="cart__total">
+                            <h6>Tổng giá trị (<span id="quantity-cart">0</span>) </h6>
+                            <ul>
+                                <li>Giá gốc <span id="original-price">0</span></li>
+                                <li>Giảm giá <span id="discount-price">0</span></li>
+                                <li>Tổng <span id="total-price">0</span></li>
+                            </ul>
+                            <button id="btn-checkout" th:data-href="@{/order/checkout}" class="primary-btn disabled text-white w-100 border-0 rounded" formmethod="GET">Đặt hàng</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <!-- Shopping Cart Section End -->
+    </div>
+</div>

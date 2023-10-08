@@ -1,0 +1,7 @@
+server:
+  port: 8080
+
+app:
+  host:  http://localhost
+  port: ${server.port}
+  contenxt-path: ${server.servlet.context-path:}

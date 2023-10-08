@@ -4,6 +4,7 @@ import com.swimmingpool.assignment.request.AssignmentCreationRequest;
 import com.swimmingpool.assignment.request.AssignmentField;
 import com.swimmingpool.assignment.request.AssignmentSearchRequest;
 import com.swimmingpool.assignment.response.AssignmentSearchResponse;
+import com.swimmingpool.assignment.response.AvailableAssignmentResponse;
 import com.swimmingpool.common.dto.PageResponse;
 import com.swimmingpool.common.exception.ValidationException;
 
@@ -15,9 +16,11 @@ public interface IAssignmentService {
 
     List<Assignment> findByCourseId(String courseId);
 
-    List<Assignment> findActiveByCourseId(String courseId);
+    List<AvailableAssignmentResponse> findAvailableAssignmentByCourseId(String courseId);
 
     List<Assignment> findByPoolId(String poolId);
+
+    List<Assignment> findByIds(List<String> ids);
 
     Assignment findByIdThrowIfNotPresent(String id) throws ValidationException;
 

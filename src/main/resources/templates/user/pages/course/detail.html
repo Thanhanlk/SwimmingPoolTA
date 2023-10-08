@@ -1,17 +1,17 @@
 <div th:replace="~{user/layout :: layout(${course.name}, ~{::#content})}">
     <div id="content">
         <!-- Shop Details Section Begin -->
-        <div th:replace="~{user/pages/home/hero :: #hero}"/>
         <section class="shop-details">
             <div th:replace="~{user/common/breadcrumb :: breadscrumb(${'Khóa học,' + course.name})}"/>
             <div class="product__details__content">
                 <div class="container mt-3">
                     <div class="d-flex">
-                        <div class="col-md-8 pl-0" style="height: 445px;">
-                            <img th:src="${course.image}"/>
+                        <div class="col-md-7 pl-0" style="height: 445px;">
+                            <img th:src="${course.image}" class="h-100"/>
                         </div>
-                        <div class="col-md-4">
-                            <form  method="post" class="product__details__text text-left">
+                        <div class="col-md-5">
+                            <form th:action="@{/cart}" method="post" class="product__details__text text-left">
+                                <input type="hidden" name="_REDIRECT_URL_KEY" th:value="@{/course/${course.slug}?courseCode=${course.code}}" />
                                 <h4 class="dots" th:title="${course.name}" th:text="${course.name}"/>
                                 <div class="d-flex align-items-center mb-2">
                                     <th:block th:if="${course.discount le 0}">
@@ -25,11 +25,12 @@
                                 <p class="my-3" th:text="${course.shortDescription}"/>
                                 <div class="product__details__option">
                                     <b>Lịch (Chọn lịch để đăng ký)</b>
-                                    <div class="d-flex flex-wrap mt-2 nice-scroll" style="gap: 5px; overflow: auto; max-height: 185px">
-                                        <div th:each="a : ${course.assignments}" class="d-flex border p-2" style="gap: 5px">
-                                            <input th:id="${a.id}" type="checkbox" th:disabled="${a.startDate.after(#dates.createNow())}"/>
-                                            <label th:for="${a.id}" class="mb-0">
-                                                <th:block th:text="#{'day-of-week.' + ${T(java.time.DayOfWeek).of(a.dayOfWeek)}}"/>&#44;<th:block th:text="${#dates.format(a.startTime, 'HH:mm')}"/>-<th:block th:text="${#dates.format(a.endTime, 'HH:mm')}"/>
+                                    <div class="d-flex mt-2 nice-scroll" style="overflow: auto; max-height: 185px">
+                                        <div th:each="a : ${course.assignments}" class="col-md-6 d-flex border py-2" th:classappend="${a.maxStudent eq a.registerStudent ? 'disabled' : ''}" style="gap: 5px">
+                                            <input th:id="${a.id}" type="checkbox" name="assignmentId" th:value="${a.id}" th:disabled="${a.maxStudent eq a.registerStudent}" required/>
+                                            <label th:for="${a.id}" class="mb-0 d-flex flex-column align-items-center">
+                                                <span><th:block th:text="#{'day-of-week.' + ${a.dayOfWeek}}"/>&#44;&nbsp;<th:block th:text="${#dates.format(a.startTime, 'HH:mm')}"/>-<th:block th:text="${#dates.format(a.endTime, 'HH:mm')}"/></span>
+                                                <span><b>Học viên: </b>[[${a.registerStudent}]]/[[${a.maxStudent}]]</span>
                                             </label>
                                         </div>
                                     </div>

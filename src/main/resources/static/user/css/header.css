@@ -252,3 +252,13 @@
     cursor: pointer;
     margin-bottom: 0;
 }
+
+.cart-size {
+    width: 20px;
+    border-radius: 50%;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}

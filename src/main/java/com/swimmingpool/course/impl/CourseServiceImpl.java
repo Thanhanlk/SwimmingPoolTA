@@ -2,6 +2,7 @@ package com.swimmingpool.course.impl;
 
 import com.swimmingpool.assignment.Assignment;
 import com.swimmingpool.assignment.IAssignmentService;
+import com.swimmingpool.assignment.response.AvailableAssignmentResponse;
 import com.swimmingpool.common.dto.PageResponse;
 import com.swimmingpool.common.exception.ValidationException;
 import com.swimmingpool.common.util.I18nUtil;
@@ -83,6 +84,9 @@ public class CourseServiceImpl implements ICourseService {
         course.setShortDescription(courseCreationRequest.getShortDescription());
         course.setDescription(courseCreationRequest.getDescription());
         course.setDiscount(courseCreationRequest.getDiscount());
+        if (Objects.isNull(course.getDiscount())) {
+            course.setDiscount(0);
+        }
         course.setActive(false);
         course.setIsShowHome(courseCreationRequest.getIsShowHome());
         course.setSlug(courseCreationRequest.getSlug());
@@ -145,7 +149,7 @@ public class CourseServiceImpl implements ICourseService {
         if (!course.getActive()) {
             throw new ValidationException("course.code.validate.not-exist", courseCode);
         }
-        List<Assignment> activeAssignmentByCourseId = this.assignmentService.findActiveByCourseId(course.getId());
+        List<AvailableAssignmentResponse> activeAssignmentByCourseId = this.assignmentService.findAvailableAssignmentByCourseId(course.getId());
         return CourseDetailResponse.builder()
                 .id(course.getId())
                 .code(course.getCode())

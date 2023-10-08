@@ -1,0 +1,19 @@
+<form method="get" class="w-100" th:action="@{/order}" th:object="${searchRequest}">
+  <div class="row">
+    <div class="col-md-3 d-flex align-items-center">
+      <label class="col-md-3">Mã</label>
+      <input class="form-control" th:field="*{code}"/>
+    </div>
+    <div class="col-md-3 d-flex align-items-center">
+      <label class="col-md-3">Từ ngày</label>
+      <input type="date" class="form-control" th:field="*{fromDate}"/>
+    </div>
+    <div class="col-md-3 d-flex align-items-center">
+      <label class="col-md-4">Đến ngày</label>
+      <input type="date" class="form-control" th:field="*{toDate}"/>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-primary">Tìm kiếm</button>
+    </div>
+  </div>
+</form>

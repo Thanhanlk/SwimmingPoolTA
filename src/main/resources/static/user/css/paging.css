@@ -18,6 +18,8 @@
 
 .product__pagination a.active {
     border-color: #111111;
+    background: black;
+    color: white;
 }
 
 .product__pagination a:hover {

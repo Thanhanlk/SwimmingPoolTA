@@ -21,4 +21,6 @@ public class OrderSearchResponse {
     private String methodPayment;
     private String status;
     private BigDecimal total;
+    private Date startDate;
+    private Integer discount;
 }

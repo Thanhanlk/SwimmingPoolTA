@@ -15,13 +15,9 @@ public class ValidationException extends BusinessException {
     private boolean is18N;
 
     public ValidationException(String message, Object...params) {
-        this(message, null, true, params);
-    }
-
-    public ValidationException(String message, String redirectUrl, boolean is18N, Object...params) {
-        super(message, redirectUrl);
+        super(message, null);
         this.params = params;
-        this.is18N = is18N;
+        this.is18N = true;
     }
 
     @Override

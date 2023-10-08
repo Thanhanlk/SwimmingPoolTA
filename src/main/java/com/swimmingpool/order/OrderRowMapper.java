@@ -29,6 +29,8 @@ public class OrderRowMapper {
             orderSearchResponse.setMethodPayment(tuple.get("methodPayment", String.class));
             orderSearchResponse.setStatus(tuple.get("status", String.class));
             orderSearchResponse.setTotal(tuple.get("total", BigDecimal.class));
+            orderSearchResponse.setStartDate(tuple.get("startDate", Date.class));
+            orderSearchResponse.setDiscount(tuple.get("discount", Integer.class));
             return orderSearchResponse;
         };
     }

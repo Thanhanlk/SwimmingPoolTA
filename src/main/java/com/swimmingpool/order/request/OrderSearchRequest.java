@@ -11,10 +11,13 @@ import java.util.Date;
 public class OrderSearchRequest extends PageRequest {
 
     private String id;
+    private String code;
     private String fullName;
     private OrderConstant.MethodPayment methodPayment;
     private String phone;
     private OrderConstant.Status status;
+    private String address;
+    private String createdBy;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fromDate;

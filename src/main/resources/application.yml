@@ -1,6 +1,5 @@
 server:
   shutdown: graceful
-  port: 8080
   max-http-request-header-size: 10KB
 
 spring:
@@ -51,9 +50,20 @@ firebase:
 
 # paypal api
 paypal:
-  client-id: ${paypal.client-id}
-  client-secret: ${paypal.client-secret}
+  client-id: ${PAYPAL_CLIENT_ID}
+  client-secret: ${PAYPAL_CLIENT_SECRET}
   mode: sandbox
+  currency: ${rate.curency}
+  success-url: ${app.host}:${app.port}/${app.contenxt-path}payment/execute
+  cancel-url: ${app.host}:${app.port}/${app.contenxt-path}payment/cancel
+
+# rate
+rate:
+  exchange:
+    enabled: true
+  curency: EUR
+  access-token: ${EXCHANGE_RATE_ACCESS_TOKEN}
+  url: 'http://api.exchangeratesapi.io/v1'
 
 # cache
 cache:
@@ -67,4 +77,6 @@ cache:
     - name: ACTIVE_COURSE
       ttl: 1440
     - name: TEACHER
+      ttl: 1440
+    - name: CART
       ttl: 1440

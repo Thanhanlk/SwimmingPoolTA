@@ -1,0 +1,51 @@
+<div th:replace="~{user/layout :: layout('Lịch sử mua khóa học', ~{::#content})}">
+    <div id="content">
+        <div th:replace="~{user/common/breadcrumb :: breadscrumb('Đơn hàng')}"/>
+
+        <!-- Shopping Cart Section Begin -->
+        <section class="shopping-cart spad pt-5">
+            <div class="container">
+                <div class="row mb-4">
+                    <div th:replace="~{user/pages/order/form-search :: form}"/>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Hồ bơi</th>
+                            <th>Khóa học</th>
+                            <th>Thời gian bắt đầu</th>
+                            <th>Thời gian học</th>
+                            <th>Thông tin</th>
+                            <th>Trạng thái</th>
+                            <th>Tổng tiền</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item : ${_PAGING_KEY.items}">
+                                <td th:text="${item.poolName}"/>
+                                <td th:text="${item.courseName}"/>
+                                <td th:text="${#dates.format(item.startDate, 'dd/MM/yyyy')}"/>
+                                <td>
+                                    <span th:text="#{'day-of-week.' + __${item.day}__}" />&sbquo;
+                                    <span th:text="${#dates.format(item.startTime, 'HH:mm')}" />&nbsp;&ndash;
+                                    <span th:text="${#dates.format(item.endTime, 'HH:mm')}" />
+                                </td>
+                                <td>
+                                    <div th:text="${item.phone}"/>
+                                    <div th:text="#{'method-payment.' + ${item.methodPayment}}"/>
+                                </td>
+                                <td>
+                                    <div th:replace="~{_common/status-order :: statusOrder(${item.status})}" />
+                                </td>
+                                <td th:text="${#numbers.formatCurrency(item.total * ((100 - item.discount) / 100.0))}" />
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div th:replace="~{user/common/paging :: #paging}"/>
+            </div>
+        </section>
+        <!-- Shopping Cart Section End -->
+    </div>
+</div>

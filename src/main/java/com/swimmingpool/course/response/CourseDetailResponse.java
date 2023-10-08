@@ -1,6 +1,6 @@
 package com.swimmingpool.course.response;
 
-import com.swimmingpool.assignment.Assignment;
+import com.swimmingpool.assignment.response.AvailableAssignmentResponse;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -11,5 +11,5 @@ import java.util.List;
 public class CourseDetailResponse extends CourseResponse {
     private Integer discount;
     private List<CourseSearchResponse> relatedProducts;
-    private List<Assignment> assignments;
+    private List<AvailableAssignmentResponse> assignments;
 }

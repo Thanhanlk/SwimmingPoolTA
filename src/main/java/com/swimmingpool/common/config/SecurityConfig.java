@@ -53,6 +53,7 @@ public class SecurityConfig {
                     request.requestMatchers("/auth/**").permitAll()
                             .requestMatchers("/resources/**").permitAll()
                             .requestMatchers("/course/**").permitAll()
+                            .requestMatchers("/contact", "/").permitAll()
                             .requestMatchers("/admin/**").hasAuthority(ADMIN.name())
                             .requestMatchers(AppConstant.Endpoint.HOME).permitAll()
                             .anyRequest()

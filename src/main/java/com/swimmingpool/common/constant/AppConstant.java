@@ -3,9 +3,12 @@ package com.swimmingpool.common.constant;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AppConstant {
 
+    public static final BigDecimal ZERO = new BigDecimal("0");
     public static final int DATE_INDICATE_NEWEST = 30;
     public static final int PERCENT_INDICATE_HOT_SALE = 35;
     public static final int NUMBER_BEST_SELLER_SHOW = 8;

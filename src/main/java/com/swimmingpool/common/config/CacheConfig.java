@@ -15,7 +15,6 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
@@ -55,19 +54,18 @@ public class CacheConfig {
 
     @Bean
     public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
-        GenericJackson2JsonRedisSerializer json = new GenericJackson2JsonRedisSerializer(this.objectMapper);
         RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
                 .entryTtl(Duration.ofMillis(5))
-                .computePrefixWith(cacheName -> "SWP:".concat(cacheName))
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(json));
+                .computePrefixWith(cacheName -> "SWP:".concat(cacheName).concat(":"))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.json()));
         redisCacheConfiguration.usePrefix();
         Map<String, RedisCacheConfiguration> redisCacheConfigurationMap = this.properties.stream()
                 .collect(Collectors.toMap(p -> p.name, p -> RedisCacheConfiguration.defaultCacheConfig()
                         .disableCachingNullValues()
                         .entryTtl(Duration.ofMinutes(p.ttl))
-                        .computePrefixWith(name -> "SWP:".concat(p.name))
-                        .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(json))));
+                        .computePrefixWith(name -> "SWP:".concat(p.name).concat(":"))
+                        .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.json()))));
         return RedisCacheManager.RedisCacheManagerBuilder.fromConnectionFactory(redisConnectionFactory)
                 .withInitialCacheConfigurations(redisCacheConfigurationMap)
                 .cacheDefaults(redisCacheConfiguration)

@@ -52,7 +52,13 @@
                 </div>
                 <div class="col-md-2">
                     <div class="header__nav__option">
-                        <a th:href="@{/cart}"><img th:src="@{/resources/img/icon/cart.png}" alt=""></a>
+                        <a class="position-relative" th:href="@{/cart}"><img th:src="@{/resources/img/icon/cart.png}" alt="">
+                            <span
+                                sec:authorize="isAuthenticated()"
+                                class="position-absolute cart-size text-white bg-info"
+                                th:text="${cartSize}"
+                            />
+                        </a>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,47 @@
+<div id="order-list" class="checkout__order">
+    <h4 class="order__title">ĐƠN HÀNG</h4>
+    <div class="checkout__order__products">Sản phẩm <span>Tổng</span></div>
+    <ul class="checkout__total__products">
+        <th:block th:each="item : ${ productList }">
+            <li class="d-flex justify-content-between align-items-center border-top pt-2">
+                <input type="hidden" name="cartId" th:value="${item.cartId}" />
+                <span class="d-flex flex-column">
+                    <span class="font-weight-bold" th:text="${item.courseName}"/>
+                    <span style="font-size: 13px">
+                        [[#{'day-of-week.' + ${item.dayOfWeek}}]], [[${#dates.format(item.startTime, 'HH:mm')}]] - [[${#dates.format(item.endTime, 'HH:mm')}]]
+                    </span>
+                </span>
+                <span th:text="${#numbers.formatCurrency(item.price * ( (100 - item.discount) / 100.0 ))}"/>
+            </li>
+        </th:block>
+    </ul>
+    <ul class="checkout__total__all">
+        <li>
+            Giá gốc
+            <span th:text="${#numbers.formatCurrency(oldPrice)}"/>
+        </li>
+        <li>
+            Giảm giá
+            <span th:text="${#numbers.formatCurrency(oldPrice-newPrice)}"/>
+        </li>
+        <li>
+            Tổng
+            <span th:text="${#numbers.formatCurrency(newPrice)}"/>
+        </li>
+    </ul>
+    <div class="checkout__input__checkbox">
+        <label for="cod">
+            COD
+            <input type="radio" id="cod" name="method" value="COD" />
+            <span class="checkmark"></span>
+        </label>
+    </div>
+    <div class="checkout__input__checkbox">
+        <label for="paypal">
+            Paypal
+            <input type="radio" id="paypal" name="method" value="PAYPAL" />
+            <span class="checkmark"></span>
+        </label>
+    </div>
+    <button class="site-btn">Thanh toán</button>
+</div>

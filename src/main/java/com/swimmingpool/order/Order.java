@@ -40,6 +40,12 @@ public class Order extends AuditTable {
     @Column(name = "price")
     private BigDecimal price;
 
+    @Column(name = "discount")
+    private Integer discount;
+
     @Column(name = "assignment_id")
     private String assignmentId;
+
+    @Column(name = "payment_online_id")
+    private String paymentOnlineID;
 }

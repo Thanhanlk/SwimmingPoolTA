@@ -3,15 +3,21 @@ package com.swimmingpool.assignment.impl;
 import com.swimmingpool.assignment.AssignmentRowMapper;
 import com.swimmingpool.assignment.request.AssignmentSearchRequest;
 import com.swimmingpool.assignment.response.AssignmentCreationResponse;
+import com.swimmingpool.assignment.response.AvailableAssignmentResponse;
 import com.swimmingpool.common.dto.PageResponse;
 import com.swimmingpool.common.util.DateUtil;
 import com.swimmingpool.common.util.PagingUtil;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.sql.Time;
+import java.time.DayOfWeek;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -66,5 +72,31 @@ public class CustomAssignmentRepository {
         sqlBuilder.append(" ORDER BY a.day_of_week, a.start_time");
         return PagingUtil.paginate(sqlBuilder.toString(), params, request, AssignmentRowMapper.assignmentSearchRowMapper())
                 .apply(this.entityManager);
+    }
+
+    public List<AvailableAssignmentResponse> findAvailableAssignment(String courseId) {
+        String sql = new StringBuilder("SELECT a.id, a.dayOfWeek, a.startTime, a.endTime, p.numberOfStudent, count(o.id) FROM Assignment a")
+                .append("  LEFT JOIN Order o ON o.assignmentId = a.id")
+                .append("  JOIN Pool p ON p.id = a.poolId")
+                .append(" WHERE a.active = true AND a.startDate > CURRENT_DATE AND a.courseId = :courseId")
+                .append(" GROUP BY a.id")
+                .toString();
+
+        TypedQuery<Tuple> query = this.entityManager.createQuery(sql, Tuple.class);
+        query.setParameter("courseId", courseId);
+        List<Tuple> resultList = query.getResultList();
+        return resultList.stream()
+                .map(tuple -> {
+                    var assignmentResponse = new AvailableAssignmentResponse();
+                    Integer dayOfWeek = tuple.get(1, Integer.class);
+                    assignmentResponse.setId(tuple.get(0, String.class));
+                    assignmentResponse.setDayOfWeek(DayOfWeek.of(dayOfWeek));
+                    assignmentResponse.setStartTime(tuple.get(2, Time.class));
+                    assignmentResponse.setEndTime(tuple.get(3, Time.class));
+                    assignmentResponse.setMaxStudent(tuple.get(4, Integer.class));
+                    assignmentResponse.setRegisterStudent(tuple.get(5, Long.class));
+                    return assignmentResponse;
+                })
+                .toList();
     }
 }

@@ -34,4 +34,6 @@ public interface IUserService extends UserDetailsService {
     }
 
     void changeStatus(String id);
+
+    UserResponse getCurrentUserThrowIfNot();
 }
