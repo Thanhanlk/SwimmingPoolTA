@@ -3,6 +3,7 @@ package com.swimmingpool.common.interceptor;
 import com.swimmingpool.cart.ICartService;
 import com.swimmingpool.cart.response.CartResponse;
 import com.swimmingpool.user.IUserService;
+import com.swimmingpool.user.request.ChangePassword;
 import com.swimmingpool.user.response.UserResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,6 +32,7 @@ public class CommonInterceptor implements HandlerInterceptor {
             this.getCardSize(request);
             request.setAttribute("currentUri", request.getServletPath());
             request.setAttribute("uriWithQueryString", this.getUriWithParameters(request));
+            request.setAttribute("changePassword", new ChangePassword());
         }
     }
 
