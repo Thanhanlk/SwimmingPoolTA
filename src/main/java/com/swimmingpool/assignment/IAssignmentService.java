@@ -26,6 +26,8 @@ public interface IAssignmentService {
 
     List<Assignment> findByUserId(String userId);
 
+    List<Assignment> findStartedByUserIdAndActive(String userId);
+
     default AssignmentCreationRequest convertToAssignmentCreationRequest(String userId) {
         List<AssignmentField> fields = this.findByUserId(userId).stream()
                 .map(a -> {

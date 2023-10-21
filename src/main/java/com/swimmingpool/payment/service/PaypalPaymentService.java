@@ -70,12 +70,12 @@ public class PaypalPaymentService extends AbstractPaymentService {
         for (CartResponse cart : carts) {
             Course course = this.courseService.findByIdThrowIfNotPresent(cart.getCourseId());
             BigDecimal price = CurrencyUtil.calculateDiscountPrice(course.getPrice(), course.getDiscount());
-            subTotalPrice = subTotalPrice.add(price);
 
-            Item item = this.paypalService.createItem(course.getCode() + "-" + course.getName(), price.divide(vndRate, 2, RoundingMode.HALF_EVEN));
+            price = price.divide(vndRate, 2, RoundingMode.HALF_EVEN);
+            Item item = this.paypalService.createItem(course.getCode() + "-" + course.getName(), price);
+            subTotalPrice = subTotalPrice.add(price);
             items.add(item);
         }
-        subTotalPrice = subTotalPrice.divide(vndRate, 2, RoundingMode.HALF_EVEN);
         totalTax = totalTax.divide(vndRate, 2, RoundingMode.HALF_EVEN);
         itemList.setItems(items);
 

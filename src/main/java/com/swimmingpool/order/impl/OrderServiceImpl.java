@@ -6,6 +6,8 @@ import com.swimmingpool.order.Order;
 import com.swimmingpool.order.OrderRepository;
 import com.swimmingpool.order.request.OrderSearchRequest;
 import com.swimmingpool.order.response.OrderSearchResponse;
+import com.swimmingpool.order.response.TimetableResponse;
+import com.swimmingpool.user.IUserService;
 import com.swimmingpool.user.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ public class OrderServiceImpl implements IOrderService {
 
     private final OrderRepository orderRepository;
     private final CustomOrderRepository customOrderRepository;
+    private final IUserService userService;
 
     @Override
     public PageResponse<OrderSearchResponse> searchOrder(OrderSearchRequest orderSearchRequest) {
@@ -34,5 +37,11 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public Order findByAssignmentIdAndCurrentUser(String assignmentId) {
         return this.orderRepository.findByAssignmentIdAndCurrentUser(assignmentId).orElse(null);
+    }
+
+    @Override
+    public List<TimetableResponse> getTimetableCurrentUser() {
+        UserResponse userResponse = this.userService.getCurrentUserThrowIfNot();
+        return this.customOrderRepository.getUserTimetable(userResponse.getUsername());
     }
 }

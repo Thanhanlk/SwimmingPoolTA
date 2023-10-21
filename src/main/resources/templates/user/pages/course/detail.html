@@ -25,8 +25,8 @@
                                 <p class="my-3" th:text="${course.shortDescription}"/>
                                 <div class="product__details__option">
                                     <b>Lịch (Chọn lịch để đăng ký)</b>
-                                    <div class="d-flex mt-2 nice-scroll" style="overflow: auto; max-height: 185px">
-                                        <div th:each="a : ${course.assignments}" class="col-md-6 d-flex border py-2" th:classappend="${a.maxStudent eq a.registerStudent ? 'disabled' : ''}" style="gap: 5px">
+                                    <div class="owl-carousel mt-3">
+                                        <div th:each="a : ${course.assignments}" class="d-flex border p-3" th:classappend="${a.maxStudent eq a.registerStudent ? 'disabled' : ''}" style="gap: 5px">
                                             <input th:id="${a.id}" type="checkbox" name="assignmentId" th:value="${a.id}" th:disabled="${a.maxStudent eq a.registerStudent}" required/>
                                             <label th:for="${a.id}" class="mb-0 d-flex flex-column align-items-center">
                                                 <span><th:block th:text="#{'day-of-week.' + ${a.dayOfWeek}}"/>&#44;&nbsp;<th:block th:text="${#dates.format(a.startTime, 'HH:mm')}"/>-<th:block th:text="${#dates.format(a.endTime, 'HH:mm')}"/></span>

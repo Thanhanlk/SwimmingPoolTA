@@ -80,6 +80,7 @@ public class CustomAssignmentRepository {
                 .append("  JOIN Pool p ON p.id = a.poolId")
                 .append(" WHERE a.active = true AND a.startDate > CURRENT_DATE AND a.courseId = :courseId")
                 .append(" GROUP BY a.id")
+                .append(" ORDER BY a.dayOfWeek, a.startTime ASC")
                 .toString();
 
         TypedQuery<Tuple> query = this.entityManager.createQuery(sql, Tuple.class);

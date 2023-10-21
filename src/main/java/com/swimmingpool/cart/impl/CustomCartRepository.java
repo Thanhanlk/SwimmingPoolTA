@@ -30,6 +30,7 @@ public class CustomCartRepository {
                 .append("  JOIN Course c ON c.id = a.courseId")
                 .append(" WHERE cart.username = :username")
                 .append(!CollectionUtils.isEmpty(cartIds) ? " AND cart.id IN :cartIds" : "")
+                .append(" ORDER BY a.dayOfWeek, a.startTime ASC")
                 .toString();
         Query query = entityManager.createQuery(sql, Tuple.class);
         if (!CollectionUtils.isEmpty(cartIds)) {

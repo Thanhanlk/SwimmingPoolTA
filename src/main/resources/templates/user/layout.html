@@ -82,9 +82,17 @@
             th:src="@{/resources__${js}__.js}"
     ></script>
     <script>
-        $(window).load(function(){
-            $('.nice-scroll').niceScroll();
-        });
+        $('.nice-scroll').niceScroll();
+        $('.owl-carousel').owlCarousel({
+            loop: false,
+            margin:10,
+            nav: false,
+            autoWidth: true,
+            items: 2,
+            autoplay: true,
+            autoplayTimeout: 2000,
+            autoplayHoverPause: true,
+        })
     </script>
 </body>
 </html>

@@ -31,6 +31,9 @@ public interface AssignmentRepository extends JpaRepository<Assignment, String> 
     @Query("SELECT a FROM Assignment a WHERE a.userId = ?1 ORDER BY a.dayOfWeek, a.startTime")
     List<Assignment> findByUserId(String userId);
 
+    @Query("SELECT a FROM Assignment a WHERE a.startDate < current_date and a.userId = ?1 and a.active = ?2 ORDER BY a.dayOfWeek, a.startTime")
+    List<Assignment> findStartedByUserIdAndActive(String userId, boolean active);
+
     @Modifying
     @Query("DELETE FROM Assignment a WHERE a.id NOT IN (?1) AND a.userId = ?2 AND a.active = true AND a.startDate > CURRENT_DATE")
     void deleteAllNotIds(List<String> ids, String userId);

@@ -85,6 +85,11 @@ public class AssignmentServiceImpl implements IAssignmentService {
     }
 
     @Override
+    public List<Assignment> findStartedByUserIdAndActive(String userId) {
+        return this.assignmentRepository.findStartedByUserIdAndActive(userId, true);
+    }
+
+    @Override
     public PageResponse<AssignmentSearchResponse> searchAssignment(AssignmentSearchRequest request) {
         PageResponse<AssignmentCreationResponse> pageResponse = this.customAssignmentRepository.searchAssignment(request);
         List<AssignmentCreationResponse> items = pageResponse.getItems();
