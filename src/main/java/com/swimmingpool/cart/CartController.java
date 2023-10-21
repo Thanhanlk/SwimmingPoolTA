@@ -6,6 +6,7 @@ import com.swimmingpool.common.controller.BaseController;
 import com.swimmingpool.common.dto.Result;
 import com.swimmingpool.common.exception.BusinessException;
 import com.swimmingpool.common.util.I18nUtil;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +21,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/cart")
 @RequiredArgsConstructor
-public class CardController extends BaseController {
+public class CartController extends BaseController {
 
     private final ICartService cartService;
 

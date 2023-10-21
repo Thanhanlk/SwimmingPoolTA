@@ -22,6 +22,7 @@ import org.springframework.web.servlet.View;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
 import static com.swimmingpool.user.UserConstant.Role.ADMIN;
+import static com.swimmingpool.user.UserConstant.Role.TEACHER;
 
 @EnableWebSecurity
 @Configuration
@@ -55,6 +56,8 @@ public class SecurityConfig {
                             .requestMatchers("/course/**").permitAll()
                             .requestMatchers("/contact", "/").permitAll()
                             .requestMatchers("/admin/**").hasAuthority(ADMIN.name())
+                            .requestMatchers("/teacher/**").hasAuthority(TEACHER.name())
+                            .requestMatchers("/ticket/**").hasAnyAuthority(TEACHER.name(), ADMIN.name())
                             .requestMatchers(AppConstant.Endpoint.HOME).permitAll()
                             .anyRequest()
                             .authenticated();

@@ -85,8 +85,8 @@ public class AssignmentServiceImpl implements IAssignmentService {
     }
 
     @Override
-    public List<Assignment> findStartedByUserIdAndActive(String userId) {
-        return this.assignmentRepository.findStartedByUserIdAndActive(userId, true);
+    public void save(Assignment assignment) {
+        this.assignmentRepository.save(assignment);
     }
 
     @Override

@@ -1,0 +1,54 @@
+<div xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout :: layout(~{::#content})}">
+  <div id="content" th:replace="~{admin/common/data-layout :: dataLayout('admin/pages/ticket/search-form', 'admin/pages/ticket/action', ~{::.table-responsive}, 'Quản Lý Phiếu yêu cầu', 'Danh sách phiếu yêu cầu', true)}">
+    <div class="table-responsive">
+      <table class="table table-bordered w-100" id="dataTable">
+        <thead>
+        <tr>
+          <th class="table-column-header" data-col="stt" data-show="true">STT</th>
+          <th class="table-column-header" data-col="type" data-show="true">Loại phiếu yêu cầu</th>
+          <th class="table-column-header" data-col="creator" data-show="true">Người tạo</th>
+          <th class="table-column-header" data-col="createdDate" data-show="true">Ngày tạo</th>
+          <th class="table-column-header" data-col="adminReason" data-show="false">Admin</th>
+          <th class="table-column-header" data-col="teacherReason" data-show="false">Teacher</th>
+          <th class="table-column-header" data-col="objectId" data-show="false">OBJECT ID</th>
+          <th class="table-column-header" data-col="additionalInfo" data-show="true">Thông tin</th>
+          <th class="table-column-header" data-col="status" data-show="true">Trạng thái</th>
+          <th>Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item,_status : ${_PAGING_KEY.items}" th:object="${item}">
+          <td data-col="stt" th:text="${ _status.index + 1 + ( (_PAGING_KEY.page - 1) * _PAGING_KEY.pageSize ) }"></td>
+          <td data-col="type" th:text="*{ticketType.label}" />
+          <td data-col="creator" th:text="*{createdBy}"/>
+          <td data-col="createdDate" th:text="*{#dates.format(createdDate, 'dd/MM/yyyy')}"/>
+          <td data-col="adminReason" th:text="*{adminReason}"/>
+          <td data-col="teacherReason" th:text="*{teacherReason}"/>
+          <td data-col="objectId" th:text="*{objectId}"/>
+          <td data-col="additionalInfo">
+            <div th:replace="~{*{'admin/pages/ticket/additional-info/' + ticketType} :: additionalInfo(*{additionalInfo})}"></div>
+          </td>
+          <td data-col="status">
+            <span th:class="*{'ticket-status-' + status}" th:text="*{status.label}"/>
+          </td>
+          <td class="user-action">
+            <div th:if="*{status.name() eq 'PENDING'}">
+              <i class="fa fa-ellipsis-v cursor-pointer" aria-hidden="true"></i>
+              <ul th:replace="~{admin/pages/ticket/table-action :: actionList(*{status.name()}, *{id})}"></ul>
+              <th:block th:if="*{status.name() eq 'PENDING'}">
+                <div sec:authorize="hasAuthority('TEACHER')">
+                  <div th:replace="~{admin/pages/ticket/cancel-ticket-modal :: cancelTicketModal(*{id}, *{'cancel' + id},'Hủy bỏ ticket', @{/ticket/cancel})}"/>
+                </div>
+                <div sec:authorize="hasAuthority('ADMIN')">
+                  <div th:replace="~{admin/pages/ticket/cancel-ticket-modal :: cancelTicketModal(*{id}, *{'reject' + id}, 'Từ chối ticket', @{/ticket/reject})}"/>
+                  <div th:replace="~{_common/modal :: modal(*{'approve' + id}, 'Xác nhận', 'Bạn có đồng ý phê duyệt yêu cầu này', @{/ticket/approve?id=__*{id}__}, 'post', null, null, null)}" />
+                </div>
+              </th:block>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

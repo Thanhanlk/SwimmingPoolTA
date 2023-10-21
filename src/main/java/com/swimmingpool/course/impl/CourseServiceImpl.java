@@ -44,6 +44,10 @@ public class CourseServiceImpl implements ICourseService {
     @Setter(onMethod_ = { @Autowired }, onParam_ = @Lazy)
     private IAssignmentService assignmentService;
 
+    @Override
+    public void save(Course course) {
+        this.courseRepository.save(course);
+    }
 
     @Override
     @Cacheable(cacheManager = "redisCacheManager", cacheNames = "ACTIVE_COURSE", key = "'EMPTY'", unless = "#result eq null or #result.empty")

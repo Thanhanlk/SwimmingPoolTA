@@ -4,13 +4,11 @@ import com.swimmingpool.common.entity.AuditTable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Setter
 @Getter
 @Entity
 @Table(name = "_image")
-@EntityListeners(AuditingEntityListener.class)
 public class Image extends AuditTable {
 
     @Id

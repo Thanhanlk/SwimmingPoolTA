@@ -5,14 +5,12 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Setter
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "_pool")
-@EntityListeners(AuditingEntityListener.class)
 public class Pool extends AuditTable {
 
     @Id

@@ -6,7 +6,7 @@ import com.swimmingpool.order.Order;
 import com.swimmingpool.order.OrderRepository;
 import com.swimmingpool.order.request.OrderSearchRequest;
 import com.swimmingpool.order.response.OrderSearchResponse;
-import com.swimmingpool.order.response.TimetableResponse;
+import com.swimmingpool.timetable.response.TimetableResponse;
 import com.swimmingpool.user.IUserService;
 import com.swimmingpool.user.response.UserResponse;
 import lombok.RequiredArgsConstructor;
@@ -37,11 +37,5 @@ public class OrderServiceImpl implements IOrderService {
     @Override
     public Order findByAssignmentIdAndCurrentUser(String assignmentId) {
         return this.orderRepository.findByAssignmentIdAndCurrentUser(assignmentId).orElse(null);
-    }
-
-    @Override
-    public List<TimetableResponse> getTimetableCurrentUser() {
-        UserResponse userResponse = this.userService.getCurrentUserThrowIfNot();
-        return this.customOrderRepository.getUserTimetable(userResponse.getUsername());
     }
 }

@@ -49,6 +49,7 @@ public class CourseController extends BaseController {
         model.addAttribute("relatedCourse", pageResponse.getItems());
         model.addAttribute("course", courseDetailResponse);
         this.addCss(model, "/user/css/shop", "/user/css/product", "/user/css/product-detail",  "/user/css/hero");
+        this.addJavascript(model, "/user/javascript/product-detail");
         return "user/pages/course/detail";
     }
 }

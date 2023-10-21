@@ -2,8 +2,9 @@ package com.swimmingpool;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 
-@SpringBootApplication()
+@SpringBootApplication(exclude = CacheAutoConfiguration.class)
 public class SwimmingPoolApplication {
 
     public static void main(String[] args) {

@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface ICourseService {
 
+    void save(Course course);
+
     List<Course> findActiveCourse();
 
     Course findByIdThrowIfNotPresent(String id) throws ValidationException;

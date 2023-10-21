@@ -23,7 +23,9 @@
         </div>
         <div class="card-body">
             <div th:replace="${tableComponent}"></div>
-            <div th:if="${isPagination}" th:replace="~{admin/common/paging :: nav}"/>
+            <th:block th:if="${isPagination}">
+                <div th:replace="~{admin/common/paging :: nav}"/>
+            </th:block>
         </div>
     </div>
 </div>

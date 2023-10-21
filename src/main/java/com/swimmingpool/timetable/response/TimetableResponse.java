@@ -1,4 +1,4 @@
-package com.swimmingpool.order.response;
+package com.swimmingpool.timetable.response;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -5,14 +5,12 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "_user")
 @Setter
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@EntityListeners(AuditingEntityListener.class)
 public class User extends AuditTable {
 
     @Id

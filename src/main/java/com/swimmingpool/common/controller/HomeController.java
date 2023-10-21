@@ -5,6 +5,7 @@ import com.swimmingpool.course.ICourseService;
 import com.swimmingpool.course.response.CourseImageDTO;
 import com.swimmingpool.course.response.CourseResponse;
 import com.swimmingpool.user.UserConstant;
+import com.swimmingpool.user.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,14 +25,14 @@ public class HomeController extends BaseController {
     private final ICourseService courseService;
 
     @GetMapping(value = {AppConstant.Endpoint.HOME, "/"})
-    public String home(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        if (Objects.isNull(userDetails)) return this.userHome(model);
-        return userDetails.getAuthorities()
-                .stream()
-                .filter(x -> x.getAuthority().equals(UserConstant.Role.ADMIN.name()))
-                .findFirst()
-                .map(x -> "redirect:/admin/pool")
-                .orElseGet(() -> this.userHome(model));
+    public String home(@AuthenticationPrincipal UserResponse userResponse, Model model) {
+        if (Objects.isNull(userResponse)) return this.userHome(model);
+        return switch (userResponse.getRole()) {
+            case USER -> this.userHome(model);
+            case ADMIN -> "redirect:/admin/pool";
+            case TEACHER -> "redirect:/teacher/time-table";
+            default -> throw new UnsupportedOperationException("");
+        };
     }
 
     @GetMapping("/contact")

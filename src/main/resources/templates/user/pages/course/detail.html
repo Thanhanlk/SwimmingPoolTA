@@ -10,7 +10,7 @@
                             <img th:src="${course.image}" class="h-100"/>
                         </div>
                         <div class="col-md-5">
-                            <form th:action="@{/cart}" method="post" class="product__details__text text-left">
+                            <form id="add-cart-form" th:action="@{/cart}" method="post" class="product__details__text text-left">
                                 <input type="hidden" name="_REDIRECT_URL_KEY" th:value="@{/course/${course.slug}?courseCode=${course.code}}" />
                                 <h4 class="dots" th:title="${course.name}" th:text="${course.name}"/>
                                 <div class="d-flex align-items-center mb-2">

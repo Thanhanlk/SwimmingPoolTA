@@ -5,10 +5,8 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.sql.Time;
-import java.time.DayOfWeek;
 import java.util.Date;
 
 @Setter
@@ -16,7 +14,6 @@ import java.util.Date;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "_assignment")
-@EntityListeners(AuditingEntityListener.class)
 public class Assignment extends AuditTable {
 
     @Id

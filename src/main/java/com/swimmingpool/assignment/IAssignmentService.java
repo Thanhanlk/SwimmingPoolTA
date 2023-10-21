@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 
 public interface IAssignmentService {
 
+    void save(Assignment assignment);
+
     List<Assignment> findByCourseId(String courseId);
 
     List<AvailableAssignmentResponse> findAvailableAssignmentByCourseId(String courseId);
@@ -25,8 +27,6 @@ public interface IAssignmentService {
     Assignment findByIdThrowIfNotPresent(String id) throws ValidationException;
 
     List<Assignment> findByUserId(String userId);
-
-    List<Assignment> findStartedByUserIdAndActive(String userId);
 
     default AssignmentCreationRequest convertToAssignmentCreationRequest(String userId) {
         List<AssignmentField> fields = this.findByUserId(userId).stream()

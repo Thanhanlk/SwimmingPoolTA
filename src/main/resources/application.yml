@@ -38,6 +38,8 @@ spring:
         enabled: false
   main:
     allow-bean-definition-overriding: true
+  cache:
+    type: none
 logging:
   file:
     name: logs/swimming-pool.log
