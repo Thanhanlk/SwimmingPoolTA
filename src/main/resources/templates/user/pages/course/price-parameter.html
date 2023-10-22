@@ -1,0 +1,17 @@
+<th:block th:fragment="priceParameter(minPrice, maxPrice)">
+    <th:block th:if="${(searchRequest.minPrice eq minPrice and searchRequest.maxPrice eq maxPrice)}">
+        <li class="active">
+            <a th:href="@{/course}">
+                [[${#numbers.formatCurrency(minPrice)}]] <th:block th:if="${maxPrice ne null}">- [[${#numbers.formatCurrency(maxPrice)}]]</th:block>
+            </a>
+        </li>
+    </th:block>
+
+    <th:block th:if="${(searchRequest.minPrice ne minPrice or searchRequest.maxPrice ne maxPrice)}">
+        <li>
+            <a th:href="@{/course?minPrice=__${minPrice}__&maxPrice=__${maxPrice}__}">
+                [[${#numbers.formatCurrency(minPrice)}]] <th:block th:if="${maxPrice ne null}">- [[${#numbers.formatCurrency(maxPrice)}]]</th:block>
+            </a>
+        </li>
+    </th:block>
+</th:block>

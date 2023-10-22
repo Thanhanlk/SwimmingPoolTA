@@ -1,0 +1,69 @@
+<div xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout :: layout(~{::#content})}">
+    <div id="content">
+        <a th:href="@{/admin/user/staff}">Quay lại</a>
+        <form
+                th:object="${staffCreation}"
+                th:action="@{/admin/user/staff}"
+                th:with="isCreate=*{id eq null}"
+                method="post"
+                class="d-flex flex-column mt-3"
+                style="gap: 20px;"
+        >
+            <input th:unless="${isCreate}" type="hidden" th:field="*{id}" />
+            <div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="required">Tên</label>
+                        <input class="form-control" placeholder="Nhập tên " th:field="*{firstName}" required/>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="required">Họ</label>
+                        <input class="form-control" placeholder="Nhập họ" th:field="*{lastName}" required/>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <label class="required">Tên đăng nhập</label>
+                        <input class="form-control" placeholder="Nhập tên đăng nhập" th:field="*{username}" th:required="${!isCreate}" required/>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label class="required">Mật khẩu</label>
+                        <input type="password" class="form-control" placeholder="Nhập mật khẩu" th:field="*{password}" required/>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="required">Mật khẩu</label>
+                        <input type="password" class="form-control" placeholder="Nhập lại mật khẩu" th:field="*{repeatPassword}" required/>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label class="required">Email</label>
+                        <input th:field="*{email}" class="form-control" type="email" required/>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="required">Sô điện thoại</label>
+                        <input th:field="*{phone}" class="form-control" required/>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <label class="required">Địa chỉ</label>
+                        <textarea class="form-control" rows="5" maxlength="200" th:field="*{address}" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-secondary" th:href="@{/admin/user/staff}">Hủy bỏ</a>
+                <button class="btn btn-primary ml-3">Lưu lại</button>
+            </div>
+        </form>
+    </div>
+</div>

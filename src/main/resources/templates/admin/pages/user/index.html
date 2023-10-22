@@ -1,0 +1,43 @@
+<div xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout :: layout(~{::#content})}">
+    <div id="content" th:replace="~{admin/common/data-layout :: dataLayout('admin/pages/user/search-form', 'admin/pages/user/action', ~{::.table-responsive}, ${title}, ${subTitle}, true)}">
+        <div class="table-responsive">
+            <table class="table table-bordered w-100" id="dataTable">
+                <thead>
+                <tr>
+                    <th class="table-column-header" data-col="stt" data-show="true">STT</th>
+                    <th class="table-column-header" data-col="username" data-show="true">Tên đăng nhập</th>
+                    <th class="table-column-header" data-col="fullName" data-show="true">Họ và tên</th>
+                    <th class="table-column-header" data-col="phone" data-show="true">Số điện thoại</th>
+                    <th class="table-column-header" data-col="address" data-show="true">Địa chỉ</th>
+                    <th class="table-column-header" data-col="email" data-show="false">Email</th>
+                    <th class="table-column-header" data-col="createdDate" data-show="false">Ngày tạo</th>
+                    <th class="table-column-header" data-col="updatedDate" data-show="false">Ngày cập nhật</th>
+                    <th class="table-column-header" data-col="status" data-show="true">Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="course,_status : ${_PAGING_KEY.items}" th:object="${course}">
+                        <td data-col="stt" th:text="${ _status.index + 1 + ( (_PAGING_KEY.page - 1) * _PAGING_KEY.pageSize ) }"></td>
+                        <td data-col="username" th:text="*{username}"/>
+                        <td data-col="fullName" th:text="*{fullName}" />
+                        <td data-col="phone" th:text="*{phone}"/>
+                        <td data-col="address" th:text="*{address}" />
+                        <td data-col="email" th:text="*{email}" />
+                        <td data-col="createdDate" th:text="*{#dates.format(createdDate, 'dd/MM/yyyy')}"/>
+                        <td data-col="updatedDate" th:text="*{#dates.format(modifiedDate, 'dd/MM/yyyy')}"/>
+                        <td data-col="status">
+                            <span th:class="*{ isEnabled ? 'text-success' : 'text-danger' }">[[*{ isEnabled ? 'Hoạt động' : 'Ngưng hoạt động' }]]</span>
+                        </td>
+                        <td class="user-action">
+                            <div>
+                                <i class="fa fa-ellipsis-v cursor-pointer" aria-hidden="true"></i>
+                                <ul th:replace="~{admin/pages/user/table-action :: actionList(*{isEnabled}, *{id}, *{role})}"></ul>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<div id="paging" class="w-100">
+    <div class="product__pagination">
+        <th:block th:each="page : ${_PAGING_KEY.pages}">
+            <span th:if="${page eq '...'}">...</span>
+            <a
+                th:if="${page ne '...'}"
+                th:class="${ page eq _PAGING_KEY.page ? 'active' : '' }"
+                th:href="${uriWithQueryString + '&page=' + page }"
+                th:text="${page}"
+            />
+        </th:block>
+    </div>
+</div>

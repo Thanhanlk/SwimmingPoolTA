@@ -14,4 +14,7 @@ public class PaypalProperties {
     private String clientId;
     private String clientSecret;
     private PaypalConstant.Mode mode;
+    private String cancelUrl;
+    private String successUrl;
+    private String currency;
 }

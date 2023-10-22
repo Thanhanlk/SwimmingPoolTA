@@ -1,0 +1,41 @@
+<th:block th:fragment="timeTable(numberRow, timetables, action)">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <th
+                    th:each="d : ${T(java.time.DayOfWeek).values()}"
+                    th:text="#{'day-of-week.' + __${d.name()}__}"
+                    th:data-col="${d.name()}"
+                    class="table-column-header"
+                    data-show="true"
+                />
+            </thead>
+            <tbody>
+            <tr th:each="row: ${#numbers.sequence(1, numberRow)}">
+                <td th:each="d : ${T(java.time.DayOfWeek).values()}" th:data-col="${d.name()}">
+                    <th:block th:if="${timetables[d.value] ne null and timetables[d.value].size() ge row}"
+                              th:object="${timetables[d.value].get(row - 1)}">
+                        <div class="d-flex flex-column position-relative">
+                            <div>
+                                <span th:text="*{poolName}"/>
+                            </div>
+                            <div>
+                                <span class="font-weight-bold" th:text="*{courseName}"/>
+                            </div>
+                            <div>
+                                <span>[[*{#dates.format(startTime, 'HH:mm')}]] - [[*{#dates.format(endTime, 'HH:mm')}]]</span>
+                            </div>
+                            <div>
+                                <span class="font-italic">GV: <span class="dots" th:title="*{teacher}" th:text="*{teacher}"/></span>
+                            </div>
+                            <th:block th:if="${action ne null}"  th:with="id=*{assignmentId}" >
+                                <div th:replace="${action}"/>
+                            </th:block>
+                        </div>
+                    </th:block>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</th:block>

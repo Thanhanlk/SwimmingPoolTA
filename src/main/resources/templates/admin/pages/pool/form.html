@@ -1,0 +1,39 @@
+<div th:fragment="form(_id, code, name, numberOfStudent, idForm)">
+    <div th:replace="~{_common/modal :: modal(${idForm}, ${_id ne null ? 'Cập nhật hồ bơi' : 'Tạo mới hồ bơi'}, null, null, null, null, ~{::.form}, null)}" >
+        <form
+                th:action="@{/admin/pool}"
+                method="post"
+                class="d-flex flex-column form"
+                style="gap: 20px;"
+        >
+            <input type="hidden" name="_REDIRECT_URL_KEY" th:value="@{/admin/pool}" />
+            <input type="hidden" name="id" th:value="${_id}" />
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="required">Mã khóa học</label>
+                    <input class="form-control" placeholder="Nhập mã hồ bơi" name="code" th:value="${code}" th:readonly="${_id ne null}" required/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="required">Tên hồ bơi</label>
+                    <input name="name" th:value="${name}" placeholder="Nhập tên hồ bơi" class="form-control" required/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="required">Số lượng học viên</label>
+                    <input name="numberOfStudent" th:value="${numberOfStudent}" type="number" placeholder="Nhập số lượng" class="form-control" th:readonly="${_id ne null}" required/>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy bỏ</button>
+                <button class="btn btn-primary ml-3">Lưu lại</button>
+            </div>
+        </form>
+    </div>
+</div>

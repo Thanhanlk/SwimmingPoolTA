@@ -1,0 +1,16 @@
+<form method="get" th:action="@{/ticket}" th:object="${searchRequest}" class="mt-3 search-component">
+    <div class="row">
+        <div class="col-md-3">
+            <input class="form-control" type="date" th:field="*{fromDate}">
+        </div>
+        <div class="col-md-3">
+            <input class="form-control" type="date" th:field="*{toDate}">
+        </div>
+        <div sec:authorize="hasAuthority('ADMIN')" class="col-md-3">
+            <input class="form-control" placeholder="Nhập tên đăng nhập" th:field="*{creator}">
+        </div>
+        <div class="justify-content-center">
+            <button class="btn btn-primary">Tìm kiếm</button>
+        </div>
+    </div>
+</form>

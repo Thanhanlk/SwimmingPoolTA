@@ -1,0 +1,41 @@
+<div xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout :: layout(~{::#content})}">
+    <div id="content" th:replace="~{admin/common/data-layout :: dataLayout('admin/pages/pool/search-form', 'admin/pages/pool/action', ~{::.table-responsive}, 'Quản Lý Hồ Bơi', 'Danh sách hồ bơi', true)}">
+        <div class="table-responsive">
+            <table class="table table-bordered w-100" id="dataTable">
+                <thead>
+                <tr>
+                    <th class="table-column-header" data-col="stt" data-show="true">STT</th>
+                    <th class="table-column-header" data-col="code" data-show="true">Mã hồ bơi</th>
+                    <th class="table-column-header" data-col="name" data-show="true">Tên hồ bơi</th>
+                    <th class="table-column-header" data-col="numberOfStudent" data-show="true">Số lượng học viên</th>
+                    <th class="table-column-header" data-col="createdDate" data-show="false">Ngày tạo</th>
+                    <th class="table-column-header" data-col="updatedDate" data-show="false">Ngày cập nhật</th>
+                    <th class="table-column-header" data-col="status" data-show="true">Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="pool,_status : ${_PAGING_KEY.items}" th:object="${pool}">
+                    <div th:replace="~{_common/modal :: modal(*{'deletePool' + id}, 'Xác nhận', *{'Bạn có chắc chắn muốn xóa ' + name}, @{/admin/pool/delete(id=*{id})}, 'get', null, null, null)}" />
+                    <td data-col="stt" th:text="${ _status.index + 1 + ( (_PAGING_KEY.page - 1) * _PAGING_KEY.pageSize ) }"></td>
+                    <td data-col="code" th:text="*{code}" />
+                    <td data-col="name" th:text="*{name}"/>
+                    <td data-col="numberOfStudent" th:text="*{numberOfStudent}"/>
+                    <td data-col="createdDate" th:text="*{#dates.format(createdDate, 'dd/MM/yyyy')}"/>
+                    <td data-col="updatedDate" th:text="*{#dates.format(modifiedDate, 'dd/MM/yyyy')}"/>
+                    <td data-col="status">
+                        <span th:class="*{ active ? 'text-success' : 'text-danger' }">[[*{ active ? 'Hoạt động' : 'Ngưng hoạt động' }]]</span>
+                    </td>
+                    <td class="user-action">
+                        <div>
+                            <i class="fa fa-ellipsis-v cursor-pointer" aria-hidden="true"></i>
+                            <ul th:replace="~{admin/pages/pool/table-action :: actionList(*{active}, *{id})}"></ul>
+                            <div th:replace="~{admin/pages/pool/form :: form(*{id}, *{code}, *{name}, *{numberOfStudent}, *{'update-pool' + id})}" />
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

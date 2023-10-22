@@ -1,0 +1,49 @@
+<div xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout :: layout(~{::#content})}">
+    <div id="content" th:replace="~{admin/common/data-layout :: dataLayout('admin/pages/order/search-form', 'admin/pages/order/action', ~{::.table-responsive}, 'Quản Lý Hóa Đơn', 'Danh sách hóa đơn', true)}">
+        <div class="table-responsive">
+            <table class="table table-bordered w-100" id="dataTable">
+                <thead>
+                <tr>
+                    <th class="table-column-header" data-col="stt" data-show="true">STT</th>
+                    <th class="table-column-header" data-col="code" data-show="false">Mã hóa đơn</th>
+                    <th class="table-column-header" data-col="pool" data-show="true">Hồ bơi</th>
+                    <th class="table-column-header" data-col="course" data-show="true">Khóa học</th>
+                    <th class="table-column-header" data-col="time" data-show="true">Thời gian học</th>
+                    <th class="table-column-header" data-col="createdBy" data-show="true">Người mua</th>
+                    <th class="table-column-header" data-col="phone" data-show="false">Số điện thoại</th>
+                    <th class="table-column-header" data-col="createdDate" data-show="false">Ngày mua</th>
+                    <th class="table-column-header" data-col="method" data-show="false">Hình thức TT</th>
+                    <th class="table-column-header" data-col="status" data-show="true">Trạng thái</th>
+                    <th class="table-column-header" data-col="total" data-show="true">Tổng tiền</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="item,_status : ${_PAGING_KEY.items}">
+                        <tr>
+                            <td data-col="stt" th:text="${ _status.index + 1 + ( (_PAGING_KEY.page - 1) * _PAGING_KEY.pageSize )}"/>
+                            <td data-col="code" th:text="${item.id}"/>
+                            <td data-col="pool" th:text="${item.poolName}"/>
+                            <td data-col="course" th:text="${item.courseName}"/>
+                            <td data-col="time">
+                                <span th:text="#{'day-of-week.' + __${item.day}__}" />&sbquo;
+                                <span th:text="${#dates.format(item.startTime, 'HH:mm')}" />&nbsp;&ndash;
+                                <span th:text="${#dates.format(item.endTime, 'HH:mm')}" />
+                            </td>
+
+                            <td data-col="createdBy" th:text="${item.fullName}"/>
+                            <td data-col="phone" th:text="${item.phone}"/>
+                            <td data-col="createdDate" th:text="${#dates.format(item.createdDate, 'dd/MM/yyyy')}"/>
+                            <td data-col="method">
+                                <h6 th:replace="~{_common/method-payment-icon :: methodPaymentIcon(${item.methodPayment})}" />
+                            </td>
+                            <td data-col="status">
+                                <div th:replace="~{_common/status-order :: statusOrder(${item.status})}" />
+                            </td>
+                            <td data-col="total" th:text="${#numbers.formatCurrency(item.total)}"/>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

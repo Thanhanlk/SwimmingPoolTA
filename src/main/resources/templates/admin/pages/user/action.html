@@ -1,0 +1,7 @@
+<div class="action-component d-flex">
+    <a th:if="${#strings.startsWith(currentUri, '/admin/user/staff')}" th:href="@{/admin/user/staff/create}" class="btn btn-primary">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        Tạo mới
+    </a>
+    <div th:replace="~{admin/common/column-controller :: #column-controller-wrapper}"></div>
+</div>

@@ -1,0 +1,8 @@
+<div th:replace="~{user/layout :: layout(null, ~{::#content})}">
+    <div id="content" class="py-5">
+        <div class="d-flex flex-column" style="row-gap: 20px">
+            <h2 class="w-100 text-center">Thời khóa biểu</h2>
+            <div th:replace="~{/_common/timetable-table :: timeTable(${numberRow}, ${timetables}, null)}" />
+        </div>
+    </div>
+</div>

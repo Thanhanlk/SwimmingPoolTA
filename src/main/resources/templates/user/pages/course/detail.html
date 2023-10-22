@@ -1,0 +1,80 @@
+<div th:replace="~{user/layout :: layout(${course.name}, ~{::#content})}">
+    <div id="content">
+        <!-- Shop Details Section Begin -->
+        <section class="shop-details">
+            <div th:replace="~{user/common/breadcrumb :: breadscrumb(${'Khóa học,' + course.name})}"/>
+            <div class="product__details__content">
+                <div class="container mt-3">
+                    <div class="d-flex">
+                        <div class="col-md-7 pl-0" style="height: 445px;">
+                            <img th:src="${course.image}" class="h-100"/>
+                        </div>
+                        <div class="col-md-5">
+                            <form id="add-cart-form" th:action="@{/cart}" method="post" class="product__details__text text-left">
+                                <input type="hidden" name="_REDIRECT_URL_KEY" th:value="@{/course/${course.slug}?courseCode=${course.code}}" />
+                                <h4 class="dots" th:title="${course.name}" th:text="${course.name}"/>
+                                <div class="d-flex align-items-center mb-2">
+                                    <th:block th:if="${course.discount le 0}">
+                                        <h5 id="new-price" class="mb-0" th:text="${#numbers.formatCurrency(course.price)}"/>
+                                    </th:block>
+                                    <th:block th:if="${course.discount gt 0}">
+                                        <h5 id="new-price" class="mb-0" th:text="${#numbers.formatCurrency(course.price * ((100 - course.discount)/100.0))}"/>
+                                        <span id="old-price" th:text="${#numbers.formatCurrency(course.price)}"/>
+                                    </th:block>
+                                </div>
+                                <p class="my-3" th:text="${course.shortDescription}"/>
+                                <div class="product__details__option">
+                                    <b>Lịch (Chọn lịch để đăng ký)</b>
+                                    <div class="owl-carousel mt-3">
+                                        <div th:each="a : ${course.assignments}" class="d-flex border p-3" th:classappend="${a.maxStudent eq a.registerStudent ? 'disabled' : ''}" style="gap: 5px">
+                                            <input th:id="${a.id}" type="checkbox" name="assignmentId" th:value="${a.id}" th:disabled="${a.maxStudent eq a.registerStudent}" required/>
+                                            <label th:for="${a.id}" class="mb-0 d-flex flex-column align-items-center">
+                                                <span><th:block th:text="#{'day-of-week.' + ${a.dayOfWeek}}"/>&#44;&nbsp;<th:block th:text="${#dates.format(a.startTime, 'HH:mm')}"/>-<th:block th:text="${#dates.format(a.endTime, 'HH:mm')}"/></span>
+                                                <span><b>Học viên: </b>[[${a.registerStudent}]]/[[${a.maxStudent}]]</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product__details__cart__option mb-0">
+                                    <button class="primary-btn border-0 rounded w-100">Thêm giỏ hàng</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="product__details__tab">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5"
+                                       role="tab">Mô Tả</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tabs-5" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <div class="product__details__tab__content__item px-5" th:utext="${course.description}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Shop Details Section End -->
+        <!-- Related Section Begin -->
+        <section class="related spad pt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="related-title">Sản phẩm liên quan</h3>
+                    </div>
+                </div>
+                <div class="row" style="row-gap: 30px">
+                    <div th:replace="~{user/pages/home/course :: course(null, 'relatedCourse')}"/>
+                </div>
+            </div>
+        </section>
+        <!-- Related Section End -->
+    </div>
+</div>

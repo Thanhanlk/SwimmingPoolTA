@@ -1,0 +1,27 @@
+<div th:replace="~{user/layout :: layout(null, ~{::#content})}">
+   <div id="content">
+       <div th:replace="~{user/common/breadcrumb :: breadscrumb('khóa học')}"/>
+
+       <!-- Shop Section Begin -->
+       <section class="shop spad pt-5">
+           <div class="container">
+               <div class="row">
+                   <div class="col-lg-3">
+                       <div th:replace="~{user/pages/course/course-sidebar :: #course-sidebar}"/>
+                   </div>
+                   <div class="col-lg-9">
+                       <div class="row" style="row-gap: 30px;">
+                           <th:block th:each="item : ${_PAGING_KEY.items}">
+                               <div th:replace="~{user/pages/course/course-card :: courseCard(${item}, '4', '6', '6')}" />
+                           </th:block>
+                       </div>
+                       <div class="row">
+                           <div th:replace="~{user/common/paging :: #paging}"/>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </section>
+       <!-- Shop Section End -->
+   </div>
+</div>

@@ -1,0 +1,11 @@
+<li
+    th:fragment="link(url, label, icon)"
+    th:with="active=${#strings.startsWith(currentUri, url)}"
+    class="nav-item"
+    th:classappend="${active ? 'active' : ''}"
+>
+    <a class="nav-link" th:href="${url}">
+        <i th:class="${icon}"></i>
+        <span th:text="${label}"></span>
+    </a>
+</li>

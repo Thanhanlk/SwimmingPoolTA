@@ -1,0 +1,22 @@
+<th:block th:fragment="course(label, nameData)" th:with="items=${__${nameData}__}" xmlns="http://www.w3.org/1999/html">
+    <th:block th:if="${not #lists.isEmpty(items)}">
+        <!-- Product Section Begin -->
+        <section class="product spad w-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="filter__controls text-left mb-3">
+                            <li th:if="${label ne null}" class="active" style="color: #111111;" th:text="${label}" />
+                        </ul>
+                    </div>
+                </div>
+                <div class="row product__filter" style="row-gap: 30px;">
+                    <th:block th:each="item : ${items}">
+                        <div th:replace="~{user/pages/course/course-card :: courseCard(${item}, '3', '6', '6')}"/>
+                    </th:block>
+                </div>
+            </div>
+        </section>
+        <!-- Product Section End -->
+    </th:block>
+</th:block>

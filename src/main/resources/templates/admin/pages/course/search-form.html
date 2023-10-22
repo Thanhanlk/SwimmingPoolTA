@@ -1,0 +1,12 @@
+<form method="get" th:action="@{__${currentUri}__}" th:object="${searchRequest}" class="mt-3 search-component">
+    <input type="hidden" name="page" value="1" />
+    <input type="hidden" name="pageSize" value="5" />
+    <div class="row">
+        <div class="col-md-5">
+            <input class="form-control" placeholder="Tên, mã khoá học" th:field="*{codeName}">
+        </div>
+        <div class="justify-content-center">
+            <button class="btn btn-primary">Tìm kiếm</button>
+        </div>
+    </div>
+</form>

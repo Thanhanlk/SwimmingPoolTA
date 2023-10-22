@@ -1,0 +1,25 @@
+<th:block xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="statusLogin()" >
+    <th:block sec:authorize="isAnonymous()">
+        <a th:href="@{/auth}">Đăng nhập</a>
+    </th:block>
+    <th:block sec:authorize="isAuthenticated()">
+        <div class="user-info position-relative">
+            <a href="javascript:void(0)">Xin chào, <th:block sec:authentication="principal.fullName"/></a>
+            <ul class="d-none bg-white position-absolute border" style="list-style: none">
+                <li>
+                    <p data-toggle="modal" data-target="#updateUserId">Cập nhật thông tin</p>
+                </li>
+                <li>
+                    <p data-toggle="modal" data-target="#changePasswordId">Đổi mật khẩu</p>
+                </li>
+                <li>
+                    <p data-toggle="modal" data-target="#logoutId">Đăng xuất</p>
+                </li>
+            </ul>
+        </div>
+
+        <th:block sec:authorize="hasAuthority('ADMIN')">
+            <a th:href="@{/admin/pool}">Vào trang admin</a>
+        </th:block>
+    </th:block>
+</th:block>

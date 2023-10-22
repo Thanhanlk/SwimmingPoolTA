@@ -7,11 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Swimming Pool</title>
 
+    <link rel="icon" th:href="@{/resources/img/favicon.ico}" />
+    <link th:href="@{/resources/_common/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-
-    <link th:href="@{/_common/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{/admin/css/sb-admin-2.min.css}" rel="stylesheet">
+    <link th:href="@{/resources/admin/css/sb-admin-2.min.css}" rel="stylesheet">
+    <link
+        th:if="${_CSS_KEY ne null}"
+        th:each="css : ${_CSS_KEY}"
+        th:href="@{/resources__${css}__.css}"
+        rel="stylesheet"
+    />
     <style>
         .required:after {
             content: ' *';
@@ -39,19 +45,35 @@
         .scalable:hover {
             transform: scale(2);
         }
+
+        .ticket-status-CANCEL,
+        .ticket-status-REJECT {
+            font-weight: bold;
+            color: var(--danger);
+        }
+
+        .ticket-status-APPROVED {
+            font-weight: bold;
+            color: var(--success);
+        }
+
+        .ticket-status-PENDING {
+            font-weight: bold;
+            color: var(--primary);
+        }
     </style>
 </head>
 <body>
-    <div th:replace="_common/notifier :: div "></div>
-    <div th:replace="admin/common/spinner :: #spinner"></div>
+    <div th:replace="~{_common/notifier :: div}"></div>
+    <div th:replace="~{admin/common/spinner :: #spinner}"></div>
     <!-- Page Wrapper -->
     <div id="wrapper">
-        <div th:replace="admin/common/sidebar :: #accordionSidebar"></div>
+        <div th:replace="~{admin/common/sidebar :: #accordionSidebar}"></div>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
-                <div th:replace="admin/common/topbar :: nav"></div>
+                <div th:replace="~{admin/common/topbar :: nav}"></div>
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
                     <div th:replace="${body}"></div>
@@ -70,30 +92,27 @@
         <i class="fa fa-arrow-up"></i>
     </a>
 
-    <div th:replace="_common/modal :: modal('logoutModal', 'Ready to Leave?', 'Select \'Logout\' below if you are ready to end your current session.', @{/auth/logout})" />
-<!--    <div th:replace="_common/modal :: modal('change-password-user', 'Đổi mật khẩu?', 'Select \'Logout\' below if you are ready to end your current session.', @{/auth/logout})" />-->
+    <div th:replace="~{_common/modal :: modal('logoutModal', 'Ready to Leave?', 'Select \'Logout\' below if you are ready to end your current session.', @{/auth/logout}, 'post', null, null, null)}" />
 
-<!--    <jsp:include page="../common/modal.jsp">-->
-<!--        <jsp:param name="_title" value="Đổi mật khẩu"/>-->
-<!--        <jsp:param name="id" value="${ changePasswordId }"/>-->
-<!--        <jsp:param name="bodyComponent" value="/user/common/change-password-form.jsp"/>-->
-<!--    </jsp:include>-->
+    <div th:replace="~{_common/modal :: modal('changePasswordId', 'Đổi mật khẩu', null, null, null, '/user/common/change-password-form', null, null)}" />
 
     <!-- Bootstrap core JavaScript-->
-    <script src="${contextPath}/static/common/js/jquery-3.3.1.min.js"></script>
-    <script src="${contextPath}/static/common/js/bootstrap.min.js"></script>
+    <script th:src="@{/resources/_common/javascript/jquery-3.3.1.min.js}"></script>
+    <script th:src="@{/resources/_common/javascript/bootstrap.min.js}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="${contextPath}/static/admin/js/jquery.easing.min.js"></script>
+    <script th:src="@{/resources/admin/javascript/jquery.easing.min.js}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="${contextPath}/static/admin/js/admin.min.js"></script>
-    <script src="${contextPath}/static/common/js/sweetalert2.js"></script>
-    <script src="${contextPath}/static/admin/js/spinner.js"></script>
-    <script src="${contextPath}/static/common/js/notifier.js" ></script>
-    <script src="${contextPath}/static/common/js/utilities.js" ></script>
-    <c:forEach var="js" items="${_js}">
-        <script src="${contextPath}/static/${js}.js" type="text/javascript" charset="UTF-8"></script>
-    </c:forEach>
+    <script th:src="@{/resources/admin/javascript/admin.min.js}"></script>
+    <script th:src="@{/resources/_common/javascript/sweetalert2.js}"></script>
+    <script th:src="@{/resources/admin/javascript/spinner.js}"></script>
+    <script th:src="@{/resources/_common/javascript/notifier.js}" ></script>
+    <script th:src="@{/resources/_common/javascript/utilities.js}" ></script>
+    <script
+        th:if="${_JS_KEY ne null}"
+        th:each="js : ${_JS_KEY}"
+        th:src="@{/resources__${js}__.js}"
+    ></script>
 </body>
 </html>

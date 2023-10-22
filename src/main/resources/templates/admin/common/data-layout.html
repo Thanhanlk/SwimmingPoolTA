@@ -1,0 +1,31 @@
+<div
+    xmlns:th="http://www.thymeleaf.org"
+    th:fragment="dataLayout(searchComponent, actionComponent, tableComponent, title, subTitle, isPagination)"
+    th:with="isSearch=${ searchComponent ne null }"
+>
+    <div class="d-flex justify-content-between">
+        <h1 class="h3 mb-2 text-gray-800">[[${title}]]</h1>
+        <a th:if="${isSearch}" data-toggle="collapse" href="#advancedSearch" role="button">
+            Tìm kiếm nâng cao
+        </a>
+    </div>
+
+    <div th:if="${isSearch}" class="collapse" id="advancedSearch">
+        <div th:replace="~{${searchComponent} :: .search-component }"></div>
+    </div>
+
+    <div class="card shadow my-4">
+        <div class="card-header d-flex justify-content-between py-3">
+            <h6 class="m-0 font-weight-bold text-primary">[[${subTitle}]]</h6>
+            <th:block th:if="${actionComponent ne null}">
+                <div th:replace="~{ ${actionComponent} :: .action-component }"></div>
+            </th:block>
+        </div>
+        <div class="card-body">
+            <div th:replace="${tableComponent}"></div>
+            <th:block th:if="${isPagination}">
+                <div th:replace="~{admin/common/paging :: nav}"/>
+            </th:block>
+        </div>
+    </div>
+</div>

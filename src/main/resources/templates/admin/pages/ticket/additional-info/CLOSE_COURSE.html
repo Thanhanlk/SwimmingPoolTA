@@ -1,0 +1,7 @@
+<div th:fragment="additionalInfo(object)" th:object="${object}" class="d-flex flex-column">
+    <span>Mã khóa học: <span class="dots" th:title="*{courseCode}" th:text="*{courseCode}"/></span>
+    <span>Khóa học: <span class="dots" th:title="*{courseName}" th:text="*{courseName}"/></span>
+    <span>Số buổi: <span class="dots" th:text="*{numberLesson}"/></span>
+    <span>Bắt đầu: <span th:text="*{#dates.format(startDate, 'dd/MM/yyyy')}"/></span>
+    <span>[[*{#dates.format(startTime, 'HH:mm')}]] - [[*{#dates.format(endTime, 'HH:mm')}]]</span>
+</div>

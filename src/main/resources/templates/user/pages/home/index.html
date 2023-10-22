@@ -1,0 +1,9 @@
+<div th:replace="~{user/layout :: layout(null, ~{::#content})}">
+    <div id="content">
+        <div th:replace="~{user/pages/home/hero :: #hero}"/>
+        <div th:replace="~{user/pages/home/banner :: #banner}"/>
+        <div th:replace="~{user/pages/home/course :: course('Bán Chạy Nhất', 'bestSeller')}"/>
+        <div th:replace="~{user/pages/home/course :: course('Sản Phẩm Mới', 'newest')}"/>
+        <div th:replace="~{user/pages/home/course :: course('Sốc Sales', 'hotSales')}"/>
+    </div>
+</div>

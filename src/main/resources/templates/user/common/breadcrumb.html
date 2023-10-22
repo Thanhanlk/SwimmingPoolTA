@@ -1,0 +1,18 @@
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option border-top border-white" th:fragment="breadscrumb(list)">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <div class="breadcrumb__links">
+                        <a class="arrow" th:href="@{/home}">Trang chủ</a>
+                        <th:block th:each="item,_status : ${#strings.listSplit(list, ',')}">
+                            <a th:class="${(_status.size-1) > _status.index ? 'arrow' : ''}" th:text="${item}"/>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->

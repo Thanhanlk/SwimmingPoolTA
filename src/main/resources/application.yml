@@ -1,15 +1,26 @@
 server:
   shutdown: graceful
-  port: 8080
+  max-http-request-header-size: 10KB
 
 spring:
+  application:
+    name: swimming-pool
+    version: 1.0.0
+    formatted-version: v1.0.0
+  servlet:
+    multipart:
+      enabled: true
+      resolve-lazily: true
+      max-file-size: 5MB
+      max-request-size: 5MB
+      file-size-threshold: 5MB
   docker:
     compose:
       enabled: true
       file: docker-compose.yaml
   datasource:
     username: root
-    password: NguyenVanSuong@2001
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/swimming-pool?createDatabaseIfNotExist=true
     hikari:
@@ -19,14 +30,53 @@ spring:
   jpa:
     open-in-view: false
     show-sql: true
-    format_sql: true
+    hibernate:
+      ddl-auto: update
+  data:
+    redis:
+      repositories:
+        enabled: false
+  main:
+    allow-bean-definition-overriding: true
+  cache:
+    type: none
+logging:
+  file:
+    name: logs/swimming-pool.log
 # firebase
 firebase:
+  enable: true
   location: firebase.json
   bucket: swimming-pool-27ad5.appspot.com
+  urlImage: 'https://firebasestorage.googleapis.com/v0/b/{0}/o/{1}?alt=media'
 
 # paypal api
 paypal:
-  client-id: ${paypal.client-id}
-  client-secret: ${paypal.client-secret}
+  client-id: ${PAYPAL_CLIENT_ID}
+  client-secret: ${PAYPAL_CLIENT_SECRET}
   mode: sandbox
+  currency: ${rate.currency}
+  success-url: ${app.host}:${app.port}/${app.contenxt-path}payment/execute
+  cancel-url: ${app.host}:${app.port}/${app.contenxt-path}payment/cancel
+
+# rate
+rate:
+  exchange:
+    enabled: true
+  currency: EUR
+  access-token: ${EXCHANGE_RATE_ACCESS_TOKEN}
+  url: 'http://api.exchangeratesapi.io/v1'
+
+# cache
+cache:
+  enable: false
+  host: localhost
+  port: 6379
+  password: ${REDIS_PASSWORD}
+  properties:
+    - name: ACTIVE_POOL
+      ttl: 1440
+    - name: ACTIVE_COURSE
+      ttl: 1440
+    - name: CART
+      ttl: 1440

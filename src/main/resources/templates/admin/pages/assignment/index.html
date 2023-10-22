@@ -1,0 +1,50 @@
+<div xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/layout :: layout(~{::#content})}">
+    <div id="content" th:replace="~{admin/common/data-layout :: dataLayout('admin/pages/assignment/search-form', 'admin/pages/assignment/action', ~{::.table-responsive}, 'Phân công giảng dạy', 'Danh sách lịch dạy', true)}">
+        <div class="table-responsive">
+            <table class="table table-bordered w-100" id="dataTable">
+                <thead>
+                <tr>
+                    <th class="table-column-header" data-col="stt" data-show="true">STT</th>
+                    <th class="table-column-header" data-col="teacher" data-show="true">Giáo viên</th>
+                    <th class="table-column-header" data-col="time" data-show="true">Thời gian</th>
+                    <th class="table-column-header" data-col="course" data-show="true">Khóa học</th>
+                    <th class="table-column-header" data-col="pool" data-show="true">Hồ bơi</th>
+                    <th class="table-column-header" data-col="createdDate" data-show="false">Ngày tạo</th>
+                    <th class="table-column-header" data-col="modifiedDate" data-show="false">Ngày cập nhật</th>
+                    <th>Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="assignment,_status : ${_PAGING_KEY.items}">
+                        <tr th:each="a,_s : ${assignment.assignments}">
+                            <th:block th:if="${_s.index eq 0}">
+                                <td data-col="stt" th:rowspan="${#lists.size(assignment.assignments)}" th:text="${ _status.index + 1 + ( (_PAGING_KEY.page - 1) * _PAGING_KEY.pageSize ) }"></td>
+                                <td data-col="teacher" th:rowspan="${#lists.size(assignment.assignments)}">
+                                    <div th:text="${assignment.userName}" />
+                                    <div th:text="*{assignment.fullName}" />
+                                </td>
+                            </th:block>
+                            <td data-col="time">
+                                <span th:text="#{'day-of-week.' + __${a.day}__}" />&sbquo;
+                                <span th:text="${#dates.format(a.startTime, 'HH:mm')}" />&nbsp;&ndash;
+                                <span th:text="${#dates.format(a.endTime, 'HH:mm')}" />
+                            </td>
+                            <td data-col="course" th:text="${a.courseName}"/>
+                            <td data-col="pool" th:text="${a.poolName}"/>
+                            <td data-col="createdDate" th:text="${#dates.format(a.createdDate, 'dd/MM/yyyy HH:mm')}"/>
+                            <td data-col="modifiedDate" th:text="${#dates.format(a.modifiedDate, 'dd/MM/yyyy HH:mm')}"/>
+                            <th:block th:if="${_s.index eq 0}">
+                                <td th:rowspan="${#lists.size(assignment.assignments)}" class="user-action">
+                                    <div>
+                                        <i class="fa fa-ellipsis-v cursor-pointer" aria-hidden="true"></i>
+                                        <ul th:replace="~{admin/pages/assignment/table-action :: actionList(${assignment.userId})}"></ul>
+                                    </div>
+                                </td>
+                            </th:block>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+<div id="course-sidebar" class="shop__sidebar">
+    <div class="shop__sidebar__search">
+        <form method="get" th:action="@{/course}" th:object="${searchRequest}">
+            <input placeholder="Search..."th:field="*{codeName}">
+            <button type="submit"><span class="icon_search"></span></button>
+        </form>
+    </div>
+    <div class="shop__sidebar__accordion">
+        <div class="accordion" id="accordionExample">
+            <div class="card">
+                <div class="card-heading">
+                    <a data-toggle="collapse" data-target="#DayOfWeekParameter">Thứ</a>
+                </div>
+                <div id="DayOfWeekParameter" class="collapse show">
+                    <div class="card-body">
+                        <div class="shop__sidebar__size d-flex flex-wrap">
+                            <div th:each="d : ${T(java.time.DayOfWeek).values()}" class="col-md-4 p-1">
+                                <th:block th:if="${d eq searchRequest.dayOfWeek}">
+                                    <div class="active">
+                                        <a
+                                            th:text="#{'day-of-week.' + __${d}__}"
+                                            th:href="@{/course}"
+                                        />
+                                    </div>
+                                </th:block>
+                                <th:block th:if="${d ne searchRequest.dayOfWeek}">
+                                    <div>
+                                        <a
+                                            th:text="#{'day-of-week.' + __${d}__}"
+                                            th:href="@{/course?dayOfWeek=__${d}__}"
+                                        />
+                                    </div>
+                                </th:block>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-heading">
+                    <a data-toggle="collapse" data-target="#priceParameter">Giá</a>
+                </div>
+                <div id="priceParameter" class="collapse show">
+                    <div class="card-body">
+                        <div class="shop__sidebar__price">
+                            <ul>
+                                <li th:replace="~{user/pages/course/price-parameter :: priceParameter(0, 50000)}"/>
+                                <li th:replace="~{user/pages/course/price-parameter :: priceParameter(50000, 100000)}"/>
+                                <li th:replace="~{user/pages/course/price-parameter :: priceParameter(100000, 150000)}"/>
+                                <li th:replace="~{user/pages/course/price-parameter :: priceParameter(150000, 200000)}"/>
+                                <li th:replace="~{user/pages/course/price-parameter :: priceParameter(200000, 250000)}"/>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
