@@ -55,7 +55,7 @@ paypal:
   client-id: ${PAYPAL_CLIENT_ID}
   client-secret: ${PAYPAL_CLIENT_SECRET}
   mode: sandbox
-  currency: ${rate.curency}
+  currency: ${rate.currency}
   success-url: ${app.host}:${app.port}/${app.contenxt-path}payment/execute
   cancel-url: ${app.host}:${app.port}/${app.contenxt-path}payment/cancel
 
@@ -63,7 +63,7 @@ paypal:
 rate:
   exchange:
     enabled: true
-  curency: EUR
+  currency: EUR
   access-token: ${EXCHANGE_RATE_ACCESS_TOKEN}
   url: 'http://api.exchangeratesapi.io/v1'
 
