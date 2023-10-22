@@ -6,11 +6,11 @@
                     <div class="user-action">
                         <div>
                             <i class="fa fa-ellipsis-v cursor-pointer" aria-hidden="true"></i>
-                            <div th:replace="~{admin/pages/ticket/ticket-modal :: tickerModal(${id}, ${id}, 'CLOSE_COURSE', 'Kết thúc khóa học')}"/>
+                            <div th:replace="~{admin/pages/ticket/ticket-modal :: tickerModal(${'close-course' + id}, ${id}, 'CLOSE_COURSE', 'Kết thúc khóa học')}"/>
                             <ul class="d-none bg-white pl-0 rounded border">
                                 <li>
                                     <div class="p-2">
-                                        <a href="javascript:void(0)" data-toggle="modal" th:data-target="${'#' + id}">Kết thúc khóa học</a>
+                                        <a href="javascript:void(0)" data-toggle="modal" th:data-target="${'#close-course' + id}">Kết thúc khóa học</a>
                                     </div>
                                 </li>
                             </ul>
