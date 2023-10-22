@@ -3,6 +3,8 @@ server:
   max-http-request-header-size: 10KB
 
 spring:
+  profiles:
+    active: dev
   application:
     name: swimming-pool
     version: 1.0.0
@@ -20,7 +22,7 @@ spring:
       file: docker-compose.yaml
   datasource:
     username: root
-    password: ${DB_PASSWORD}
+    password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/swimming-pool?createDatabaseIfNotExist=true
     hikari:
@@ -52,10 +54,10 @@ firebase:
 
 # paypal api
 paypal:
-  client-id: ${PAYPAL_CLIENT_ID}
-  client-secret: ${PAYPAL_CLIENT_SECRET}
+  client-id: AQq0ul4ZlpCXokhrnONUkDifaPe5ZXtPuPu0Ye3KrZ7h6d5a71fLNGtzw8wiIkWfqRfAe2zTl1TBOkEh
+  client-secret: ECdZ-vjaJQ6DpTWyJi-l7o_JngLdFbFJTCaRJVyiGTHOuBYB2tB2ECYP51EfntHZy0M1u0RFBeCgo2Rc
   mode: sandbox
-  currency: ${rate.curency}
+  currency: ${rate.currency}
   success-url: ${app.host}:${app.port}/${app.contenxt-path}payment/execute
   cancel-url: ${app.host}:${app.port}/${app.contenxt-path}payment/cancel
 
@@ -63,8 +65,8 @@ paypal:
 rate:
   exchange:
     enabled: true
-  curency: EUR
-  access-token: ${EXCHANGE_RATE_ACCESS_TOKEN}
+  currency: EUR
+  access-token: 0ae9f8ed709d751cd3bc8d630dab3d06
   url: 'http://api.exchangeratesapi.io/v1'
 
 # cache
@@ -72,7 +74,7 @@ cache:
   enable: false
   host: localhost
   port: 6379
-  password: ${REDIS_PASSWORD}
+  password: 123456
   properties:
     - name: ACTIVE_POOL
       ttl: 1440
