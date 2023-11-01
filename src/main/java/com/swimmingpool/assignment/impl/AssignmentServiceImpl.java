@@ -156,14 +156,14 @@ public class AssignmentServiceImpl implements IAssignmentService {
         }
         this.courseService.findByIdThrowIfNotPresent(form.getCourseId());
         Pool pool = this.poolService.findByIdThrowIfNotPresent(form.getPoolId());
-        Optional<Assignment> assignmentByPoolId = this.assignmentRepository.findByPoolIdAndStartTimeBetweenAndDayOfWeek(
+        List<Assignment> assignmentByPoolId = this.assignmentRepository.findByPoolIdAndStartTimeBetweenAndDayOfWeek(
                 form.getPoolId(),
                 startTime,
                 endTime,
                 form.getDayOfWeek().getValue()
-        ).filter(x -> !x.getId().equals(form.getId()));
-        if (assignmentByPoolId.isPresent()) {
-            Assignment a = assignmentByPoolId.get();
+        ).stream().filter(x -> !x.getId().equals(form.getId())).toList();
+        if (!assignmentByPoolId.isEmpty()) {
+            Assignment a = assignmentByPoolId.get(0);
             String name = DayOfWeek.of(a.getDayOfWeek()).name();
             throw new ValidationException(
                     "assignment.pool-id.validate.exist",
@@ -174,14 +174,14 @@ public class AssignmentServiceImpl implements IAssignmentService {
             );
         }
 
-        Optional<Assignment> assignmentByUserId = this.assignmentRepository.findByUserIdAndStartTimeBetweenAndDayOfWeek(
+        List<Assignment> assignmentByUserId = this.assignmentRepository.findByUserIdAndStartTimeBetweenAndDayOfWeek(
                 user.getId(),
                 startTime,
                 endTime,
                 form.getDayOfWeek().getValue()
-        ).filter(x -> !x.getId().equals(form.getId()));
-        if (assignmentByUserId.isPresent()) {
-            Assignment a = assignmentByUserId.get();
+        ).stream().filter(x -> !x.getId().equals(form.getId())).toList();
+        if (!assignmentByUserId.isEmpty()) {
+            Assignment a = assignmentByUserId.get(0);
             String name = DayOfWeek.of(a.getDayOfWeek()).name();
             throw new ValidationException(
                     "assignment.user-id.validate.exist",

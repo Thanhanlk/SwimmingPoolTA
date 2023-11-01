@@ -17,16 +17,18 @@ public interface AssignmentRepository extends JpaRepository<Assignment, String> 
             " AND (?2 BETWEEN a.startTime AND a.endTime" +
             " OR ?3 BETWEEN a.startTime AND a.endTime)" +
             " AND a.dayOfWeek = ?4" +
+            " AND a.startDate >= CURRENT_DATE" +
             " AND a.active = true")
-    Optional<Assignment> findByPoolIdAndStartTimeBetweenAndDayOfWeek(String poolId, Time startTime, Time endTime, Integer dayOfWeek);
+    List<Assignment> findByPoolIdAndStartTimeBetweenAndDayOfWeek(String poolId, Time startTime, Time endTime, Integer dayOfWeek);
 
     @Query("SELECT a FROM Assignment a" +
             " WHERE a.userId = ?1" +
             " AND (?2 BETWEEN a.startTime AND a.endTime" +
             " OR ?3 BETWEEN a.startTime AND a.endTime)" +
             " AND a.dayOfWeek = ?4" +
+            " AND a.startDate >= CURRENT_DATE" +
             " AND a.active = true")
-    Optional<Assignment> findByUserIdAndStartTimeBetweenAndDayOfWeek(String userId, Time startTime, Time endTime, Integer dayOfWeek);
+    List<Assignment> findByUserIdAndStartTimeBetweenAndDayOfWeek(String userId, Time startTime, Time endTime, Integer dayOfWeek);
 
     @Query("SELECT a FROM Assignment a WHERE a.userId = ?1 ORDER BY a.dayOfWeek, a.startTime")
     List<Assignment> findByUserId(String userId);
