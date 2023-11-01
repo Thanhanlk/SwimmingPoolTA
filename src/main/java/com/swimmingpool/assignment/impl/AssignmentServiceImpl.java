@@ -131,9 +131,9 @@ public class AssignmentServiceImpl implements IAssignmentService {
                 .map(AssignmentField::getId)
                 .filter(Objects::nonNull)
                 .toList();
-        // if (!CollectionUtils.isEmpty(ids)) {
-        //     this.assignmentRepository.deleteAllNotIds(ids, creationRequest.getUserId());
-        // }
+        if (!CollectionUtils.isEmpty(ids)) {
+            this.assignmentRepository.deleteAllNotIds(ids, creationRequest.getUserId());
+        }
         Map<String, Assignment> assignmentByUserIdMap = this.findByUserId(creationRequest.getUserId()).stream()
                 .collect(Collectors.toMap(Assignment::getId, v -> v));
         for (AssignmentField form : creationRequest.getAssignmentFields()) {
