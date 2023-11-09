@@ -13,4 +13,5 @@ public class AvailableAssignmentResponse {
     private DayOfWeek dayOfWeek;
     private Long registerStudent;
     private Integer maxStudent;
+    private String teacherName;
 }

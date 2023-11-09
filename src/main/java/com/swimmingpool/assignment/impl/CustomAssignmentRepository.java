@@ -75,9 +75,10 @@ public class CustomAssignmentRepository {
     }
 
     public List<AvailableAssignmentResponse> findAvailableAssignment(String courseId) {
-        String sql = new StringBuilder("SELECT a.id, a.dayOfWeek, a.startTime, a.endTime, p.numberOfStudent, count(o.id) FROM Assignment a")
+        String sql = new StringBuilder("SELECT a.id, a.dayOfWeek, a.startTime, a.endTime, p.numberOfStudent, count(o.id), u.fullName FROM Assignment a")
                 .append("  LEFT JOIN Order o ON o.assignmentId = a.id")
                 .append("  JOIN Pool p ON p.id = a.poolId")
+                .append("  JOIN User u ON u.id = a.userId")
                 .append(" WHERE a.active = true AND a.startDate > CURRENT_DATE AND a.courseId = :courseId")
                 .append(" GROUP BY a.id")
                 .append(" ORDER BY a.dayOfWeek, a.startTime ASC")
@@ -96,6 +97,7 @@ public class CustomAssignmentRepository {
                     assignmentResponse.setEndTime(tuple.get(3, Time.class));
                     assignmentResponse.setMaxStudent(tuple.get(4, Integer.class));
                     assignmentResponse.setRegisterStudent(tuple.get(5, Long.class));
+                    assignmentResponse.setTeacherName(tuple.get(6, String.class));
                     return assignmentResponse;
                 })
                 .toList();

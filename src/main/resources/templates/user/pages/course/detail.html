@@ -31,6 +31,7 @@
                                             <label th:for="${a.id}" class="mb-0 d-flex flex-column align-items-center">
                                                 <span><th:block th:text="#{'day-of-week.' + ${a.dayOfWeek}}"/>&#44;&nbsp;<th:block th:text="${#dates.format(a.startTime, 'HH:mm')}"/>-<th:block th:text="${#dates.format(a.endTime, 'HH:mm')}"/></span>
                                                 <span><b>Học viên: </b>[[${a.registerStudent}]]/[[${a.maxStudent}]]</span>
+                                                <span><b th:text="${a.teacherName}"/></span>
                                             </label>
                                         </div>
                                     </div>
