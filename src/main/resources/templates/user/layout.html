@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title th:if="${title ne null}" th:text="${title}"/>
     <title th:if="${title eq null}" th:text="'Trung tâm dạy bơi'"/>
+    <link rel="stylesheet" href="/css/chonlichuser.css">
     <link rel="icon" th:href="@{/resources/img/favicon.ico}" />
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
@@ -43,6 +44,8 @@
     </style>
 </head>
 <body>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v18.0" nonce="sF5yvsIm"></script>
 
     <div style="height: fit-content">
         <div th:replace="~{_common/notifier :: div}"></div>
@@ -51,7 +54,33 @@
             <div class="loader"></div>
         </div>
         <header th:replace="~{user/common/header :: header}" />
-        <div th:replace="${content}"/>
+        <div th:replace="${content}">
+            <!-- Other content goes here -->
+        </div>
+
+        <!-- Floating Messenger Button -->
+        <!-- Floating Messenger Button -->
+        <a href="https://www.facebook.com/messages/t/100009874608828" class="floating-messenger-button" target="_blank" rel="noopener noreferrer">
+            <img src="https://aristino.com/Content/pc/images/icon/facebook_mesenger.svg" alt="Chat with us on Facebook Messenger" />
+        </a>
+
+        <!-- Styling for floating button -->
+        <style>
+        .floating-messenger-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .floating-messenger-button img {
+            width: 60px; /* You can adjust the size as needed */
+            height: auto;
+        }
+    </style>
+
+
+
         <footer th:replace="~{user/common/footer :: footer}"/>
     </div>
 

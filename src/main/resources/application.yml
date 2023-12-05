@@ -49,7 +49,7 @@ logging:
 firebase:
   enable: true
   location: firebase.json
-  bucket: swimming-pool-27ad5.appspot.com
+  bucket: swimming-pool-3728e.appspot.com
   urlImage: 'https://firebasestorage.googleapis.com/v0/b/{0}/o/{1}?alt=media'
 
 # paypal api

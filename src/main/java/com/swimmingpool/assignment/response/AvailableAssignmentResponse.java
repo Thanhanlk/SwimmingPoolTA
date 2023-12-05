@@ -14,4 +14,5 @@ public class AvailableAssignmentResponse {
     private Long registerStudent;
     private Integer maxStudent;
     private String teacherName;
+    private String poolName;
 }

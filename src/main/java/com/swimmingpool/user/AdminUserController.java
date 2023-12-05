@@ -30,8 +30,8 @@ public class AdminUserController extends BaseController {
     public String getStaff(UserSearchRequest userSearchRequest, Model model) {
         userSearchRequest.setRole(UserConstant.Role.TEACHER);
         PageResponse<UserSearchResponse> pageResponse = this.userService.searchUser(userSearchRequest);
-        model.addAttribute("title", "Quản lý nhân viên");
-        model.addAttribute("subTitle", "Danh sách nhân viên");
+        model.addAttribute("title", "Quản lý giáo viên");
+        model.addAttribute("subTitle", "Danh sách giáo viên");
         return this.index(model, pageResponse, userSearchRequest);
     }
 
@@ -87,8 +87,8 @@ public class AdminUserController extends BaseController {
     public String getCustomer(UserSearchRequest userSearchRequest, Model model) {
         userSearchRequest.setRole(UserConstant.Role.USER);
         PageResponse<UserSearchResponse> pageResponse = this.userService.searchUser(userSearchRequest);
-        model.addAttribute("title", "Quản lý khách hàng");
-        model.addAttribute("subTitle", "Danh sách khách hàng");
+        model.addAttribute("title", "Quản lý học viên");
+        model.addAttribute("subTitle", "Danh sách học viên");
         return this.index(model, pageResponse, userSearchRequest);
     }
 

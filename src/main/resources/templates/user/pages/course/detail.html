@@ -1,4 +1,4 @@
-<div th:replace="~{user/layout :: layout(${course.name}, ~{::#content})}">
+<div th:replace="~{user/layout :: layout(${course.name}, ~{::#content})}" xmlns:th="http://www.w3.org/1999/xhtml">
     <div id="content">
         <!-- Shop Details Section Begin -->
         <section class="shop-details">
@@ -10,36 +10,49 @@
                             <img th:src="${course.image}" class="h-100"/>
                         </div>
                         <div class="col-md-5">
-                            <form id="add-cart-form" th:action="@{/cart}" method="post" class="product__details__text text-left">
-                                <input type="hidden" name="_REDIRECT_URL_KEY" th:value="@{/course/${course.slug}?courseCode=${course.code}}" />
-                                <h4 class="dots" th:title="${course.name}" th:text="${course.name}"/>
-                                <div class="d-flex align-items-center mb-2">
-                                    <th:block th:if="${course.discount le 0}">
-                                        <h5 id="new-price" class="mb-0" th:text="${#numbers.formatCurrency(course.price)}"/>
-                                    </th:block>
-                                    <th:block th:if="${course.discount gt 0}">
-                                        <h5 id="new-price" class="mb-0" th:text="${#numbers.formatCurrency(course.price * ((100 - course.discount)/100.0))}"/>
-                                        <span id="old-price" th:text="${#numbers.formatCurrency(course.price)}"/>
-                                    </th:block>
-                                </div>
-                                <p class="my-3" th:text="${course.shortDescription}"/>
-                                <div class="product__details__option">
-                                    <b>Lịch (Chọn lịch để đăng ký)</b>
-                                    <div class="owl-carousel mt-3">
-                                        <div th:each="a : ${course.assignments}" class="d-flex border p-3" th:classappend="${a.maxStudent eq a.registerStudent ? 'disabled' : ''}" style="gap: 5px">
-                                            <input th:id="${a.id}" type="checkbox" name="assignmentId" th:value="${a.id}" th:disabled="${a.maxStudent eq a.registerStudent}" required/>
-                                            <label th:for="${a.id}" class="mb-0 d-flex flex-column align-items-center">
-                                                <span><th:block th:text="#{'day-of-week.' + ${a.dayOfWeek}}"/>&#44;&nbsp;<th:block th:text="${#dates.format(a.startTime, 'HH:mm')}"/>-<th:block th:text="${#dates.format(a.endTime, 'HH:mm')}"/></span>
-                                                <span><b>Học viên: </b>[[${a.registerStudent}]]/[[${a.maxStudent}]]</span>
-                                                <span><b th:text="${a.teacherName}"/></span>
-                                            </label>
+                            <th:block th:if="${course != null}">
+                                <form id="add-cart-form" th:action="@{/cart}" method="post" class="product__details__text text-left">
+                                    <input type="hidden" name="_REDIRECT_URL_KEY" th:value="@{/course/${course.slug}?courseCode=${course.code}}" />
+                                    <h4 class="dots" th:title="${course.name}" th:text="${course.name}"/>
+                                    <div class="d-flex align-items-center mb-2">
+                                        <th:block th:if="${course.discount le 0}">
+                                            <h5 id="new-price" class="mb-0" th:text="${#numbers.formatCurrency(course.price)}"/>
+                                        </th:block>
+                                        <th:block th:if="${course.discount gt 0}">
+                                            <h5 id="new-price" class="mb-0" th:text="${#numbers.formatCurrency(course.price * ((100 - course.discount)/100.0))}"/>
+                                            <span id="old-price" th:text="${#numbers.formatCurrency(course.price)}"/>
+                                        </th:block>
+                                    </div>
+                                    <p class="my-3" th:text="${course.shortDescription}"/>
+                                    <div class="product__details__option">
+                                        <b>Lịch (Chọn lịch để đăng ký)</b>
+                                        <div class="owl-carousel mt-3">
+                                            <th:block th:if="${not #lists.isEmpty(course.assignments)}">
+                                                <div th:each="a : ${course.assignments}" class="d-flex border p-3" th:classappend="${a.maxStudent eq a.registerStudent ? 'disabled' : ''}" style="gap: 5px">
+                                                    <input th:id="${a.id}" type="checkbox" name="assignmentId" th:value="${a.id}" th:disabled="${a.maxStudent eq a.registerStudent}" />
+                                                    <label th:for="${a.id}" class="mb-0 d-flex flex-column align-items-center">
+                                                        <span><b>Ngày: </b><th:block th:text="#{'day-of-week.' + ${a.dayOfWeek}}"/>&#44;&nbsp;<th:block th:text="${#dates.format(a.startTime, 'HH:mm')}"/>-<th:block th:text="${#dates.format(a.endTime, 'HH:mm')}"/></span>
+                                                        <span><b>Học viên: </b>[[${a.registerStudent}]]/[[${a.maxStudent}]]</span>
+                                                        <span><b>Giáo viên: </b><span th:text="${a.teacherName}"/></span>
+                                                        <span><b>Hồ bơi: </b><span th:text="${a.poolName}"></span></span>
+                                                    </label>
+                                                </div>
+                                            </th:block>
+                                            <th:block th:unless="${not #lists.isEmpty(course.assignments)}">
+                                                <!-- Display this text when there are no assignments -->
+                                                <span><b>Chưa có lịch bạn nhé !!<b></b></span>
+                                            </th:block>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="product__details__cart__option mb-0">
-                                    <button class="primary-btn border-0 rounded w-100">Thêm giỏ hàng</button>
-                                </div>
-                            </form>
+                                    <div class="product__details__cart__option mb-0">
+                                        <button class="primary-btn border-0 rounded w-100">Thêm giỏ hàng</button>
+                                    </div>
+                                </form>
+                            </th:block>
+                            <th:block th:unless="${course != null}">
+                                <!-- Display this text when there is no course -->
+                                <span>Không có Khóa học</span>
+                            </th:block>
                         </div>
                     </div>
                     <div class="row">

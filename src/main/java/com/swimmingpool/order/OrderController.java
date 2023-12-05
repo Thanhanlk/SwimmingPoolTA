@@ -42,7 +42,14 @@ public class OrderController extends BaseController {
     }
 
     @GetMapping("/checkout")
-    public String checkout(@RequestParam List<String> cartId, Model model) {
+    public String checkout(@RequestParam List<String> cartId, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        // Retrieve user-specific details here, e.g., firstname, lastname, phone from userDetails
+        String firstname = userDetails.getUsername(); // Replace with the actual method to get the firstname
+
+
+        // Pass the user details to the Thymeleaf template
+        model.addAttribute("firstname", firstname);
+
         List<CartResponse> checkoutProduct = this.cartService.getMyCart(cartId);
         BigDecimal newPrice = new BigDecimal("0");
         BigDecimal oldPrice = new BigDecimal("0");
@@ -57,4 +64,5 @@ public class OrderController extends BaseController {
         this.addCss(model, "/user/css/checkout");
         return "/user/pages/checkout/index";
     }
+
 }

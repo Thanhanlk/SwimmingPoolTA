@@ -76,7 +76,7 @@ public class CustomOrderRepository {
         }
 
         if (Objects.nonNull(orderSearchRequest.getCreatedBy())) {
-            sqlBuilder.append(" AND o.created_by <= :createdBy");
+            sqlBuilder.append(" AND o.created_by = :createdBy");
             params.put("createdBy", orderSearchRequest.getCreatedBy());
         }
 

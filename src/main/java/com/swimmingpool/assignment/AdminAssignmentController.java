@@ -58,11 +58,12 @@ public class AdminAssignmentController extends BaseController {
     @PostMapping("/add-row")
     public String addRowAssignment(
             @ModelAttribute("assignmentCreation") AssignmentCreationRequest creationRequest,
-            @RequestParam(required = false) Optional<String> userId,
+            @RequestParam(required = false, name = "userId") Optional<String> userId,
             RedirectAttributes redirectAttributes) {
         creationRequest.addAssignmentField(new AssignmentField());
         redirectAttributes.addFlashAttribute("assignmentCreation", creationRequest);
-        return userId.map(i -> "redirect:/admin/assignment/update?userId=" + i).orElse("redirect:/admin/assignment/create");
+        return userId.map(i -> "redirect:/admin/assignment/update?userId=" + i)
+                .orElse("redirect:/admin/assignment/create");
     }
 
     @PostMapping("/delete-row")
