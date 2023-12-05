@@ -24,6 +24,7 @@
     <link rel="stylesheet" th:href="@{/resources/user/css/style.css}" type="text/css">
     <link rel="stylesheet" th:href="@{/resources/user/css/header.css}" type="text/css">
     <link rel="stylesheet" th:href="@{/resources/user/css/footer.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/resources/user/css/chatgpt.css}" type="text/css">
     <link
             th:if="${_CSS_KEY ne null}"
             th:each="css : ${_CSS_KEY}"
@@ -41,6 +42,18 @@
             overflow: hidden;
             white-space: nowrap;
         }
+
+        .chat-container {
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            gap: 10px;
+        }
+
+        .chat-container img {
+            width: 45px;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -54,33 +67,14 @@
             <div class="loader"></div>
         </div>
         <header th:replace="~{user/common/header :: header}" />
-        <div th:replace="${content}">
-            <!-- Other content goes here -->
+        <div th:replace="${content}"></div>
+
+        <div class="chat-container d-flex flex-column position-fixed">
+            <div th:replace="~{user/chatbot/messenger :: #messenger}"/>
+            <div th:replace="~{user/chatbot/GPT :: #gpt}"/>
         </div>
 
-        <!-- Floating Messenger Button -->
-        <!-- Floating Messenger Button -->
-        <a href="https://www.facebook.com/messages/t/100009874608828" class="floating-messenger-button" target="_blank" rel="noopener noreferrer">
-            <img src="https://aristino.com/Content/pc/images/icon/facebook_mesenger.svg" alt="Chat with us on Facebook Messenger" />
-        </a>
-
-        <!-- Styling for floating button -->
-        <style>
-        .floating-messenger-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .floating-messenger-button img {
-            width: 60px; /* You can adjust the size as needed */
-            height: auto;
-        }
-    </style>
-
-
-
+        <div th:replace="~{user/common/chatGPT :: #chatGPT}"/>
         <footer th:replace="~{user/common/footer :: footer}"/>
     </div>
 
@@ -105,6 +99,7 @@
     <script th:src="@{/resources/_common/javascript/utilities.js}"></script>
     <script th:src="@{/resources/admin/javascript/spinner.js}"></script>
     <script th:src="@{/resources/user/javascript/main.js}"></script>
+<script th:src="@{/resources/user/javascript/chat-gpt.js}"></script>
     <script
             th:if="${_JS_KEY ne null}"
             th:each="js : ${_JS_KEY}"

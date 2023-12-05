@@ -55,6 +55,7 @@ public class SecurityConfig {
                             .requestMatchers("/resources/**").permitAll()
                             .requestMatchers("/course/**").permitAll()
                             .requestMatchers("/contact", "/").permitAll()
+                            .requestMatchers("/chat-gpt/**").permitAll()
                             .requestMatchers("/admin/**").hasAuthority(ADMIN.name())
                             .requestMatchers("/teacher/**").hasAuthority(TEACHER.name())
                             .requestMatchers("/ticket/**").hasAnyAuthority(TEACHER.name(), ADMIN.name())

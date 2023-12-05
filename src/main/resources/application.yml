@@ -82,3 +82,9 @@ cache:
       ttl: 1440
     - name: CART
       ttl: 1440
+chatgpt:
+  url: 'https://api.openai.com'
+  api-key: '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'
+  model: gpt-3.5-turbo
+  read-timeout: 60000
+  connect-timeout: 60000
