@@ -49,32 +49,18 @@ const cardBodyScrollEnd = () => {
 
 const messageComponent = ({ isUser, content }) => {
     const wrapper = document.createElement("div");
-    wrapper.classList.add("d-flex", "mb-4");
-    wrapper.style.flexDirection = isUser ? "row-reverse" : "row";
+    wrapper.classList.add("message", `message-${isUser ? 'USER' : 'ASSISTANT'}`);
+
+    const img = document.createElement("div");
+    img.classList.add("image");
 
     const div = document.createElement("div");
-    div.classList.add("p-3", "rounded");
-    if (isUser) {
-        div.classList.add("border", "mr-2");
-        div.style.backgroundColor = "#fbfbfb";
-    } else {
-        div.classList.add("ml-2");
-        div.style.backgroundColor = "rgba(57, 192, 237, 0.2";
-    }
-
+    div.classList.add('content')
     const p = document.createElement("p");
     p.classList.add("small", "mb-0");
+
     p.textContent = content;
     div.appendChild(p);
-
-    const img = document.createElement("img");
-    if (isUser) {
-        img.src = "/resources/img/icon/ava2-bg.webp";
-    } else {
-        img.src = "/resources/img/icon/chatgpt-icon.png";
-    }
-    img.style.width = "45px";
-    img.style.height = "45px";
 
     wrapper.appendChild(img);
     wrapper.appendChild(div);

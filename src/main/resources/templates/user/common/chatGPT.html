@@ -8,24 +8,17 @@
             <i class="fa fa-times" aria-hidden="true" data-toggle="collapse" data-target="#chatGPT" style="cursor: pointer"></i>
         </div>
         <div class="card-body" style="height: 400px; overflow: auto">
-            <div class="d-flex flex-row mb-4">
-                <img th:src="@{/resources/img/icon/chatgpt-icon.png}" alt="chat GPT" style="width: 45px; height: 100%;"/>
-                <div class="p-3 ml-2 rounded" style="background-color: rgba(57, 192, 237,.2);">
+            <div class="message message-ASSISTANT">
+                <div class="image"></div>
+                <div class="content">
                     <p class="small mb-0">Hồ bơi Thanh An có thể hỗ trợ gì cho bạn?</p>
                 </div>
             </div>
             <th:block th:each="message: ${session.get(T(com.swimmingpool.chatgpt.constant.ChatGptConstant).CHAT_HIS_KEY)}">
 
-                <div th:if="${message.role.name() ne 'USER'}" class="d-flex flex-row mb-4">
-                    <img th:src="@{/resources/img/icon/chatgpt-icon.png}" alt="chat GPT" style="width: 45px; height: 45px;"/>
-                    <div class="p-3 ml-2 rounded" style="background-color: rgba(57, 192, 237,.2);">
-                        <p class="small mb-0" th:text="${message.content}"/>
-                    </div>
-                </div>
-
-                <div th:if="${message.role.name() eq 'USER'}" class="d-flex flex-row-reverse mb-4">
-                    <img th:src="@{/resources/img/icon/ava2-bg.webp}" alt="avatar 1" style="width: 45px; height: 45px;">
-                    <div class="p-3 mr-2 border rounded" style="background-color: #fbfbfb;">
+                <div th:class="${'message message-' + message.role.name()}">
+                    <div class="image"></div>
+                    <div class="content">
                         <p class="small mb-0" th:text="${message.content}"/>
                     </div>
                 </div>

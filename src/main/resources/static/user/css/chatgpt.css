@@ -73,3 +73,47 @@
 #chat1 .form-outline .form-control~.form-label {
     color: #bfbfbf;
 }
+
+.message {
+    display: flex;
+    margin-bottom: 1.5rem!important;
+}
+
+.message-USER {
+    flex-direction: row-reverse;
+}
+
+.message-ASSISTANT {
+    flex-direction: row;
+}
+
+.message > .image {
+    min-width: 45px;
+    max-width: 45px;
+    height: 45px;
+    background-size: 100% 100%;
+}
+
+.message > .content {
+    padding: 1rem!important;
+    border-radius: 0.25rem!important;
+}
+
+.message-USER > .content {
+    margin-right: 0.5rem!important;
+    border: 1px solid #dee2e6!important;
+    background-color: #fbfbfb;
+}
+
+.message-ASSISTANT > .content {
+    margin-left: 0.5rem!important;
+    background-color: rgba(57, 192, 237,.2);
+}
+
+.message-USER > .image {
+    background-image: url("/resources/img/icon/ava2-bg.webp");
+}
+
+.message-ASSISTANT > .image {
+    background-image: url("/resources/img/icon/chatgpt-icon.png");
+}
