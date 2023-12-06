@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous" />
+
+        <style>
+            #chat-container {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 1000;
+            }
+
+            #chatGPT {
+                position: fixed;
+                bottom: 20px;
+                right: 0px;
+                z-index: 1000;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root"></div>
+        <div id="chat-container">
+            <a
+                data-toggle="collapse"
+                href="#chatGPT">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0,0,256,256"
+                    width="48px"
+                    height="48px">
+                    <g
+                        fill="#32c041"
+                        fill-rule="nonzero"
+                        stroke="none"
+                        stroke-width="1"
+                        stroke-linecap="butt"
+                        stroke-linejoin="miter"
+                        stroke-miterlimit="10"
+                        stroke-dasharray=""
+                        stroke-dashoffset="0"
+                        font-family="none"
+                        font-weight="none"
+                        font-size="none"
+                        text-anchor="none"
+                        style="mix-blend-mode: normal">
+                        <g transform="scale(5.33333,5.33333)">
+                            <path
+                                d="M30.7,7.27l-2.37,1.83c-1.605,-2.067 -4.068,-3.209 -6.697,-3.092c-4.32,0.192 -7.633,3.945 -7.633,8.269v9.143l10.5,6.12l-1,1.72l-11.706,-6.827c-0.492,-0.287 -0.794,-0.813 -0.794,-1.382v-8.687c0,-6.264 5.129,-11.574 11.39,-11.357c3.279,0.113 6.29,1.656 8.31,4.263z"></path>
+                            <path
+                                d="M12.861,9.833l0.4,2.967c-2.592,0.357 -4.813,1.919 -6.026,4.254c-1.994,3.837 -0.4,8.582 3.345,10.745l7.918,4.571l10.55,-6.033l0.99,1.726l-11.765,6.724c-0.494,0.282 -1.101,0.281 -1.594,-0.003l-7.523,-4.343c-5.426,-3.133 -7.46,-10.23 -4.142,-15.543c1.738,-2.784 4.58,-4.619 7.847,-5.065z"></path>
+                            <path
+                                d="M6.161,26.563l2.77,1.137c-0.987,2.423 -0.745,5.128 0.671,7.346c2.326,3.645 7.233,4.638 10.977,2.476l7.918,-4.572l0.05,-12.153l1.99,0.006l-0.059,13.551c-0.002,0.569 -0.307,1.094 -0.8,1.379l-7.523,4.343c-5.425,3.132 -12.588,1.345 -15.531,-4.185c-1.541,-2.897 -1.71,-6.275 -0.463,-9.328z"></path>
+                            <path
+                                d="M17.3,40.73l2.37,-1.83c1.605,2.067 4.068,3.209 6.697,3.092c4.32,-0.192 7.633,-3.945 7.633,-8.269v-9.143l-10.5,-6.12l1,-1.72l11.706,6.827c0.492,0.287 0.794,0.813 0.794,1.382v8.687c0,6.264 -5.13,11.574 -11.39,11.358c-3.279,-0.114 -6.29,-1.657 -8.31,-4.264z"></path>
+                            <path
+                                d="M35.139,38.167l-0.4,-2.967c2.592,-0.357 4.813,-1.919 6.026,-4.254c1.994,-3.837 0.4,-8.582 -3.345,-10.745l-7.918,-4.571l-10.55,6.033l-0.99,-1.726l11.765,-6.724c0.494,-0.282 1.101,-0.281 1.594,0.003l7.523,4.343c5.425,3.132 7.459,10.229 4.141,15.543c-1.737,2.784 -4.579,4.619 -7.846,5.065z"></path>
+                            <path
+                                d="M41.839,21.437l-2.77,-1.137c0.987,-2.423 0.745,-5.128 -0.671,-7.346c-2.326,-3.645 -7.233,-4.638 -10.977,-2.476l-7.918,4.572l-0.05,12.153l-1.99,-0.006l0.059,-13.551c0.002,-0.569 0.307,-1.094 0.8,-1.379l7.523,-4.343c5.425,-3.132 12.588,-1.345 15.531,4.185c1.541,2.897 1.71,6.275 0.463,9.328z"></path>
+                        </g>
+                    </g>
+                </svg>
+            </a>
+        </div>
+
+        <div
+            class="collapse col-md-5 col-sm-12"
+            id="chatGPT">
+            <div
+                class="card"
+                id="chat1"
+                style="border-radius: 15px">
+                <div
+                    class="card-header d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"
+                    style="border-top-left-radius: 15px; border-top-right-radius: 15px">
+                    <i class="fas fa-angle-left"></i>
+                    <p class="mb-0 fw-bold">Live chat</p>
+                    <span
+                        style="cursor: pointer"
+                        data-toggle="collapse"
+                        data-target="#chatGPT"
+                        >&times;</span
+                    >
+                </div>
+                <div
+                    class="card-body d-flex flex-column"
+                    style="height: 400px; overflow: auto; gap: 20px"></div>
+                <div class="card-footer">
+                    <div class="form-outline">
+                        <input
+                            class="form-control"
+                            id="input"
+                            placeholder="Nhập câu hỏi" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <script>
+        const root = document.getElementById("root");
+        const input = document.querySelector("#input");
+        const cardBody = document.querySelector("#chatGPT .card-body");
+        const chatGPTRequest = {
+            model: "gpt-3.5-turbo-1106",
+            stream: true,
+            messages: [],
+        };
+        input.addEventListener("keyup", async (e) => {
+            if (e.keyCode != 13) return;
+            const value = e.target.value;
+            e.target.value = null;
+            chatGPTRequest.messages.push({
+                role: "user",
+                content: value,
+            });
+            appendMessageComponent({ isUser: true, content: value });
+            fetch("https://api.openai.com/v1/chat/completions", {
+                method: "post",
+                headers: {
+                    Authorization: "Bearer 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",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(chatGPTRequest),
+            }).then((response) => {
+                const reader = response.body.getReader();
+                const message = appendMessageComponent({ isUser: false, content: "" });
+
+                const content = message.querySelector("p");
+                function read() {
+                    reader.read().then(({ done, value }) => {
+                        if (done) {
+                            return;
+                        }
+                        // Process the stream data (e.g., convert to text)
+                        const text = new TextDecoder().decode(value);
+                        var rx = /"content"\s*:\s*"([^"]*)"/g;
+                        let match;
+                        while ((match = rx.exec(text)) !== null) {
+                            content.innerText += match[1];
+                        }
+
+                        // Continue reading the next chunk
+                        read();
+                    });
+                }
+
+                // Start reading the stream
+                read();
+            });
+            // const { choices } = await res.json();
+            // console.log(choices);
+            // const { message } = choices[0];
+            // chatGPTRequest.messages.push(message);
+            // appendMessageComponent({ isUser: false, content: message.content });
+        });
+
+        const messageComponent = ({ isUser, content }) => {
+            const wrapper = document.createElement("div");
+            wrapper.classList.add("d-flex", "justify-content-end");
+            wrapper.style.flexDirection = isUser ? "row" : "row-reverse";
+
+            const div = document.createElement("div");
+            div.classList.add("p-3", "me-3", "rounded");
+            if (isUser) {
+                div.classList.add("border");
+                div.style.backgroundColor = "#fbfbfb";
+            } else {
+                div.style.backgroundColor = "rgba(57, 192, 237, 0.2";
+            }
+
+            const p = document.createElement("p");
+            p.classList.add("small", "mb-0");
+            p.textContent = content;
+            div.appendChild(p);
+
+            const img = document.createElement("img");
+            if (isUser) {
+                img.src = "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp";
+            } else {
+                img.src = "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp";
+            }
+            img.style.width = "45px";
+            img.style.height = "45px";
+
+            wrapper.appendChild(img);
+            wrapper.appendChild(div);
+            return wrapper;
+        };
+
+        const appendMessageComponent = (props) => {
+            const message = messageComponent(props);
+            cardBody.appendChild(message);
+            return message;
+        };
+    </script>
+</html>
+
