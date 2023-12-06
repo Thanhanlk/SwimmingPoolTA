@@ -11,8 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 public class ChatGptProperties {
     private String url;
-    private int readTimeout;
-    private int connectionTimeout;
+    private Integer timeout;
     private String apiKey;
     private String model;
 }

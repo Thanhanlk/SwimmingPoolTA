@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 public class ChatGptConstant {
 
     public static final String CHAT_HIS_KEY = "CHAT_HIS_SESSION_KEY";
-    public static final String ENDPOINT_FOR_CHAT = "/v1/chat/completions";
+    public static final String ENDPOINT_FOR_CHAT_COMPLETION = "/v1/chat/completions";
 }

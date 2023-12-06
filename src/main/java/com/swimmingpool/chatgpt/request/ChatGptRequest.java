@@ -8,4 +8,5 @@ import java.util.List;
 public class ChatGptRequest {
     private String model;
     private List<Message> messages;
+    private Boolean stream;
 }

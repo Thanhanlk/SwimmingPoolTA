@@ -86,5 +86,4 @@ chatgpt:
   url: 'https://api.openai.com'
   api-key: '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'
   model: gpt-3.5-turbo
-  read-timeout: 60000
-  connect-timeout: 60000
+  timeout: 60000

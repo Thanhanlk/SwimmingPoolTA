@@ -1,28 +1,35 @@
 package com.swimmingpool.chatgpt;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.web.reactive.function.client.ClientResponse;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.function.Consumer;
 
 @Configuration
 @Slf4j
 public class ChatGptConfig {
 
-    @Bean("chatGptRestTemplate")
-    public RestTemplate chatGptRestTemplate(ChatGptProperties chatGptProperties) {
-        return new RestTemplateBuilder()
-                .setReadTimeout(Duration.ofMillis(chatGptProperties.getReadTimeout()))
-                .setConnectTimeout(Duration.ofMillis(chatGptProperties.getConnectionTimeout()))
-                .rootUri(chatGptProperties.getUrl())
-                .defaultHeader("Authorization", String.format("Bearer %s", chatGptProperties.getApiKey()))
-                .interceptors((request, body, execution) -> {
-                    log.info("request: {}-{}", request.getURI(), new String(body, StandardCharsets.UTF_8));
-                    return execution.execute(request, body);
+    @Bean("chatGptWebClient")
+    public WebClient webClient(ChatGptProperties properties) {
+        HttpClient httpClient = HttpClient.create()
+                .responseTimeout(Duration.ofMillis(properties.getTimeout()));
+        return WebClient.builder()
+                .baseUrl(properties.getUrl())
+                .defaultHeader("Authorization", String.format("Bearer %s", properties.getApiKey()))
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .filter((request, next) -> {
+                    log.info("request ChatGPT: {}", request.url());
+                    return next.exchange(request)
+                            .doOnSuccess(clientResponse -> {
+                                log.info("response chatGPT: {} status {}", request.url(), clientResponse.statusCode());
+                            });
                 })
                 .build();
     }
