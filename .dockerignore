@@ -1,0 +1,9 @@
+out
+target
+.docker
+Dockerfile
+docker-compose.*
+.git
+.gitignore
+.idea
+*.iml
