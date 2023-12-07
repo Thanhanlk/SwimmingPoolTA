@@ -51,6 +51,6 @@ public class HomeController extends BaseController {
         model.addAttribute("newest", newest);
         model.addAttribute("hotSales", hotSales);
         this.addCss(model, "/user/css/product", "/user/css/banner", "/user/css/hero");
-        return "/user/pages/home/index";
+        return "user/pages/home/index";
     }
 }

@@ -5,5 +5,5 @@ RUN mvn package -Dmaven.test.skip=true -DappName=swimming-pool -X
 FROM openjdk:17-slim AS runner
 EXPOSE 8080
 COPY --from=builder /target/swimming-pool.jar swimming-pool.jar
-CMD ["java", "-Dserver.port=8080", "-jar", "swiming-pool.jar"]
+CMD ["java", "-Dserver.port=8080", "-jar", "swimming-pool.jar"]
 

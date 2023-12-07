@@ -14,6 +14,7 @@
     <name>swimming-pool</name>
     <description>Swimming Pool Management</description>
     <properties>
+        <appName>swimming-pool</appName>
         <java.version>17</java.version>
     </properties>
     <dependencies>
@@ -118,6 +119,7 @@
     </dependencies>
 
     <build>
+        <finalName>${appName}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.hibernate.orm.tooling</groupId>
