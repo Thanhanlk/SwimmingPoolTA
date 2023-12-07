@@ -27,7 +27,8 @@ chatGptInput.addEventListener('keyup', (e) => {
                             isGptTyping = false;
                             return;
                         }
-                        const text = new TextDecoder().decode(value);
+                        const array = new Uint8Array(value);
+                        const text = new TextDecoder().decode(array);
                         console.log(text.replace(/data:/g, '').replace(/\n/g, ''))
                         content.innerText += text.replace(/data:/g, '').replace(/\n/g, '');
                         cardBodyScrollEnd();

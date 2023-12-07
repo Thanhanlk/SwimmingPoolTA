@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/chat-gpt")
@@ -24,7 +25,7 @@ public class ChatGptController {
     private final ChatGptService chatGptService;
 
     @PostMapping(value = "/stream-message", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<String> sendMessage(
+    public Flux<byte[]> sendMessage(
             @RequestParam String userInput,
             @SessionAttribute(required = false, name = ChatGptConstant.CHAT_HIS_KEY) List<Message> chatHistoryList,
             HttpSession httpSession
@@ -41,8 +42,11 @@ public class ChatGptController {
                         .map(x -> x.get(0))
                         .map(Choice::getMessage)
                         .map(Message::getContent)
-                        .orElse(""))
-                .doOnNext(fullMessage::append)
+                        .map(x -> x.getBytes(StandardCharsets.UTF_8))
+                        .orElse(new byte[0]))
+                .doOnNext(bytes -> {
+                  fullMessage.append(new String(bytes, StandardCharsets.UTF_8));
+                })
                 .doOnComplete(() -> {
                     if (fullMessage.isEmpty()) {
                         return;
