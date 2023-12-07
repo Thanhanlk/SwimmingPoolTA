@@ -22,12 +22,13 @@ import java.util.Locale;
 @EnableWebMvc
 @EnableAsync
 public class WebConfig implements WebMvcConfigurer {
-    private static final Locale VN = new Locale("vi", "VN");
+    private static final Locale VN = new Locale("vi");
 
     private final CommonInterceptor commonInterceptor;
 
     @PostConstruct
     public void init() {
+        Locale.setDefault(VN);
         LocaleContextHolder.setDefaultLocale(VN);
     }
 

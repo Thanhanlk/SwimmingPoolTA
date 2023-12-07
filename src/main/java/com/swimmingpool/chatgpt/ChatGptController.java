@@ -5,21 +5,24 @@ import com.swimmingpool.chatgpt.constant.Role;
 import com.swimmingpool.chatgpt.request.Message;
 import com.swimmingpool.chatgpt.response.ChatGptResponse;
 import com.swimmingpool.chatgpt.response.Choice;
+import com.swimmingpool.common.util.I18nUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.nio.charset.StandardCharsets;
 
 @RestController
 @RequestMapping("/chat-gpt")
 @RequiredArgsConstructor
+@Slf4j
 public class ChatGptController {
 
     private final ChatGptService chatGptService;
@@ -45,7 +48,7 @@ public class ChatGptController {
                         .map(x -> x.getBytes(StandardCharsets.UTF_8))
                         .orElse(new byte[0]))
                 .doOnNext(bytes -> {
-                  fullMessage.append(new String(bytes, StandardCharsets.UTF_8));
+                    fullMessage.append(new String(bytes, StandardCharsets.UTF_8));
                 })
                 .doOnComplete(() -> {
                     if (fullMessage.isEmpty()) {
@@ -56,6 +59,10 @@ public class ChatGptController {
                     _message.setContent(fullMessage.toString());
                     finalChatHistoryList.add(_message);
                     httpSession.setAttribute(ChatGptConstant.CHAT_HIS_KEY, finalChatHistoryList);
+                })
+                .onErrorResume(throwable -> {
+                    log.error(throwable.getMessage(), throwable);
+                    return Mono.just(I18nUtil.getMessage("chatgpt.error").getBytes(StandardCharsets.UTF_8));
                 });
     }
 }
