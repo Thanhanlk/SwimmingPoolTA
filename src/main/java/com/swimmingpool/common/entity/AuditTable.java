@@ -25,7 +25,7 @@ public class AuditTable {
     @CreatedBy
     private String createdBy;
 
-    @Column(name = "updated_by")
+    @Column(name = "updated_by", insertable = false)
     @LastModifiedBy
     private String updatedBy;
 

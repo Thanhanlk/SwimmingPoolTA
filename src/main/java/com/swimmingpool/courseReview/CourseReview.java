@@ -29,4 +29,7 @@ public class CourseReview extends AuditTable {
 
     @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;
+
+    @Column(name = "is_updated")
+    private boolean updated = false;
 }

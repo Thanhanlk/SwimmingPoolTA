@@ -2,28 +2,18 @@
     <div class="container">
         <div class="row d-flex justify-content-center">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body d-flex flex-column" style="gap: 20px;">
+                <div class="card border-0">
+                    <div th:if="${!#lists.isEmpty(comments)}" class="card-body d-flex flex-column" style="gap: 20px;">
                         <th:block
                             th:each="comment : ${comments}"
                             th:insert="~{this :: commentTemplate(${comment})}"
                         />
                     </div>
-                    <form sec:authorize="isAuthenticated()"th:if="${!isCommentd}" th:action="@{/course-review}" method="post" class="card-footer py-3 border-0">
-                        <input type="hidden" name="courseId" th:value="${courseId}" />
-                        <div class="d-flex">
-                            <label class="mr-2">Đánh giá sao: </label>
-                            <div th:replace="~{user/pages/course/star :: star('', 'star', 5, false)}"/>
-                        </div>
-                        <div class="d-flex flex-start w-100">
-                            <div class="form-outline w-100">
-                                <textarea class="form-control bg-white" rows="4" placeholder="Nhập bình luận" name="content"></textarea>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-end mt-2 pt-1">
-                            <button type="submit" class="btn btn-primary btn-sm">Đánh giá</button>
-                        </div>
-                    </form>
+                    <th:block
+                        sec:authorize="isAuthenticated()"
+                        th:if="${!isCommentd}"
+                        th:insert="~{this :: formComment(@{/course-review}, ${courseId}, '', 5, null)}"
+                    />
                     <div sec:authorize="isAnonymous()" class="d-flex justify-content-center p-4">
                         <a th:href="@{/auth}">Đăng nhập để có thể đánh giá khóa học.</a>
                     </div>
@@ -33,7 +23,7 @@
     </div>
 </section>
 
-<th:block th:fragment="commentTemplate(comment)">
+<th:block th:fragment="commentTemplate(comment)" th:with="updated=${comment.updated}">
     <div class="border-bottom pb-3">
         <div class="d-flex flex-start align-items-center">
             <img class="rounded-circle shadow-1-strong mr-3"
@@ -45,7 +35,11 @@
                     <h6 class="font-weight-bold text-primary mr-2" th:text="${comment.createdName}"/>
                     <span class="font-italic text-secondary" th:text="${'<' + comment.username + '>'}"/>
                 </div>
-                <p class="text-muted small mb-0" th:text="${#dates.format(comment.createdDate, 'dd/MM/yyyy HH:mm')}"/>
+                <p th:unless="${updated}" class="text-muted small mb-0" th:text="${#dates.format(comment.createdDate, 'dd/MM/yyyy HH:mm')}"/>
+                <div th:if="${updated}" class="d-flex">
+                    <p class="text-muted small mb-0 mr-2" th:text="${#dates.format(comment.modifiedDate, 'dd/MM/yyyy HH:mm')}"/>
+                    <span>Đã chỉnh sửa</span>
+                </div>
                 <div th:replace="~{user/pages/course/star :: star(${comment.id}, ${comment.id}, ${comment.star}, true)}"/>
             </div>
         </div>
@@ -55,12 +49,44 @@
         <div class="small d-flex justify-content-start">
             <a href="#!" class="d-flex align-items-center mr-3 text-primary">
                 <i class="fa fa-thumbs-o-up mr-2" aria-hidden="true"></i>
-                <p class="mb-0">Like</p>
+                <p class="mb-0">Thích</p>
             </a>
             <a href="#!" class="d-flex align-items-center mr-3 text-primary">
                 <i class="fa fa-share mr-2" aria-hidden="true"></i>
-                <p class="mb-0">Share</p>
+                <p class="mb-0">Chia sẻ</p>
+            </a>
+            <a sec:authorize="isAuthenticated()" th:if="${!updated && #authentication.principal.username eq comment.username}" data-toggle="collapse" th:href="${'#comment-' + comment.id}" class="d-flex align-items-center mr-3 text-primary">
+                <i class="fa fa-edit mr-2" aria-hidden="true"></i>
+                <p class="mb-0">Chỉnh sửa</p>
             </a>
         </div>
+
+        <div
+            sec:authorize="isAuthenticated()"
+            th:if="${!updated && #authentication.principal.username eq comment.username}"
+            class="collapse mt-3"
+            th:id="${'comment-' + comment.id}"
+            th:insert="~{this :: formComment(@{/course-review/update}, ${comment.courseId}, ${comment.content}, ${comment.star}, ${comment.id})}"
+        />
     </div>
+</th:block>
+
+<th:block th:fragment="formComment(url, courseId, content, star, courseReviewId)">
+    <form th:action="${url}" method="post" class="card-footer py-3 border-0">
+        <input type="hidden" name="courseId" th:value="${courseId}" />
+        <input type="hidden" name="courseReviewId" th:value="${courseReviewId}"/>
+        <div class="d-flex">
+            <label class="mr-2">Đánh giá sao: </label>
+            <div th:replace="~{user/pages/course/star :: star('', 'star', ${star}, false)}"/>
+        </div>
+        <div class="d-flex flex-start w-100">
+            <div class="form-outline w-100">
+                <textarea class="form-control bg-white" rows="4" placeholder="Nhập bình luận" name="content" th:text="${content}"></textarea>
+            </div>
+        </div>
+        <i class="d-block mt-2">* Lưu ý chỉ được chỉnh sửa đánh giá 1 lần.</i>
+        <div class="d-flex justify-content-end mt-2 pt-1">
+            <button type="submit" class="btn btn-primary btn-sm">Đánh giá</button>
+        </div>
+    </form>
 </th:block>

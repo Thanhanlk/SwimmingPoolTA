@@ -22,7 +22,7 @@ import java.util.Locale;
 @EnableWebMvc
 @EnableAsync
 public class WebConfig implements WebMvcConfigurer {
-    private static final Locale VN = new Locale("vi");
+    private static final Locale VN = new Locale("vi", "VN");
 
     private final CommonInterceptor commonInterceptor;
 

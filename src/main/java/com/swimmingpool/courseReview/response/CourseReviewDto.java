@@ -12,4 +12,7 @@ public class CourseReviewDto {
     private String content;
     private Integer star;
     private String createdName;
+    private Date modifiedDate;
+    private String courseId;
+    private boolean updated;
 }

@@ -61,10 +61,11 @@ public class CourseController extends BaseController {
                 .collect(Collectors.toMap(CourseReviewDto::getUsername, x -> x));
         model.addAttribute("relatedCourse", pageResponse.getItems());
         model.addAttribute("course", courseDetailResponse);
+
         if (Objects.nonNull(userResponse)) {
             final CourseReviewDto courseReviewDto = courseReviewMap.get(userResponse.getUsername());
             model.addAttribute("myReview", courseReviewDto);
-//            courseReviewMap.remove(userResponse.getUsername());
+            courseReviewMap.remove(userResponse.getUsername());
         }
         model.addAttribute("reviewMap", courseReviewMap);
         this.addCss(model, "/user/css/shop", "/user/css/product", "/user/css/product-detail",  "/user/css/hero");
