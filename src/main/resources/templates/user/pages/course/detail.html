@@ -59,14 +59,29 @@
                         <div class="product__details__tab">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5"
-                                       role="tab">Mô Tả</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#tab-desc">Mô Tả</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab-comment">Đánh giá</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="tabs-5" role="tabpanel">
+                                <div class="tab-pane active" id="tab-desc" role="tabpanel">
                                     <div class="product__details__tab__content">
                                         <div class="product__details__tab__content__item px-5" th:utext="${course.description}" />
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane" id="tab-comment" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <div class="product__details__tab__content__item px-5">
+                                            <div th:if="${myReview ne null}">
+                                                <h6>Đánh giá của tôi</h6>
+                                                <div th:replace="~{user/pages/course/comments :: commentTemplate(${myReview})}"/>
+                                            </div>
+                                            <div th:replace="~{user/pages/course/comments :: comments(${reviewMap.values()}, ${course.id}, ${myReview ne null})}"/>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>

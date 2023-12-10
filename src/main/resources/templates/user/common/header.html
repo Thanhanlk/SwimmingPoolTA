@@ -45,8 +45,10 @@
                             <li th:replace="~{user/common/link :: link('/home', 'Trang chủ')}"/>
                             <li th:replace="~{user/common/link :: link('/course', 'Khóa học')}"/>
                             <!-- Chỉ hiển thị Đơn hàng và Thời khóa biểu nếu người dùng đã đăng nhập -->
-                            <li sec:authorize="isAuthenticated()" th:replace="~{user/common/link :: link('/order', 'Đơn hàng')}"/>
-                            <li sec:authorize="isAuthenticated()" th:replace="~{user/common/link :: link('/time-table', 'Thời khóa biểu')}"/>
+                            <th:block sec:authorize="isAuthenticated()">
+                                <li th:replace="~{user/common/link :: link('/order', 'Đơn hàng')}"/>
+                                <li th:replace="~{user/common/link :: link('/time-table', 'Thời khóa biểu')}"/>
+                            </th:block>
                             <li th:replace="~{user/common/link :: link('/contact', 'Liên hệ')}"/>
                         </ul>
                     </nav>

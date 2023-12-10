@@ -7,8 +7,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Setter
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -26,18 +24,9 @@ public class CourseReview extends AuditTable {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @Column(name = "user_id")
-    private Long userId;
-
     @Column(name = "rating")
     private Integer rating;
 
     @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;
-
-    @Column(name = "review_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date reviewDate;
-
-    // Constructors, getters, and setters are omitted for brevity
 }

@@ -1,6 +1,7 @@
 package com.swimmingpool.common.config;
 
 import com.swimmingpool.common.constant.AppConstant;
+import io.micrometer.core.ipc.http.HttpSender;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

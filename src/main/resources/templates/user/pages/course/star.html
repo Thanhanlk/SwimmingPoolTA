@@ -1,0 +1,29 @@
+<div class="comments" th:fragment="star(id, name, numberOfStar, disabled)">
+    <input th:id="${'star-1' + id}" type="radio" class="d-none star-1" th:name="${name}" th:checked="${1 eq numberOfStar}" value="1" th:disabled="${disabled}"/>
+    <input th:id="${'star-2' + id}" type="radio" class="d-none star-2" th:name="${name}" th:checked="${2 eq numberOfStar}" value="2" th:disabled="${disabled}"/>
+    <input th:id="${'star-3' + id}" type="radio" class="d-none star-3" th:name="${name}" th:checked="${3 eq numberOfStar}" value="3" th:disabled="${disabled}"/>
+    <input th:id="${'star-4' + id}" type="radio" class="d-none star-4" th:name="${name}" th:checked="${4 eq numberOfStar}" value="4" th:disabled="${disabled}"/>
+    <input th:id="${'star-5' + id}" type="radio" class="d-none star-5" th:name="${name}" th:checked="${5 eq numberOfStar}" value="5" th:disabled="${disabled}"/>
+
+    <label style="cursor: pointer" th:for="${'star-1' + id}" class="rate-1 rate-2 rate-3 rate-4 rate-5">
+        <i class="fa fa-star" aria-hidden="true"></i>
+    </label>
+
+    <label style="cursor: pointer" th:for="${'star-2' + id}" class="rate-2 rate-3 rate-4 rate-5">
+        <i class="fa fa-star" aria-hidden="true"></i>
+    </label>
+
+
+    <label style="cursor: pointer" th:for="${'star-3' + id}" class="rate-3 rate-4 rate-5">
+        <i class="fa fa-star" aria-hidden="true"></i>
+    </label>
+
+
+    <label style="cursor: pointer" th:for="${'star-4' + id}" class="rate-4 rate-5">
+        <i class="fa fa-star" aria-hidden="true"></i>
+    </label>
+
+    <label style="cursor: pointer" th:for="${'star-5' + id}" class="rate-5">
+        <i class="fa fa-star" aria-hidden="true"></i>
+    </label>
+</div>
