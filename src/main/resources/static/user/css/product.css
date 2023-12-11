@@ -244,3 +244,11 @@
     position: absolute;
     visibility: hidden;
 }
+
+.comments > input.star-1:checked ~ .rate-1,
+.comments > input.star-2:checked ~ .rate-2,
+.comments > input.star-3:checked ~ .rate-3,
+.comments > input.star-4:checked ~ .rate-4,
+.comments > input.star-5:checked ~ .rate-5 {
+    color: var(--warning);
+}

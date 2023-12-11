@@ -12,6 +12,10 @@
             </div>
             <div class="product__item__text">
                 <h6 th:title="*{name}" th:text="*{name}" class="dots" />
+                <div class="d-flex">
+                    <div th:replace="~{user/pages/course/star :: star(*{code}, *{code}, *{avgStar}, true)}"/>
+                    <span class="ml-2 small d-flex align-items-center text-secondary">([[*{numberOfReview}]] đánh giá)</span>
+                </div>
                 <div class="d-flex align-items-center" style="gap: 5px;">
                     <span>Giá: </span>
                     <span class="mb-0 h6" th:text="*{#numbers.formatCurrency(price)}" />

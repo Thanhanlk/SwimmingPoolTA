@@ -3,15 +3,18 @@ package com.swimmingpool.course.impl;
 import com.swimmingpool.assignment.Assignment;
 import com.swimmingpool.assignment.IAssignmentService;
 import com.swimmingpool.assignment.response.AvailableAssignmentResponse;
+import com.swimmingpool.common.constant.AppConstant;
 import com.swimmingpool.common.dto.PageResponse;
 import com.swimmingpool.common.exception.ValidationException;
 import com.swimmingpool.common.util.I18nUtil;
+import com.swimmingpool.common.util.NumberUtil;
 import com.swimmingpool.course.Course;
 import com.swimmingpool.course.CourseRepository;
 import com.swimmingpool.course.ICourseService;
 import com.swimmingpool.course.request.CourseCreationRequest;
 import com.swimmingpool.course.request.CourseSearchRequest;
 import com.swimmingpool.course.response.*;
+import com.swimmingpool.courseReview.CourseReviewRepository;
 import com.swimmingpool.image.ImageConstant;
 import com.swimmingpool.image.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +26,14 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.NumberUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +43,7 @@ public class CourseServiceImpl implements ICourseService {
 
     private final CourseRepository courseRepository;
     private final CustomCourseRepositoryImpl customCourseRepositoryImpl;
+    private final CourseReviewRepository courseReviewRepository;
 
     @Setter(onMethod_ = { @Autowired }, onParam_ = @Lazy)
     private ImageService imageService;
@@ -63,7 +70,9 @@ public class CourseServiceImpl implements ICourseService {
 
     @Override
     public PageResponse<CourseSearchResponse> searchCourse(CourseSearchRequest courseSearchRequest) {
-        return this.customCourseRepositoryImpl.searchCourse(courseSearchRequest);
+        final PageResponse<CourseSearchResponse> response = this.customCourseRepositoryImpl.searchCourse(courseSearchRequest);
+        this.fetchAvgStar(response.getItems());
+        return response;
     }
 
     @Override
@@ -133,17 +142,23 @@ public class CourseServiceImpl implements ICourseService {
 
     @Override
     public List<CourseResponse> getBestSeller(int limit) {
-        return this.customCourseRepositoryImpl.getBestSeller(limit);
+        final List<CourseResponse> bestSeller = this.customCourseRepositoryImpl.getBestSeller(limit);
+        this.fetchAvgStar(bestSeller);
+        return bestSeller;
     }
 
     @Override
     public List<CourseResponse> getNewest(int limit) {
-        return this.customCourseRepositoryImpl.getNewest(limit);
+        final List<CourseResponse> newest = this.customCourseRepositoryImpl.getNewest(limit);
+        this.fetchAvgStar(newest);
+        return newest;
     }
 
     @Override
     public List<CourseResponse> getHotSales(int limit) {
-        return this.customCourseRepositoryImpl.getHotSales(limit);
+        final List<CourseResponse> hotSales = this.customCourseRepositoryImpl.getHotSales(limit);
+        this.fetchAvgStar(hotSales);
+        return hotSales;
     }
 
     @Override
@@ -166,5 +181,22 @@ public class CourseServiceImpl implements ICourseService {
                 .discount(course.getDiscount())
                 .price(course.getPrice())
                 .build();
+    }
+
+    private void fetchAvgStar(List<? extends CourseResponse> courseResponses) {
+        final List<String> ids = courseResponses.stream()
+                .map(CourseResponse::getId)
+                .toList();
+        final Map<Object, Map<String, Object>> avgStarByCourseId = this.courseReviewRepository.getAvgStarByCourseId(ids).stream()
+                .collect(Collectors.toMap(x -> x.get("courseId"), Function.identity()));
+        courseResponses.forEach(courseResponse -> {
+            final Map<String, Object> map = avgStarByCourseId.get(courseResponse.getId());
+            if (Objects.nonNull(map)) {
+                final int avgRating = NumberUtil.toInt(map.get("avgStar"));
+                final int count = NumberUtil.toInt(map.get("count"));
+                courseResponse.setAvgStar(avgRating);
+                courseResponse.setNumberOfReview(count);
+            }
+        });
     }
 }

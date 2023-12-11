@@ -22,4 +22,6 @@ public class CourseResponse {
     private Boolean isShowHome;
     private BigDecimal price;
     private String slug;
+    private Integer avgStar;
+    private int numberOfReview;
 }
